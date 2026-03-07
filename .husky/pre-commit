@@ -1,0 +1,2 @@
+echo "Rodando lint nos arquivos staged..."
+npx lint-staged
