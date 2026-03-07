@@ -1,0 +1,56 @@
+{
+    "importSorter.sortConfiguration.customOrderingRules.rules": [
+        {
+           "regex": "^@angular",
+           "orderLevel": 10,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^rxjs",
+           "orderLevel": 10,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^@angular",
+           "orderLevel": 20,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^@root",
+           "orderLevel": 30,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^@core",
+           "orderLevel": 40,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^@layout",
+           "orderLevel": 50,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^@features",
+           "orderLevel": 60,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^@shared",
+           "orderLevel": 70,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^@assets",
+           "orderLevel": 80,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+        {
+           "regex": "^[.]",
+           "orderLevel": 90,
+           "numberOfEmptyLinesAfterGroup": 1
+        },
+    ],
+    "importSorter.generalConfiguration.sortOnBeforeSave": true,
+    "importSorter.importStringConfiguration.maximumNumberOfImportExpressionPerLine.count": 200
+}
