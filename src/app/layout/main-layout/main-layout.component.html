@@ -1,10 +1,13 @@
-<div class="min-h-screen bg-surface flex">
-  <aside class="hidden md:flex flex-col fixed inset-y-0 left-0 w-60 bg-primary-dark z-30">
+<div class="bg-surface flex" style="height: 100dvh; overflow: hidden">
+  <aside class="hidden md:flex flex-col flex-shrink-0 bg-primary-dark" style="width: 240px">
     <div class="flex items-center gap-3 px-4 py-5 bg-[#0a2444]">
-      <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-        <span class="text-primary font-bold text-sm">SE</span>
+      <div
+        class="bg-white rounded-full flex items-center justify-center flex-shrink-0"
+        style="width: 40px; height: 40px; min-width: 40px"
+      >
+        <span class="text-primary font-bold" style="font-size: 13px">SE</span>
       </div>
-      <span class="text-white font-bold text-lg">SeniorEase</span>
+      <span class="text-white font-bold truncate" style="font-size: 17px">SeniorEase</span>
     </div>
 
     <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
@@ -13,17 +16,27 @@
           <a
             [routerLink]="item.path"
             routerLinkActive="bg-white/20 !text-white font-semibold"
-            class="flex items-center gap-3 px-3 py-3 rounded-xl text-primary-light hover:bg-white/10 transition-colors text-[15px]"
+            class="flex items-center gap-3 px-3 py-3 rounded-xl text-primary-light hover:bg-white/10 transition-colors"
+            style="font-size: 15px"
           >
-            <fa-icon [icon]="item.icon" class="w-7 text-center text-lg"></fa-icon>
-            <span>{{ item.label }}</span>
+            <fa-icon
+              [icon]="item.icon"
+              class="text-center flex-shrink-0"
+              style="width: 24px; font-size: 17px"
+            ></fa-icon>
+            <span class="truncate">{{ item.label }}</span>
           </a>
         } @else {
           <span
-            class="flex items-center gap-3 px-3 py-3 rounded-xl text-primary-light/30 text-[15px] cursor-not-allowed select-none"
+            class="flex items-center gap-3 px-3 py-3 rounded-xl text-primary-light/30 cursor-not-allowed select-none"
+            style="font-size: 15px"
           >
-            <fa-icon [icon]="item.icon" class="w-7 text-center text-lg"></fa-icon>
-            <span>{{ item.label }}</span>
+            <fa-icon
+              [icon]="item.icon"
+              class="text-center flex-shrink-0"
+              style="width: 24px; font-size: 17px"
+            ></fa-icon>
+            <span class="truncate">{{ item.label }}</span>
           </span>
         }
       }
@@ -31,42 +44,58 @@
 
     <div class="p-3 pb-6">
       <div class="flex items-center gap-3 bg-white/10 rounded-xl px-3 py-3">
-        <div class="w-9 h-9 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
-          <span class="text-white font-bold text-xs">SA</span>
+        <div
+          class="bg-accent rounded-full flex items-center justify-center flex-shrink-0"
+          style="width: 36px; height: 36px; min-width: 36px"
+        >
+          <span class="text-white font-bold" style="font-size: 11px">SA</span>
         </div>
-        <span class="text-white text-sm font-medium truncate">Sr. Arnaldo</span>
+        <span class="text-white font-medium truncate" style="font-size: 13px">Sr. Arnaldo</span>
       </div>
     </div>
   </aside>
 
-  <main class="flex-1 md:pl-60 min-h-screen">
-    <router-outlet />
-  </main>
+  <div class="flex-1 flex flex-col min-w-0" style="height: 100dvh; overflow: hidden">
+    <main class="flex-1 overflow-y-auto">
+      <router-outlet />
+    </main>
 
-  <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-border z-30">
-    <div class="flex items-stretch h-20">
-      @for (item of bottomNavItems; track item.path) {
-        @if (!item.disabled) {
-          <a
-            [routerLink]="item.path"
-            routerLinkActive
-            #rla="routerLinkActive"
-            class="flex-1 flex flex-col items-center justify-center gap-1 transition-colors"
-            [class.text-primary]="rla.isActive"
-            [class.text-muted]="!rla.isActive"
-          >
-            <fa-icon [icon]="item.icon" class="text-2xl"></fa-icon>
-            <span class="text-[11px]" [class.font-semibold]="rla.isActive">{{ item.label }}</span>
-          </a>
-        } @else {
-          <span
-            class="flex-1 flex flex-col items-center justify-center gap-1 text-muted/30 select-none"
-          >
-            <fa-icon [icon]="item.icon" class="text-2xl"></fa-icon>
-            <span class="text-[11px]">{{ item.label }}</span>
-          </span>
+    <nav
+      class="md:hidden bg-white border-t border-border flex-shrink-0"
+      style="height: 64px; overflow: hidden"
+    >
+      <div class="flex" style="height: 64px">
+        @for (item of bottomNavItems; track item.path) {
+          @if (!item.disabled) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive
+              #rla="routerLinkActive"
+              class="flex-1 flex flex-col items-center justify-center transition-colors"
+              style="gap: 4px"
+              [class.text-primary]="rla.isActive"
+              [class.text-muted]="!rla.isActive"
+            >
+              <fa-icon [icon]="item.icon" style="font-size: 22px; line-height: 1"></fa-icon>
+              <span
+                style="font-size: 10px; line-height: 1; font-family: inherit"
+                [class.font-semibold]="rla.isActive"
+                >{{ item.label }}</span
+              >
+            </a>
+          } @else {
+            <span
+              class="flex-1 flex flex-col items-center justify-center text-muted/30 select-none"
+              style="gap: 4px"
+            >
+              <fa-icon [icon]="item.icon" style="font-size: 22px; line-height: 1"></fa-icon>
+              <span style="font-size: 10px; line-height: 1; font-family: inherit">{{
+                item.label
+              }}</span>
+            </span>
+          }
         }
-      }
-    </div>
-  </nav>
+      </div>
+    </nav>
+  </div>
 </div>

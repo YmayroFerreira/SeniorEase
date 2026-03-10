@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -12,8 +12,8 @@ import {
   faVolumeUp,
   faWheelchair,
 } from '@fortawesome/free-solid-svg-icons';
+import { AccessibilityService, type FontSize } from '../../core/services/accessibility.service';
 
-type FontSize = 'small' | 'medium' | 'large';
 type Theme = 'default' | 'high-contrast' | 'soft';
 type Animation = 'normal' | 'slow' | 'none';
 
@@ -31,6 +31,8 @@ interface AccessibilityPrefs {
   templateUrl: './accessibility.component.html',
 })
 export class AccessibilityComponent {
+  private readonly accessibilityService = inject(AccessibilityService);
+
   protected readonly icons = {
     wheelchair: faWheelchair,
     textHeight: faTextHeight,
@@ -43,7 +45,7 @@ export class AccessibilityComponent {
     increasedSpacing: faTextWidth,
   };
 
-  protected readonly selectedFontSize = signal<FontSize>('medium');
+  protected readonly selectedFontSize = this.accessibilityService.fontSize;
   protected readonly selectedTheme = signal<Theme>('default');
   protected readonly selectedAnimation = signal<Animation>('normal');
 
@@ -56,9 +58,11 @@ export class AccessibilityComponent {
   });
 
   protected readonly fontSizeOptions: { value: FontSize; label: string; description: string }[] = [
-    { value: 'small', label: 'Pequeno', description: 'Texto compacto' },
-    { value: 'medium', label: 'Médio', description: 'Padrão do sistema' },
-    { value: 'large', label: 'Grande', description: 'Mais fácil de ler' },
+    { value: 'small', label: 'P', description: 'Compacto' },
+    { value: 'medium', label: 'M', description: 'Padrão' },
+    { value: 'large', label: 'G', description: 'Grande' },
+    { value: 'x-large', label: 'XG', description: 'Maior' },
+    { value: 'xx-large', label: 'XXG', description: 'Máximo' },
   ];
 
   protected readonly themeOptions: { value: Theme; label: string; description: string }[] = [
@@ -94,17 +98,11 @@ export class AccessibilityComponent {
   }
 
   protected savePreferences(): void {
-    console.log(
-      'Salvando preferências',
-      this.prefs(),
-      this.selectedFontSize(),
-      this.selectedTheme(),
-      this.selectedAnimation(),
-    );
+    // fontSize já é aplicado em tempo real via service; aqui confirmamos as demais prefs
   }
 
   protected resetPreferences(): void {
-    this.selectedFontSize.set('medium');
+    this.accessibilityService.fontSize.set('medium');
     this.selectedTheme.set('default');
     this.selectedAnimation.set('normal');
     this.prefs.set({
