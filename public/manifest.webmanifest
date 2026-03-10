@@ -1,6 +1,9 @@
 {
-  "name": "app",
-  "short_name": "app",
+  "name": "SeniorEase",
+  "short_name": "SeniorEase",
+  "description": "Tecnologia pensada para você",
+  "background_color": "#1b4f8a",
+  "theme_color": "#1b4f8a",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
