@@ -1,65 +1,80 @@
-<div class="min-h-screen bg-surface pb-[88px] md:pb-8">
+<div class="min-h-screen bg-surface" style="padding-bottom: 88px">
   <div class="md:hidden">
-    <div class="bg-primary h-11"></div>
+    <div class="bg-primary" style="height: 44px"></div>
   </div>
 
-  <div
-    class="bg-primary md:bg-white md:border-b md:border-border px-6 md:px-8 pt-4 md:pt-5 pb-6 md:pb-5"
-  >
-    <div class="md:hidden flex items-center gap-3 mb-1">
-      <a routerLink="/inicio" class="text-white text-2xl leading-none">
+  <div class="bg-primary md:bg-card md:border-b md:border-border" style="padding: 16px 24px 24px">
+    <div class="md:hidden flex items-center" style="gap: 12px; margin-bottom: 4px">
+      <a routerLink="/inicio" class="text-white" style="font-size: 24px; line-height: 1">
         <fa-icon [icon]="icons.arrowLeft"></fa-icon>
       </a>
-      <h1 class="text-xl font-semibold text-white">Acessibilidade</h1>
+      <h1 class="font-semibold text-white" style="font-size: 20px">Acessibilidade</h1>
     </div>
     <div class="hidden md:block">
-      <h1 class="text-xl font-bold text-gray-800">Acessibilidade</h1>
-      <p class="text-sm text-muted mt-0.5">Personalize sua experiência de uso</p>
+      <h1 class="font-bold text-foreground" style="font-size: 20px">Acessibilidade</h1>
+      <p class="text-muted" style="font-size: 14px; margin-top: 2px">
+        Personalize sua experiência de uso
+      </p>
     </div>
   </div>
 
-  <div class="px-6 md:px-8 pt-5 md:pt-6 md:max-w-2xl">
+  <div style="padding: 20px 24px 0; max-width: 672px">
     <div
-      class="bg-primary-surface border border-primary/20 rounded-2xl p-4 mb-6 flex items-start gap-3"
+      class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start"
+      style="padding: 16px; margin-bottom: 24px; gap: 12px"
     >
-      <fa-icon [icon]="icons.wheelchair" class="text-primary text-xl mt-0.5"></fa-icon>
-      <p class="text-sm text-primary leading-relaxed">
+      <fa-icon
+        [icon]="icons.wheelchair"
+        class="text-primary flex-shrink-0"
+        style="font-size: 18px; margin-top: 2px"
+      ></fa-icon>
+      <p class="text-primary" style="font-size: 14px; line-height: 1.5">
         Ajuste as configurações para tornar o SeniorEase mais confortável para você.
       </p>
     </div>
 
-    <section class="mb-6">
-      <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
+    <section style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
         Tamanho do Texto
       </h2>
-      <div class="grid grid-cols-5 gap-[6px]">
+      <div class="grid grid-cols-5" style="gap: 6px">
         @for (opt of fontSizeOptions; track opt.value) {
           <button
             type="button"
             (click)="selectedFontSize.set(opt.value)"
-            class="bg-card rounded-xl shadow-sm py-3 px-1 text-center border-2 transition-colors cursor-pointer"
+            class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex flex-col items-center justify-center"
+            style="padding: 10px 4px; min-height: 72px"
             [class.border-primary]="selectedFontSize() === opt.value"
             [class.border-transparent]="selectedFontSize() !== opt.value"
             [attr.aria-pressed]="selectedFontSize() === opt.value"
           >
             <fa-icon
               [icon]="icons.textHeight"
-              class="text-primary block mx-auto"
-              [class.text-xs]="opt.value === 'small'"
-              [class.text-sm]="opt.value === 'medium'"
-              [class.text-base]="opt.value === 'large'"
-              [class.text-lg]="opt.value === 'x-large'"
-              [class.text-xl]="opt.value === 'xx-large'"
+              class="text-primary block"
+              [style.fontSize.px]="fontIconPx[opt.value]"
             ></fa-icon>
-            <p class="font-bold text-gray-800 mt-1.5" style="font-size: 11px">{{ opt.label }}</p>
-            <p class="text-muted leading-snug" style="font-size: 9px">{{ opt.description }}</p>
+            <p
+              class="font-bold text-foreground"
+              style="font-size: 11px; margin-top: 6px; line-height: 1"
+            >
+              {{ opt.label }}
+            </p>
+            <p class="text-muted" style="font-size: 9px; margin-top: 3px; line-height: 1.2">
+              {{ opt.description }}
+            </p>
           </button>
         }
       </div>
     </section>
 
-    <section class="mb-6">
-      <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
+    <section style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
         Tema de Contraste
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
@@ -67,32 +82,39 @@
           <button
             type="button"
             (click)="selectedTheme.set(opt.value)"
-            class="w-full flex items-center gap-4 px-4 py-4 hover:bg-surface transition-colors cursor-pointer"
+            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
+            style="gap: 16px; padding: 14px 16px"
             [attr.aria-pressed]="selectedTheme() === opt.value"
           >
             <div
-              class="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"
+              class="rounded-full border-2 flex items-center justify-center flex-shrink-0"
+              style="width: 20px; height: 20px; min-width: 20px"
               [class.border-primary]="selectedTheme() === opt.value"
               [class.border-border]="selectedTheme() !== opt.value"
             >
               @if (selectedTheme() === opt.value) {
-                <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                <div class="rounded-full bg-primary" style="width: 10px; height: 10px"></div>
               }
             </div>
             <div class="flex-1 text-left">
-              <p class="text-sm font-semibold text-gray-800">{{ opt.label }}</p>
-              <p class="text-xs text-muted mt-0.5">{{ opt.description }}</p>
+              <p class="font-semibold text-foreground" style="font-size: 14px">{{ opt.label }}</p>
+              <p class="text-muted" style="font-size: 12px; margin-top: 2px">
+                {{ opt.description }}
+              </p>
             </div>
           </button>
           @if (!last) {
-            <div class="h-px bg-border mx-4"></div>
+            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
           }
         }
       </div>
     </section>
 
-    <section class="hidden md:block mb-6">
-      <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
+    <section class="hidden md:block" style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
         Velocidade de Animação
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
@@ -100,44 +122,51 @@
           <button
             type="button"
             (click)="selectedAnimation.set(opt.value)"
-            class="w-full flex items-center gap-4 px-4 py-4 hover:bg-surface transition-colors cursor-pointer"
+            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
+            style="gap: 16px; padding: 14px 16px"
             [attr.aria-pressed]="selectedAnimation() === opt.value"
           >
             <div
-              class="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"
+              class="rounded-full border-2 flex items-center justify-center flex-shrink-0"
+              style="width: 20px; height: 20px; min-width: 20px"
               [class.border-primary]="selectedAnimation() === opt.value"
               [class.border-border]="selectedAnimation() !== opt.value"
             >
               @if (selectedAnimation() === opt.value) {
-                <div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                <div class="rounded-full bg-primary" style="width: 10px; height: 10px"></div>
               }
             </div>
-            <p class="text-sm font-semibold text-gray-800 text-left flex-1">{{ opt.label }}</p>
+            <p class="font-semibold text-foreground text-left flex-1" style="font-size: 14px">
+              {{ opt.label }}
+            </p>
           </button>
           @if (!last) {
-            <div class="h-px bg-border mx-4"></div>
+            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
           }
         }
       </div>
     </section>
 
-    <section class="mb-8">
-      <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
+    <section style="margin-bottom: 32px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
         Recursos de Acessibilidade
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         @for (item of toggleItems; track item.key; let last = $last) {
-          <div class="flex items-center gap-3 px-4 py-4">
+          <div class="flex items-center" style="gap: 12px; padding: 14px 16px">
             <fa-icon
               [icon]="icons[item.key]"
               class="text-primary text-center flex-shrink-0"
               style="font-size: 18px; width: 22px"
             ></fa-icon>
             <div class="flex-1 min-w-0">
-              <p class="font-semibold text-gray-800 truncate" style="font-size: 15px">
+              <p class="font-semibold text-foreground truncate" style="font-size: 15px">
                 {{ item.label }}
               </p>
-              <p class="text-muted mt-0.5 truncate" style="font-size: 12px">
+              <p class="text-muted truncate" style="font-size: 12px; margin-top: 2px">
                 {{ item.description }}
               </p>
             </div>
@@ -149,7 +178,7 @@
               class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer"
               style="width: 48px; height: 26px; min-width: 48px"
               [class.bg-primary]="prefs()[item.key]"
-              [class.bg-border]="!prefs()[item.key]"
+              [class.bg-toggle-off]="!prefs()[item.key]"
             >
               <span
                 class="absolute bg-white rounded-full shadow transition-transform"
@@ -159,24 +188,18 @@
             </button>
           </div>
           @if (!last) {
-            <div class="h-px bg-border mx-4"></div>
+            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
           }
         }
       </div>
     </section>
 
-    <div class="flex flex-col gap-3 pb-4">
-      <button
-        type="button"
-        (click)="savePreferences()"
-        class="w-full bg-primary hover:bg-primary-dark text-white font-semibold text-base rounded-2xl py-4 transition-colors cursor-pointer"
-      >
-        Salvar Preferências
-      </button>
+    <div style="padding-bottom: 16px">
       <button
         type="button"
         (click)="resetPreferences()"
-        class="w-full bg-card border border-border text-muted font-semibold text-base rounded-2xl py-4 transition-colors hover:bg-surface cursor-pointer"
+        class="w-full bg-card border border-border text-muted font-semibold rounded-2xl transition-colors hover:bg-surface cursor-pointer"
+        style="font-size: 16px; padding: 16px"
       >
         Restaurar Padrões
       </button>

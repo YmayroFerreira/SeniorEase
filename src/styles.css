@@ -8,21 +8,23 @@
   --color-primary-light: #b7d8f6;
   --color-primary-surface: #eaf1fb;
 
-  --color-accent: #e67e22;
-  --color-accent-hover: #cf6d17;
+  --color-accent: #8b4000;
+  --color-accent-hover: #6b3000;
 
   --color-surface: #f1f5f9;
   --color-card: #ffffff;
-  --color-muted: #718096;
+  --color-muted: #536070;
   --color-border: #e0e6ed;
+  --color-foreground: #1a202c;
+  --color-toggle-off: #536070;
 
-  --color-success: #27ae60;
+  --color-success: #0f5c2b;
   --color-success-light: #e0f7e9;
 
-  --color-warning: #f59e0b;
+  --color-warning: #7a5000;
   --color-warning-light: #fef3c7;
 
-  --color-danger: #e53e3e;
+  --color-danger: #9a1a1a;
   --color-danger-light: #fff5f5;
 
   --color-purple: #6a3bab;
@@ -40,21 +42,89 @@ html {
 body {
   font-family: var(--font-sans);
   background-color: var(--color-surface);
-  color: #1a202c;
+  color: var(--color-foreground);
 }
 
 .font-small {
   --font-size-base: 14px;
 }
-
 .font-large {
   --font-size-base: 20px;
 }
-
 .font-x-large {
   --font-size-base: 24px;
 }
-
 .font-xx-large {
   --font-size-base: 28px;
+}
+
+.theme-high-contrast {
+  --color-foreground: #f0f0f0;
+
+  --color-primary: #000000;
+  --color-primary-dark: #000000;
+  --color-primary-light: #ffff00;
+  --color-primary-surface: #1a1a00;
+
+  --color-accent: #ffcc00;
+  --color-accent-hover: #e6b800;
+
+  --color-surface: #000000;
+  --color-card: #111111;
+  --color-muted: #aaaaaa;
+  --color-border: #3a3a3a;
+  --color-foreground: #f0f0f0;
+  --color-toggle-off: #444444;
+
+  --color-success: #44dd55;
+  --color-success-light: #001100;
+  --color-warning: #ffcc00;
+  --color-warning-light: #1a1200;
+  --color-danger: #ff5555;
+  --color-danger-light: #1a0000;
+}
+
+.theme-high-contrast .text-primary {
+  color: #ffff00;
+}
+
+.theme-high-contrast .border-primary {
+  border-color: #ffff00;
+}
+
+.theme-high-contrast .rounded-full.bg-primary {
+  background-color: #ffff00;
+}
+
+.theme-high-contrast [role='switch'].bg-primary span {
+  background-color: #000000;
+}
+
+.theme-high-contrast .bg-accent {
+  color: #000000;
+}
+
+.theme-soft {
+  --color-foreground: #1a202c;
+
+  --color-primary: #3a6b99;
+  --color-primary-dark: #2a4e73;
+  --color-primary-light: #c8ddf0;
+  --color-primary-surface: #f0f5fb;
+
+  --color-accent: #8b5a2b;
+  --color-accent-hover: #7a4d24;
+
+  --color-surface: #f8f4f0;
+  --color-card: #ffffff;
+  --color-muted: #4a5663;
+  --color-border: #d8cfc6;
+  --color-toggle-off: #4a5663;
+
+  --color-success: #0a5225;
+  --color-success-light: #eaf5ee;
+  --color-warning: #8b6524;
+  --color-warning-light: #fdf3e3;
+  --color-danger: #904040;
+  --color-danger-light: #fdf0f0;
 }

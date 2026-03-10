@@ -5,16 +5,18 @@ import {
   faArrowLeft,
   faBars,
   faExpand,
-  faPalette,
   faTextHeight,
   faTextWidth,
   faVolumeMute,
   faVolumeUp,
   faWheelchair,
 } from '@fortawesome/free-solid-svg-icons';
-import { AccessibilityService, type FontSize } from '../../core/services/accessibility.service';
+import {
+  AccessibilityService,
+  type FontSize,
+  type Theme,
+} from '../../core/services/accessibility.service';
 
-type Theme = 'default' | 'high-contrast' | 'soft';
 type Animation = 'normal' | 'slow' | 'none';
 
 interface AccessibilityPrefs {
@@ -36,7 +38,6 @@ export class AccessibilityComponent {
   protected readonly icons = {
     wheelchair: faWheelchair,
     textHeight: faTextHeight,
-    palette: faPalette,
     arrowLeft: faArrowLeft,
     voiceReading: faVolumeUp,
     largerButtons: faExpand,
@@ -46,7 +47,7 @@ export class AccessibilityComponent {
   };
 
   protected readonly selectedFontSize = this.accessibilityService.fontSize;
-  protected readonly selectedTheme = signal<Theme>('default');
+  protected readonly selectedTheme = this.accessibilityService.theme;
   protected readonly selectedAnimation = signal<Animation>('normal');
 
   protected readonly prefs = signal<AccessibilityPrefs>({
@@ -64,6 +65,14 @@ export class AccessibilityComponent {
     { value: 'x-large', label: 'XG', description: 'Maior' },
     { value: 'xx-large', label: 'XXG', description: 'Máximo' },
   ];
+
+  protected readonly fontIconPx: Record<FontSize, number> = {
+    small: 10,
+    medium: 13,
+    large: 17,
+    'x-large': 21,
+    'xx-large': 25,
+  };
 
   protected readonly themeOptions: { value: Theme; label: string; description: string }[] = [
     { value: 'default', label: 'Padrão', description: 'Azul e branco' },
@@ -97,13 +106,9 @@ export class AccessibilityComponent {
     this.prefs.update((p) => ({ ...p, [key]: !p[key] }));
   }
 
-  protected savePreferences(): void {
-    // fontSize já é aplicado em tempo real via service; aqui confirmamos as demais prefs
-  }
-
   protected resetPreferences(): void {
     this.accessibilityService.fontSize.set('medium');
-    this.selectedTheme.set('default');
+    this.accessibilityService.theme.set('default');
     this.selectedAnimation.set('normal');
     this.prefs.set({
       voiceReading: false,
