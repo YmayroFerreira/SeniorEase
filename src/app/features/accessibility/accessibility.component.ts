@@ -5,6 +5,8 @@ import {
   faArrowLeft,
   faBars,
   faExpand,
+  faPause,
+  faPlay,
   faTextHeight,
   faTextWidth,
   faVolumeMute,
@@ -16,6 +18,8 @@ import {
   type FontSize,
   type Theme,
 } from '../../core/services/accessibility.service';
+import { VoiceReadingService } from '../../core/services/voice-reading.service';
+import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 type Animation = 'normal' | 'slow' | 'none';
 
@@ -29,11 +33,12 @@ interface AccessibilityPrefs {
 
 @Component({
   selector: 'app-accessibility',
-  imports: [RouterLink, FontAwesomeModule],
+  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective],
   templateUrl: './accessibility.component.html',
 })
 export class AccessibilityComponent {
   private readonly accessibilityService = inject(AccessibilityService);
+  protected readonly voiceReadingService = inject(VoiceReadingService);
 
   protected readonly icons = {
     wheelchair: faWheelchair,
@@ -44,14 +49,17 @@ export class AccessibilityComponent {
     simplifiedNav: faBars,
     silentMode: faVolumeMute,
     increasedSpacing: faTextWidth,
+    play: faPlay,
+    pause: faPause,
   };
 
   protected readonly selectedFontSize = this.accessibilityService.fontSize;
   protected readonly selectedTheme = this.accessibilityService.theme;
   protected readonly selectedAnimation = signal<Animation>('normal');
+  protected readonly speechRate = this.accessibilityService.speechRate;
 
   protected readonly prefs = signal<AccessibilityPrefs>({
-    voiceReading: false,
+    voiceReading: this.accessibilityService.voiceReading(),
     largerButtons: true,
     simplifiedNav: false,
     silentMode: false,
@@ -104,11 +112,44 @@ export class AccessibilityComponent {
 
   protected togglePref(key: keyof AccessibilityPrefs): void {
     this.prefs.update((p) => ({ ...p, [key]: !p[key] }));
+    if (key === 'voiceReading') {
+      this.accessibilityService.voiceReading.set(this.prefs()[key]);
+      if (this.prefs()[key]) {
+        this.voiceReadingService.speakDirect('Leitura em voz alta ativada!');
+      } else {
+        this.voiceReadingService.stop();
+      }
+    }
+  }
+
+  protected updateSpeechRate(rate: number): void {
+    this.accessibilityService.speechRate.set(rate);
+  }
+
+  protected testSpeech(): void {
+    if (this.voiceReadingService.speaking()) {
+      this.voiceReadingService.stop();
+    } else {
+      this.voiceReadingService.speakDirect(
+        'Olá! Esta é uma demonstração da leitura em voz alta do SeniorEase.',
+      );
+    }
+  }
+
+  protected get speedLabel(): string {
+    const rate = this.speechRate();
+    if (rate <= 0.6) return 'Muito lenta';
+    if (rate <= 0.8) return 'Lenta';
+    if (rate <= 1.0) return 'Normal';
+    if (rate <= 1.2) return 'Rápida';
+    return 'Muito rápida';
   }
 
   protected resetPreferences(): void {
     this.accessibilityService.fontSize.set('medium');
     this.accessibilityService.theme.set('default');
+    this.accessibilityService.voiceReading.set(false);
+    this.accessibilityService.speechRate.set(0.9);
     this.selectedAnimation.set('normal');
     this.prefs.set({
       voiceReading: false,

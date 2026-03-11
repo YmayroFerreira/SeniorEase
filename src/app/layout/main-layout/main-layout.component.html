@@ -16,6 +16,7 @@
           <a
             [routerLink]="item.path"
             routerLinkActive="bg-white/20 !text-white font-semibold"
+            [appVoiceRead]="'Navegar para ' + item.label"
             class="flex items-center gap-3 px-3 py-3 rounded-xl text-primary-light hover:bg-white/10 transition-colors"
             style="font-size: 15px"
           >
@@ -71,6 +72,7 @@
               [routerLink]="item.path"
               routerLinkActive
               #rla="routerLinkActive"
+              [appVoiceRead]="'Navegar para ' + item.label"
               class="flex-1 flex flex-col items-center justify-center transition-colors"
               style="gap: 4px"
               [class.text-primary]="rla.isActive"

@@ -7,6 +7,7 @@ import {
   faUser,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 interface NavItem {
   path: string;
@@ -17,7 +18,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, FontAwesomeModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, FontAwesomeModule, VoiceReadDirective],
   templateUrl: './main-layout.component.html',
 })
 export class MainLayoutComponent {

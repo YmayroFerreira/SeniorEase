@@ -45,6 +45,15 @@ body {
   color: var(--color-foreground);
 }
 
+.voice-read-active {
+  cursor: pointer;
+}
+.voice-read-active:hover {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
 .font-small {
   --font-size-base: 14px;
 }

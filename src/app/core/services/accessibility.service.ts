@@ -23,6 +23,8 @@ const VALID_THEMES: Theme[] = ['default', 'high-contrast', 'soft'];
 
 const FONT_KEY = 'accessibility-font-size';
 const THEME_KEY = 'accessibility-theme';
+const VOICE_KEY = 'accessibility-voice-reading';
+const SPEECH_RATE_KEY = 'accessibility-speech-rate';
 
 @Injectable({ providedIn: 'root' })
 export class AccessibilityService {
@@ -30,6 +32,8 @@ export class AccessibilityService {
 
   readonly fontSize = signal<FontSize>(this.loadFont());
   readonly theme = signal<Theme>(this.loadTheme());
+  readonly voiceReading = signal<boolean>(this.loadVoiceReading());
+  readonly speechRate = signal<number>(this.loadSpeechRate());
 
   private readonly _fontEffect = effect(() => {
     const size = this.fontSize();
@@ -49,6 +53,14 @@ export class AccessibilityService {
     localStorage.setItem(THEME_KEY, t);
   });
 
+  private readonly _voiceEffect = effect(() => {
+    localStorage.setItem(VOICE_KEY, String(this.voiceReading()));
+  });
+
+  private readonly _speechRateEffect = effect(() => {
+    localStorage.setItem(SPEECH_RATE_KEY, String(this.speechRate()));
+  });
+
   private loadFont(): FontSize {
     const stored = localStorage.getItem(FONT_KEY) as FontSize;
     return VALID_FONTS.includes(stored) ? stored : 'medium';
@@ -57,5 +69,14 @@ export class AccessibilityService {
   private loadTheme(): Theme {
     const stored = localStorage.getItem(THEME_KEY) as Theme;
     return VALID_THEMES.includes(stored) ? stored : 'default';
+  }
+
+  private loadVoiceReading(): boolean {
+    return localStorage.getItem(VOICE_KEY) === 'true';
+  }
+
+  private loadSpeechRate(): number {
+    const stored = parseFloat(localStorage.getItem(SPEECH_RATE_KEY) ?? '');
+    return isNaN(stored) ? 0.9 : Math.min(1.5, Math.max(0.5, stored));
   }
 }
