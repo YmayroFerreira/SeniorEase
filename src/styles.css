@@ -67,6 +67,17 @@ body {
   --font-size-base: 28px;
 }
 
+.dyslexia-font,
+.dyslexia-font body,
+.dyslexia-font input,
+.dyslexia-font textarea,
+.dyslexia-font button,
+.dyslexia-font select {
+  font-family: 'Atkinson Hyperlegible', sans-serif !important;
+  letter-spacing: 0.03em;
+  word-spacing: 0.1em;
+}
+
 .theme-high-contrast {
   --color-foreground: #f0f0f0;
 

@@ -5,6 +5,7 @@ import {
   faArrowLeft,
   faBars,
   faExpand,
+  faFont,
   faPause,
   faPlay,
   faTextHeight,
@@ -29,6 +30,7 @@ interface AccessibilityPrefs {
   simplifiedNav: boolean;
   silentMode: boolean;
   increasedSpacing: boolean;
+  dyslexiaFont: boolean;
 }
 
 @Component({
@@ -49,6 +51,7 @@ export class AccessibilityComponent {
     simplifiedNav: faBars,
     silentMode: faVolumeMute,
     increasedSpacing: faTextWidth,
+    dyslexiaFont: faFont,
     play: faPlay,
     pause: faPause,
   };
@@ -64,6 +67,7 @@ export class AccessibilityComponent {
     simplifiedNav: false,
     silentMode: false,
     increasedSpacing: false,
+    dyslexiaFont: this.accessibilityService.dyslexiaFont(),
   });
 
   protected readonly fontSizeOptions: { value: FontSize; label: string; description: string }[] = [
@@ -108,6 +112,11 @@ export class AccessibilityComponent {
       label: 'Espaçamento aumentado',
       description: 'Mais espaço entre elementos',
     },
+    {
+      key: 'dyslexiaFont',
+      label: 'Fonte para dislexia',
+      description: 'Facilita a leitura para disléxicos',
+    },
   ];
 
   protected togglePref(key: keyof AccessibilityPrefs): void {
@@ -119,6 +128,9 @@ export class AccessibilityComponent {
       } else {
         this.voiceReadingService.stop();
       }
+    }
+    if (key === 'dyslexiaFont') {
+      this.accessibilityService.dyslexiaFont.set(this.prefs()[key]);
     }
   }
 
@@ -151,12 +163,14 @@ export class AccessibilityComponent {
     this.accessibilityService.voiceReading.set(false);
     this.accessibilityService.speechRate.set(0.9);
     this.selectedAnimation.set('normal');
+    this.accessibilityService.dyslexiaFont.set(false);
     this.prefs.set({
       voiceReading: false,
       largerButtons: true,
       simplifiedNav: false,
       silentMode: false,
       increasedSpacing: false,
+      dyslexiaFont: false,
     });
   }
 }

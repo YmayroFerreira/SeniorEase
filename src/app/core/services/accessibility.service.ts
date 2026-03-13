@@ -25,6 +25,7 @@ const FONT_KEY = 'accessibility-font-size';
 const THEME_KEY = 'accessibility-theme';
 const VOICE_KEY = 'accessibility-voice-reading';
 const SPEECH_RATE_KEY = 'accessibility-speech-rate';
+const DYSLEXIA_KEY = 'accessibility-dyslexia-font';
 
 @Injectable({ providedIn: 'root' })
 export class AccessibilityService {
@@ -34,6 +35,7 @@ export class AccessibilityService {
   readonly theme = signal<Theme>(this.loadTheme());
   readonly voiceReading = signal<boolean>(this.loadVoiceReading());
   readonly speechRate = signal<number>(this.loadSpeechRate());
+  readonly dyslexiaFont = signal<boolean>(this.loadDyslexiaFont());
 
   private readonly _fontEffect = effect(() => {
     const size = this.fontSize();
@@ -61,6 +63,17 @@ export class AccessibilityService {
     localStorage.setItem(SPEECH_RATE_KEY, String(this.speechRate()));
   });
 
+  private readonly _dyslexiaEffect = effect(() => {
+    const enabled = this.dyslexiaFont();
+    const classList = this.document.documentElement.classList;
+    if (enabled) {
+      classList.add('dyslexia-font');
+    } else {
+      classList.remove('dyslexia-font');
+    }
+    localStorage.setItem(DYSLEXIA_KEY, String(enabled));
+  });
+
   private loadFont(): FontSize {
     const stored = localStorage.getItem(FONT_KEY) as FontSize;
     return VALID_FONTS.includes(stored) ? stored : 'medium';
@@ -73,6 +86,10 @@ export class AccessibilityService {
 
   private loadVoiceReading(): boolean {
     return localStorage.getItem(VOICE_KEY) === 'true';
+  }
+
+  private loadDyslexiaFont(): boolean {
+    return localStorage.getItem(DYSLEXIA_KEY) === 'true';
   }
 
   private loadSpeechRate(): number {
