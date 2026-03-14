@@ -1,12 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AccessibilityService } from './core/services/accessibility.service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  template: '<router-outlet />',
 })
 export class App {
-  protected readonly title = signal('app');
+  private readonly _ = inject(AccessibilityService);
 }

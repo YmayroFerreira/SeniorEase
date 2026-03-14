@@ -1,0 +1,274 @@
+<div class="min-h-screen bg-surface" style="padding-bottom: 88px">
+  <div class="md:hidden">
+    <div class="bg-primary" style="height: 44px"></div>
+  </div>
+
+  <div class="bg-primary md:bg-card md:border-b md:border-border" style="padding: 16px 24px 24px">
+    <div class="md:hidden flex items-center" style="gap: 12px; margin-bottom: 4px">
+      <a routerLink="/inicio" class="text-white" style="font-size: 24px; line-height: 1">
+        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+      </a>
+      <h1 class="font-semibold text-white" style="font-size: 20px">Acessibilidade</h1>
+    </div>
+    <div class="hidden md:block">
+      <h1 class="font-bold text-foreground" style="font-size: 20px">Acessibilidade</h1>
+      <p class="text-muted" style="font-size: 14px; margin-top: 2px">
+        Personalize sua experiência de uso
+      </p>
+    </div>
+  </div>
+
+  <div style="padding: 20px 24px 0; max-width: 672px">
+    <div
+      class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start"
+      style="padding: 16px; margin-bottom: 24px; gap: 12px"
+      appVoiceRead="Ajuste as configurações para tornar o SeniorEase mais confortável para você."
+    >
+      <fa-icon
+        [icon]="icons.wheelchair"
+        class="text-primary flex-shrink-0"
+        style="font-size: 18px; margin-top: 2px"
+      ></fa-icon>
+      <p class="text-primary" style="font-size: 14px; line-height: 1.5">
+        Ajuste as configurações para tornar o SeniorEase mais confortável para você.
+      </p>
+    </div>
+
+    <section style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Tamanho do Texto
+      </h2>
+      <div class="grid grid-cols-5" style="gap: 6px">
+        @for (opt of fontSizeOptions; track opt.value) {
+          <button
+            type="button"
+            (click)="selectedFontSize.set(opt.value)"
+            [appVoiceRead]="'Tamanho de texto: ' + opt.label + '. ' + opt.description"
+            class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex flex-col items-center justify-center"
+            style="padding: 10px 4px; min-height: 72px"
+            [class.border-primary]="selectedFontSize() === opt.value"
+            [class.border-transparent]="selectedFontSize() !== opt.value"
+            [attr.aria-pressed]="selectedFontSize() === opt.value"
+          >
+            <fa-icon
+              [icon]="icons.textHeight"
+              class="text-primary block"
+              [style.fontSize.px]="fontIconPx[opt.value]"
+            ></fa-icon>
+            <p
+              class="font-bold text-foreground"
+              style="font-size: 11px; margin-top: 6px; line-height: 1"
+            >
+              {{ opt.label }}
+            </p>
+            <p class="text-muted" style="font-size: 9px; margin-top: 3px; line-height: 1.2">
+              {{ opt.description }}
+            </p>
+          </button>
+        }
+      </div>
+    </section>
+
+    <section style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Tema de Contraste
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        @for (opt of themeOptions; track opt.value; let last = $last) {
+          <button
+            type="button"
+            (click)="selectedTheme.set(opt.value)"
+            [appVoiceRead]="'Tema: ' + opt.label + '. ' + opt.description"
+            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
+            style="gap: 16px; padding: 14px 16px"
+            [attr.aria-pressed]="selectedTheme() === opt.value"
+          >
+            <div
+              class="rounded-full border-2 flex items-center justify-center flex-shrink-0"
+              style="width: 20px; height: 20px; min-width: 20px"
+              [class.border-primary]="selectedTheme() === opt.value"
+              [class.border-border]="selectedTheme() !== opt.value"
+            >
+              @if (selectedTheme() === opt.value) {
+                <div class="rounded-full bg-primary" style="width: 10px; height: 10px"></div>
+              }
+            </div>
+            <div class="flex-1 text-left">
+              <p class="font-semibold text-foreground" style="font-size: 14px">{{ opt.label }}</p>
+              <p class="text-muted" style="font-size: 12px; margin-top: 2px">
+                {{ opt.description }}
+              </p>
+            </div>
+          </button>
+          @if (!last) {
+            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+          }
+        }
+      </div>
+    </section>
+
+    <section class="hidden md:block" style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Velocidade de Animação
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        @for (opt of animationOptions; track opt.value; let last = $last) {
+          <button
+            type="button"
+            (click)="selectedAnimation.set(opt.value)"
+            [appVoiceRead]="'Velocidade de animação: ' + opt.label"
+            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
+            style="gap: 16px; padding: 14px 16px"
+            [attr.aria-pressed]="selectedAnimation() === opt.value"
+          >
+            <div
+              class="rounded-full border-2 flex items-center justify-center flex-shrink-0"
+              style="width: 20px; height: 20px; min-width: 20px"
+              [class.border-primary]="selectedAnimation() === opt.value"
+              [class.border-border]="selectedAnimation() !== opt.value"
+            >
+              @if (selectedAnimation() === opt.value) {
+                <div class="rounded-full bg-primary" style="width: 10px; height: 10px"></div>
+              }
+            </div>
+            <p class="font-semibold text-foreground text-left flex-1" style="font-size: 14px">
+              {{ opt.label }}
+            </p>
+          </button>
+          @if (!last) {
+            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+          }
+        }
+      </div>
+    </section>
+
+    <section style="margin-bottom: 32px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Recursos de Acessibilidade
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        @for (item of toggleItems; track item.key; let last = $last) {
+          <div
+            class="flex items-center"
+            style="gap: 12px; padding: 14px 16px"
+            [appVoiceRead]="
+              item.label +
+              '. ' +
+              item.description +
+              '. ' +
+              (prefs()[item.key] ? 'Ativado' : 'Desativado')
+            "
+          >
+            <fa-icon
+              [icon]="icons[item.key]"
+              class="text-primary text-center flex-shrink-0"
+              style="font-size: 18px; width: 22px"
+            ></fa-icon>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-foreground truncate" style="font-size: 15px">
+                {{ item.label }}
+              </p>
+              <p class="text-muted truncate" style="font-size: 12px; margin-top: 2px">
+                {{ item.description }}
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              [attr.aria-checked]="prefs()[item.key]"
+              (click)="togglePref(item.key)"
+              class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer"
+              style="width: 48px; height: 26px; min-width: 48px"
+              [class.bg-primary]="prefs()[item.key]"
+              [class.bg-toggle-off]="!prefs()[item.key]"
+            >
+              <span
+                class="absolute bg-white rounded-full shadow transition-transform"
+                style="width: 20px; height: 20px; top: 3px; left: 3px"
+                [style.transform]="prefs()[item.key] ? 'translateX(22px)' : 'translateX(0)'"
+              ></span>
+            </button>
+          </div>
+
+          @if (item.key === 'voiceReading' && prefs().voiceReading) {
+            <div style="padding: 0 16px 16px">
+              <div class="bg-surface rounded-xl" style="padding: 14px">
+                <div class="flex items-center justify-between" style="margin-bottom: 8px">
+                  <p class="font-semibold text-foreground" style="font-size: 13px">
+                    Velocidade da fala
+                  </p>
+                  <span
+                    class="font-semibold text-primary bg-primary-surface rounded-full"
+                    style="font-size: 12px; padding: 2px 10px"
+                    >{{ speedLabel }}</span
+                  >
+                </div>
+                <input
+                  type="range"
+                  min="0.5"
+                  max="1.5"
+                  step="0.1"
+                  [value]="speechRate()"
+                  (input)="updateSpeechRate(+$any($event.target).value)"
+                  class="w-full cursor-pointer"
+                  style="accent-color: var(--color-primary)"
+                  aria-label="Velocidade da voz"
+                />
+                <div
+                  class="flex justify-between text-muted"
+                  style="font-size: 11px; margin-top: 4px"
+                >
+                  <span>Lenta</span>
+                  <span>Normal</span>
+                  <span>Rápida</span>
+                </div>
+                <button
+                  type="button"
+                  (click)="testSpeech()"
+                  class="w-full flex items-center justify-center gap-2 bg-card border border-border font-semibold rounded-xl transition-colors hover:bg-primary-surface cursor-pointer"
+                  style="font-size: 14px; padding: 10px; margin-top: 12px"
+                  [class.text-primary]="!voiceReadingService.speaking()"
+                  [class.text-muted]="voiceReadingService.speaking()"
+                >
+                  <fa-icon
+                    [icon]="voiceReadingService.speaking() ? icons.pause : icons.play"
+                    style="font-size: 13px"
+                  ></fa-icon>
+                  {{ voiceReadingService.speaking() ? 'Parar' : 'Testar voz' }}
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (!last) {
+            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+          }
+        }
+      </div>
+    </section>
+
+    <div style="padding-bottom: 16px">
+      <button
+        type="button"
+        (click)="resetPreferences()"
+        appVoiceRead="Restaurar Padrões"
+        class="w-full bg-card border border-border text-muted font-semibold rounded-2xl transition-colors hover:bg-surface cursor-pointer"
+        style="font-size: 16px; padding: 16px"
+      >
+        Restaurar Padrões
+      </button>
+    </div>
+  </div>
+</div>
