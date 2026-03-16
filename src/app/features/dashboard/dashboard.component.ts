@@ -28,6 +28,7 @@ export class DashboardComponent {
   protected readonly voiceInput = inject(VoiceInputService);
 
   protected readonly today = new Date();
+  protected isWorkSubmitted = true;
 
   protected readonly icons = {
     calendar: faCalendarCheck,

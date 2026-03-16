@@ -1,148 +1,250 @@
 <div class="pb-[88px] md:pb-8">
-  <div class="md:hidden bg-primary px-6 pt-10 pb-6">
-    <p class="text-primary-light text-sm mb-0.5">Bem-vindo de volta,</p>
-    <h1 class="text-white text-2xl font-bold" appVoiceRead="Bem-vindo de volta, Sr. Arnaldo">
-      Sr. Arnaldo
-    </h1>
-  </div>
-
-  <div class="hidden md:block border-b border-border bg-card px-8 py-5">
-    <h1 class="text-xl font-bold text-foreground">Início</h1>
-    <p class="text-sm text-muted mt-0.5" appVoiceRead="Bem-vindo de volta, Sr. Arnaldo">
-      Bem-vindo de volta, Sr. Arnaldo
-    </p>
-  </div>
-
-  <div class="px-6 md:px-8 pt-5 md:max-w-2xl">
-    <app-video-session class="block mb-6"></app-video-session>
-
-    <!-- Controles da Aula -->
-    <div class="grid grid-cols-1 gap-4 mb-6">
-      <button
-        type="button"
-        class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex flex-col items-center justify-center"
-        [ngClass]="
-          accessibility.theme() === 'high-contrast'
-            ? 'bg-black border-yellow-400 text-yellow-400'
-            : 'border-primary'
-        "
-        style="padding: 10px 4px; min-height: 72px"
-        (click)="toggleMute()"
-        [appVoiceRead]="isMuted ? 'Botão Ligar o som' : 'Botão Desligar o som'"
-      >
-        <fa-icon
-          [icon]="isMuted ? icons.volumeMute : icons.volumeUp"
-          class="text-2xl"
-          [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-primary' : ''"
-        ></fa-icon>
-        <span
-          class="font-bold text-sm"
-          [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-foreground' : ''"
-          >{{ isMuted ? 'Ligar som' : 'Desligar som' }}</span
-        >
-      </button>
-
-      <button
-        type="button"
-        class="flex items-center justify-center gap-3 p-4 rounded-2xl transition-colors shadow-sm active:scale-95"
-        [ngClass]="
-          accessibility.theme() === 'high-contrast'
-            ? 'bg-black border-2 border-yellow-400 text-yellow-400'
-            : 'bg-red-600 text-white hover:bg-red-700'
-        "
-        (click)="router.navigate(['/sala-de-espera'])"
-        appVoiceRead="Botão Sair da aula"
-      >
-        <fa-icon [icon]="icons.signOut" class="text-2xl"></fa-icon>
-        <span class="font-bold text-sm">Sair da aula</span>
-      </button>
-    </div>
-
-    <div
-      class="rounded-2xl p-5 mb-5 shadow-md transition-colors"
-      [ngClass]="
-        accessibility.theme() === 'high-contrast'
-          ? 'bg-black border-2 border-yellow-400 text-yellow-400'
-          : 'bg-primary text-white'
-      "
-      appVoiceRead="Tempo restante: 15 minutos"
+  <div class="bg-primary md:bg-card md:border-b md:border-border px-6 md:px-8 py-4">
+    <!-- Mobile Header -->
+    <button
+      type="button"
+      (click)="router.navigate(['/sala-de-espera'])"
+      class="md:hidden flex items-center gap-4 w-full text-left"
+      aria-label="Voltar para a tela anterior"
+      appVoiceRead="Voltar para a tela anterior"
     >
-      <div class="flex items-start justify-between gap-3">
-        <div class="flex-1 min-w-0">
-          <p
-            class="text-xs font-semibold uppercase tracking-wide opacity-80 mb-4"
-            [ngClass]="{
-              'text-yellow-400 opacity-100': accessibility.theme() === 'high-contrast',
-              'text-primary-light': accessibility.theme() !== 'high-contrast',
-            }"
-          >
-            Tempo restante
-          </p>
-          <div
-            class="rounded-full h-2 transition-colors"
-            [ngClass]="
-              accessibility.theme() === 'high-contrast' ? 'border border-yellow-400' : 'bg-white/20'
-            "
-          >
-            <div
-              class="rounded-full h-2 transition-colors"
-              style="width: 65%"
-              [ngClass]="accessibility.theme() === 'high-contrast' ? 'bg-yellow-400' : 'bg-white'"
-            ></div>
-          </div>
-          <h2
-            class="text-xl font-bold leading-snug"
-            [ngClass]="{
-              'text-yellow-400 opacity-100': accessibility.theme() === 'high-contrast',
-              'text-primary-light': accessibility.theme() !== 'high-contrast',
-            }"
-          >
-            15 minutos
-          </h2>
-        </div>
-      </div>
+      <fa-icon
+        [icon]="icons.arrowLeft"
+        class="text-2xl"
+        [ngClass]="accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-white'"
+      ></fa-icon>
+      <h1
+        class="text-xl font-bold"
+        [ngClass]="accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-white'"
+      >
+        Voltar para a tela anterior
+      </h1>
+    </button>
+    <!-- Desktop Header -->
+    <div class="hidden md:block">
+      <button
+        type="button"
+        (click)="router.navigate(['/inicio'])"
+        class="text-sm font-semibold hover:underline flex items-center gap-1.5"
+        [ngClass]="accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-primary'"
+        appVoiceRead="Voltar para a tela anterior"
+      >
+        <fa-icon [icon]="icons.arrowLeft" class="text-xs"></fa-icon>
+        <span>Voltar para a tela anterior</span>
+      </button>
     </div>
+  </div>
 
-    <div class="bg-card rounded-2xl shadow-sm p-5 mb-5">
-      <div class="flex items-center justify-between mb-1">
-        <h2 class="text-base font-bold text-foreground">Minhas anotações</h2>
-      </div>
-      <p class="text-sm text-muted mb-4">O que eu aprendi agora?</p>
-
-      @if (!voiceInput.supported) {
-        <div class="bg-warning-light border border-warning/30 rounded-xl px-4 py-3 mb-4">
-          <p class="text-sm font-semibold text-warning">
-            Seu navegador não suporta reconhecimento de voz.
-          </p>
+  <div class="px-6 md:px-8 pt-5 pb-8 max-w-7xl w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+      <!-- Coluna da Esquerda: Vídeo e Controles -->
+      <div class="lg:col-span-2 flex flex-col">
+        <div
+          class="bg-card rounded-2xl shadow-md overflow-hidden mb-5 border border-border"
+          appVoiceRead="Aula de hoje: Desenvolvimento Front End, das 19 horas às 21 horas. Sala virtual 03. Professor Doutor Carlos Mendes."
+        >
+          <div class="p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <h2 class="text-xl font-bold leading-snug text-foreground">
+                  Desenvolvimento Front-End
+                </h2>
+                <p class="text-sm text-muted mt-1 mb-4">
+                  Prof. Dr. Carlos Mendes • Sala virtual 03
+                </p>
+                <app-video-session class="block"></app-video-session>
+              </div>
+            </div>
+          </div>
         </div>
-      }
+        <div class="flex gap-4 mb-6">
+          <button
+            type="button"
+            (click)="toggleMuteMic()"
+            class="flex-1 flex items-center justify-center gap-3 p-3 rounded-xl border-2 transition-all relative overflow-hidden"
+            [ngClass]="{
+              'bg-black border-yellow-400 text-yellow-400':
+                accessibility.theme() === 'high-contrast',
+              'bg-green-50 border-green-200 text-green-700':
+                accessibility.theme() !== 'high-contrast' && !isMicMuted,
+              'bg-red-50 border-red-200 text-red-700':
+                accessibility.theme() !== 'high-contrast' && isMicMuted,
+            }"
+          >
+            <div class="flex items-center gap-2">
+              <fa-icon [icon]="isMicMuted ? icons.micSlash : icons.mic" class="text-xl"></fa-icon>
 
-      <div class="flex items-center gap-3">
-        <input
-          type="text"
-          class="flex-1 bg-surface border border-border rounded-xl px-4 font-medium text-foreground placeholder:text-muted focus:outline-none focus:border-primary transition-colors"
-          style="height: 44px; font-size: 15px"
-          placeholder="Fale ou digite algo..."
-          [(ngModel)]="testText"
-        />
-        <app-voice-input-btn
-          (result)="testText = $event; errorText = ''"
-          (errorMsg)="errorText = $event"
-        />
+              <div *ngIf="!isMicMuted" class="flex items-end gap-[2px] h-4">
+                <div class="wave-bar bg-current"></div>
+                <div class="wave-bar bg-current" style="animation-delay: 0.2s"></div>
+                <div class="wave-bar bg-current" style="animation-delay: 0.4s"></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="text-[10px] font-bold opacity-70">Seu áudio</span>
+              <span class="text-sm font-bold">{{ isMicMuted ? 'DESLIGADO' : 'LIGADO' }}</span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            (click)="toggleTurnOffVideo()"
+            class="flex-1 flex items-center justify-center gap-3 p-3 rounded-xl border-2 transition-all"
+            [ngClass]="{
+              'bg-black border-yellow-400 text-yellow-400':
+                accessibility.theme() === 'high-contrast',
+              'bg-green-50 border-green-200 text-green-700':
+                accessibility.theme() !== 'high-contrast' && !isVideoOff,
+              'bg-red-50 border-red-200 text-red-700':
+                accessibility.theme() !== 'high-contrast' && isVideoOff,
+            }"
+            [appVoiceRead]="isVideoOff ? 'Câmera desligada' : 'Câmera ligada'"
+          >
+            <fa-icon [icon]="isVideoOff ? icons.videoSlash : icons.video" class="text-xl"></fa-icon>
+            <div class="flex flex-col">
+              <span class="text-[10px] font-bold opacity-70">Sua câmera</span>
+              <span class="text-sm font-bold">{{ isVideoOff ? 'DESLIGADA' : 'LIGADA' }}</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Controles da Aula -->
+        <div class="grid grid-cols-1 gap-4 mb-2 lg:mb-0">
+          <button
+            type="button"
+            class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex items-center justify-center gap-3"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast'
+                ? 'bg-black border-yellow-400 text-yellow-400'
+                : 'border-primary'
+            "
+            style="padding: 10px 4px; min-height: 72px"
+            (click)="toggleMuteSpeaker()"
+            [appVoiceRead]="isSpeakerMuted ? 'Aula mutada' : 'Escutando aula'"
+          >
+            <fa-icon
+              [icon]="isSpeakerMuted ? icons.volumeMute : icons.volumeUp"
+              class="text-2xl"
+              [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-primary' : ''"
+            ></fa-icon>
+            <span
+              class="font-bold text-sm"
+              [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-foreground' : ''"
+              >{{ isSpeakerMuted ? 'Aula muda' : 'Escutando aula' }}</span
+            >
+          </button>
+
+          <button
+            type="button"
+            class="flex items-center justify-center gap-3 p-4 rounded-2xl transition-colors shadow-sm active:scale-95"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast'
+                ? 'bg-black border-2 border-yellow-400 text-yellow-400'
+                : 'bg-red-600 text-white hover:bg-red-700'
+            "
+            (click)="router.navigate(['/sala-de-espera'])"
+            appVoiceRead="Botão Sair da aula"
+          >
+            <fa-icon [icon]="icons.signOut" class="text-2xl"></fa-icon>
+            <span class="font-bold text-sm">Sair da aula</span>
+          </button>
+        </div>
       </div>
 
-      @if (errorText) {
-        <p class="text-sm font-semibold text-danger mt-3">{{ errorText }}</p>
-      }
-
-      @if (testText) {
-        <div class="bg-primary-surface border border-primary/20 rounded-xl px-4 py-3 mt-4">
-          <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-1">
-            Texto transcrito
-          </p>
-          <p class="text-foreground font-medium" style="font-size: 15px">{{ testText }}</p>
+      <!-- Coluna da Direita: Tempo Restante e Anotações -->
+      <div class="lg:col-span-1 flex flex-col gap-6">
+        <div
+          class="rounded-2xl p-5 shadow-md transition-colors"
+          [ngClass]="
+            accessibility.theme() === 'high-contrast'
+              ? 'bg-black border-2 border-yellow-400 text-yellow-400'
+              : 'bg-primary text-white'
+          "
+          appVoiceRead="Tempo restante: 40 minutos"
+        >
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex-1 min-w-0">
+              <p
+                class="text-xs font-semibold uppercase tracking-wide opacity-80 mb-4"
+                [ngClass]="{
+                  'text-yellow-400 opacity-100': accessibility.theme() === 'high-contrast',
+                  'text-primary-light': accessibility.theme() !== 'high-contrast',
+                }"
+              >
+                Tempo restante
+              </p>
+              <div
+                class="rounded-full h-2 transition-colors mb-1"
+                [ngClass]="
+                  accessibility.theme() === 'high-contrast'
+                    ? 'border border-yellow-400'
+                    : 'bg-white/20'
+                "
+              >
+                <div
+                  class="rounded-full h-2 transition-colors"
+                  style="width: 15%"
+                  [ngClass]="
+                    accessibility.theme() === 'high-contrast' ? 'bg-yellow-400' : 'bg-white'
+                  "
+                ></div>
+              </div>
+              <h2
+                class="text-xl font-bold leading-snug"
+                [ngClass]="{
+                  'text-yellow-400 opacity-100': accessibility.theme() === 'high-contrast',
+                  'text-primary-light': accessibility.theme() !== 'high-contrast',
+                }"
+              >
+                40 minutos
+              </h2>
+            </div>
+          </div>
         </div>
-      }
+
+        <div
+          class="bg-card flex-1 rounded-2xl shadow-sm p-5 border-2 flex flex-col"
+          [ngClass]="
+            accessibility.theme() === 'high-contrast'
+              ? 'border-yellow-400 bg-black'
+              : 'border-transparent'
+          "
+        >
+          <div class="flex items-start justify-between gap-4 mb-2">
+            <div class="flex flex-col items-start gap-1">
+              <h2 class="text-lg font-bold text-foreground">Anotações da Aula</h2>
+              <span
+                class="text-[10px] font-bold uppercase opacity-60"
+                [ngClass]="
+                  accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-success'
+                "
+              >
+                ● Salvo automaticamente
+              </span>
+            </div>
+            <app-voice-input-btn
+              (result)="appendVoiceNote($event)"
+              (errorMsg)="errorText = $event"
+            />
+          </div>
+
+          <div class="relative mt-4 flex-1 flex flex-col">
+            <textarea
+              [(ngModel)]="notes"
+              (ngModelChange)="onNotesChange()"
+              class="w-full flex-1 min-h-[150px] lg:min-h-0 bg-surface border-2 border-border rounded-xl px-4 py-3 font-medium text-foreground placeholder:text-muted focus:outline-none focus:border-primary transition-all resize-none"
+              [style.fontSize]="'18px'"
+              placeholder="As suas anotações aparecerão aqui. Você pode digitar ou usar o microfone acima..."
+              appVoiceRead="Área de anotações. Use o botão de microfone para ditar ou o teclado para escrever."
+            ></textarea>
+          </div>
+
+          @if (errorText) {
+            <p class="text-sm font-bold text-danger mt-3">{{ errorText }}</p>
+          }
+        </div>
+      </div>
     </div>
   </div>
 </div>

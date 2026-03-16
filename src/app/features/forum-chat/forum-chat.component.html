@@ -1,0 +1,59 @@
+<div class="flex flex-col h-screen bg-surface">
+  <header class="bg-primary p-4 flex items-center gap-4 shadow-md">
+    <button (click)="router.navigate(['/inicio'])" class="text-white text-xl p-2">
+      <fa-icon [icon]="icons.back"></fa-icon>
+    </button>
+    <div>
+      <h1 class="text-white font-bold text-lg">Fórum: Hackathon</h1>
+      <p class="text-primary-light text-xs">Grupo de dúvidas da turma</p>
+    </div>
+  </header>
+
+  <div class="flex-1 overflow-y-auto p-6 space-y-4">
+    <div
+      *ngFor="let msg of messages"
+      [ngClass]="msg.isMe ? 'flex flex-col items-end' : 'flex flex-col items-start'"
+    >
+      <span
+        class="text-xs font-bold mb-1 px-2"
+        [ngClass]="msg.isProfessor ? 'text-primary' : 'text-muted'"
+      >
+        {{ msg.sender }} {{ msg.isProfessor ? '• Professor' : '' }}
+      </span>
+
+      <div
+        class="max-w-[85%] p-4 rounded-2xl shadow-sm text-lg"
+        [ngClass]="{
+          'bg-primary text-white rounded-tr-none': msg.isMe,
+          'bg-card text-foreground border border-border rounded-tl-none': !msg.isMe,
+          'border-2 border-yellow-400 bg-black text-yellow-400':
+            accessibility.theme() === 'high-contrast',
+        }"
+        [appVoiceRead]="msg.sender + ' disse: ' + msg.text"
+      >
+        {{ msg.text }}
+        <p class="text-[10px] mt-2 opacity-70 text-right">{{ msg.time }}</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="p-4 bg-card border-t border-border">
+    <div class="flex items-center gap-3">
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        class="flex-1 bg-surface border-2 border-border rounded-full px-5 py-3 text-lg focus:outline-none focus:border-primary"
+        placeholder="Escreva sua dúvida aqui..."
+      />
+
+      <app-voice-input-btn (result)="newMessage = $event" class="flex-shrink-0" />
+
+      <button
+        (click)="sendMessage()"
+        class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg active:scale-95"
+      >
+        <fa-icon [icon]="icons.send" class="text-xl"></fa-icon>
+      </button>
+    </div>
+  </footer>
+</div>
