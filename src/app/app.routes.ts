@@ -44,6 +44,16 @@ export const routes: Routes = [
             (m) => m.ActiveLessonSessionComponent,
           ),
       },
+      {
+        path: 'meu-caderno',
+        loadComponent: () =>
+          import('./features/notebook/notebook.component').then((m) => m.NotebookComponent),
+      },
+      {
+        path: 'forum',
+        loadComponent: () =>
+          import('./features/forum-chat/forum-chat.component').then((m) => m.ForumChatComponent),
+      },
     ],
   },
   { path: '**', redirectTo: '' },
