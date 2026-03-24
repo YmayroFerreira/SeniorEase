@@ -54,6 +54,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/forum-chat/forum-chat.component').then((m) => m.ForumChatComponent),
       },
+      {
+        path: 'dashboardDS',
+        loadComponent: () =>
+          import('./features/dashboard-ds/dashboard-ds.component').then(
+            (m) => m.DashboardDSComponent,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

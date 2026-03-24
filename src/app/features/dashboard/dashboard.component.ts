@@ -12,6 +12,7 @@ import {
   faClipboard,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
+import { BadgeComponent, IconComponent } from '@senior-ease/ui';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
@@ -19,7 +20,7 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective],
+  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, IconComponent, BadgeComponent],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {

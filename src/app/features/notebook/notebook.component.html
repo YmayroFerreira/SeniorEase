@@ -4,7 +4,7 @@
 >
   <header
     class="border-b bg-card sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
-    [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-yellow-400' : 'border-border'"
+    [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'"
   >
     <button (click)="router.navigate(['/inicio'])" class="p-2 text-primary text-xl">
       <fa-icon [icon]="icons.arrowLeft"></fa-icon>
@@ -18,7 +18,7 @@
         *ngFor="let note of savedNotes"
         class="bg-card rounded-2xl p-6 shadow-md border-2 relative group"
         [ngClass]="
-          accessibility.theme() === 'high-contrast' ? 'border-yellow-400' : 'border-primary/10'
+          accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-primary/10'
         "
       >
         <div class="flex justify-between items-start mb-3">

@@ -26,7 +26,7 @@
         [ngClass]="{
           'bg-primary text-white rounded-tr-none': msg.isMe,
           'bg-card text-foreground border border-border rounded-tl-none': !msg.isMe,
-          'border-2 border-yellow-400 bg-black text-yellow-400':
+          'border-2 border-primary-light bg-black text-primary-light':
             accessibility.theme() === 'high-contrast',
         }"
         [appVoiceRead]="msg.sender + ' disse: ' + msg.text"

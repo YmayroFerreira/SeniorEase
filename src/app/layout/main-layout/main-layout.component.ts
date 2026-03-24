@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faHouse,
+  faTableColumns,
   faUniversalAccess,
   faUser,
   IconDefinition,
@@ -30,7 +31,7 @@ export class MainLayoutComponent {
 
   protected readonly sidebarItems: NavItem[] = [
     { path: '/inicio', icon: faHouse, label: 'Início' },
-
+    { path: '/dashboardDS', icon: faTableColumns, label: 'Dashboard DS' },
     { path: '/acessibilidade', icon: faUniversalAccess, label: 'Acessibilidade' },
     { path: '/perfil', icon: faUser, label: 'Perfil' },
   ];
