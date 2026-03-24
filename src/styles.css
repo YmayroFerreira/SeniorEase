@@ -31,6 +31,63 @@
   --color-purple-light: #eee5fc;
 }
 
+/* Senior Ease DS tokens consumed by @senior-ease/ui components */
+:root {
+  --ui-font-family-base: var(--font-sans);
+  --ui-font-size-100: 0.75rem;
+  --ui-font-size-200: 0.875rem;
+  --ui-font-size-300: 1rem;
+  --ui-font-size-400: 1.125rem;
+  --ui-font-size-600: 1.5rem;
+  --ui-font-weight-regular: 400;
+  --ui-font-weight-medium: 500;
+  --ui-font-weight-semibold: 600;
+  --ui-line-height-base: 1.5;
+  --ui-line-height-tight: 1.25;
+
+  --ui-space-1: 0.25rem;
+  --ui-space-2: 0.5rem;
+  --ui-space-3: 0.75rem;
+  --ui-space-4: 1rem;
+  --ui-space-5: 1.25rem;
+  --ui-space-6: 1.5rem;
+  --ui-space-7: 2rem;
+  --ui-space-8: 2.25rem;
+  --ui-space-9: 2.5rem;
+
+  --ui-radius-md: 0.75rem;
+  --ui-radius-lg: 1rem;
+  --ui-radius-pill: 9999px;
+  --ui-radius-round: 9999px;
+  --ui-border-width: 1px;
+  --ui-shadow-sm: 0 1px 2px rgb(15 23 42 / 0.08);
+
+  --ui-color-primary: var(--color-primary);
+  --ui-color-primary-strong: var(--color-primary-dark);
+  --ui-color-primary-soft: var(--color-primary-surface);
+  --ui-color-accent: var(--color-accent);
+  --ui-color-accent-soft: color-mix(in srgb, var(--color-accent) 16%, white);
+
+  --ui-color-surface: var(--color-card);
+  --ui-color-surface-muted: color-mix(in srgb, var(--color-surface) 70%, white);
+  --ui-color-border: var(--color-border);
+  --ui-color-text: var(--color-foreground);
+  --ui-color-text-muted: var(--color-muted);
+  --ui-color-text-inverse: #ffffff;
+  --ui-color-focus-ring: var(--color-primary);
+
+  --ui-color-success: var(--color-success);
+  --ui-color-success-soft: var(--color-success-light);
+  --ui-color-warning: var(--color-warning);
+  --ui-color-warning-soft: var(--color-warning-light);
+  --ui-color-danger: var(--color-danger);
+  --ui-color-danger-soft: var(--color-danger-light);
+
+  --ui-layout-sidebar-width: 15rem;
+  --ui-layout-content-width: none;
+  --ui-layout-mobile-nav-height: 4rem;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }

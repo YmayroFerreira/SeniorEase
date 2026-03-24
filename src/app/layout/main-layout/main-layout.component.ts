@@ -1,37 +1,34 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  faHouse,
-  faUniversalAccess,
-  faUser,
-  IconDefinition,
-} from '@fortawesome/free-solid-svg-icons';
-import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
-
-interface NavItem {
-  path: string;
-  icon: IconDefinition;
-  label: string;
-  disabled?: boolean;
-}
+import { RouterOutlet } from '@angular/router';
+import { DashboardLayoutComponent, NavItemData, SidebarComponent } from '@senior-ease/ui';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, FontAwesomeModule, VoiceReadDirective],
+  imports: [RouterOutlet, SidebarComponent, DashboardLayoutComponent],
   templateUrl: './main-layout.component.html',
 })
 export class MainLayoutComponent {
-  protected readonly bottomNavItems: NavItem[] = [
-    { path: '/inicio', icon: faHouse, label: 'Início' },
-    { path: '/acessibilidade', icon: faUniversalAccess, label: 'Acesso' },
-    { path: '/perfil', icon: faUser, label: 'Perfil' },
-  ];
-
-  protected readonly sidebarItems: NavItem[] = [
-    { path: '/inicio', icon: faHouse, label: 'Início' },
-
-    { path: '/acessibilidade', icon: faUniversalAccess, label: 'Acessibilidade' },
-    { path: '/perfil', icon: faUser, label: 'Perfil' },
+  protected readonly navItems: NavItemData[] = [
+    {
+      label: 'Inicio',
+      path: '/inicio',
+      icon: 'home',
+      description: 'Visao geral',
+      ariaLabel: 'Navegar para inicio',
+    },
+    {
+      label: 'Acessibilidade',
+      path: '/acessibilidade',
+      icon: 'accessibility',
+      description: 'Preferencias de leitura',
+      ariaLabel: 'Navegar para acessibilidade',
+    },
+    {
+      label: 'Perfil',
+      path: '/perfil',
+      icon: 'user',
+      description: 'Configuracoes da conta',
+      ariaLabel: 'Navegar para perfil',
+    },
   ];
 }
