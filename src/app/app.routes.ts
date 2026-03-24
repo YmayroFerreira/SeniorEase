@@ -61,6 +61,13 @@ export const routes: Routes = [
             (m) => m.DashboardDSComponent,
           ),
       },
+      {
+        path: 'dashboardDS2',
+        loadComponent: () =>
+          import('./features/dashboard-ds2/dashboard-ds2.component').then(
+            (m) => m.DashboardDs2Component,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

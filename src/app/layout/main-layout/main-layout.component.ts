@@ -32,6 +32,7 @@ export class MainLayoutComponent {
   protected readonly sidebarItems: NavItem[] = [
     { path: '/inicio', icon: faHouse, label: 'Início' },
     { path: '/dashboardDS', icon: faTableColumns, label: 'Dashboard DS' },
+    { path: '/dashboardDS2', icon: faTableColumns, label: 'Dashboard DS2' },
     { path: '/acessibilidade', icon: faUniversalAccess, label: 'Acessibilidade' },
     { path: '/perfil', icon: faUser, label: 'Perfil' },
   ];
