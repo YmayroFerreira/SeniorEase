@@ -12,7 +12,7 @@ import {
   faClipboard,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
-import { BadgeComponent, IconComponent } from '@senior-ease/ui';
+import { BadgeComponent, ButtonComponent, IconComponent } from '@senior-ease/ui';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
@@ -20,7 +20,14 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, IconComponent, BadgeComponent],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    VoiceReadDirective,
+    IconComponent,
+    BadgeComponent,
+    ButtonComponent,
+  ],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
@@ -40,32 +47,4 @@ export class DashboardComponent {
     clipboard: faClipboard,
     clock: faClock,
   };
-
-  protected readonly urgentActivities = [
-    {
-      id: 1,
-      type: 'study',
-      title: 'Aula de Cidades Inteligentes',
-      description: 'Hoje você tem aula às 19h',
-      time: '19:00',
-      actionLabel: 'Entrar na Sala',
-    },
-    {
-      id: 2,
-      type: 'work',
-      title: 'Registro de Mentoria Pendente',
-      description: 'Você não registrou a mentoria de ontem',
-      time: null,
-      actionLabel: 'Registrar Agora',
-    },
-  ];
-
-  protected handleAction(activity: any): void {
-    if (activity.type === 'work') {
-      console.log('Iniciar fluxo de registro de mentoria');
-      // Futuro: Navegar para o Workflow Stepper
-    } else {
-      console.log('Abrir link da aula');
-    }
-  }
 }

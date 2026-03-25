@@ -55,13 +55,6 @@ export const routes: Routes = [
           import('./features/forum-chat/forum-chat.component').then((m) => m.ForumChatComponent),
       },
       {
-        path: 'dashboardDS',
-        loadComponent: () =>
-          import('./features/dashboard-ds/dashboard-ds.component').then(
-            (m) => m.DashboardDSComponent,
-          ),
-      },
-      {
         path: 'dashboardDS2',
         loadComponent: () =>
           import('./features/dashboard-ds2/dashboard-ds2.component').then(
