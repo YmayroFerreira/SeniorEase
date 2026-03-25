@@ -1,38 +1,13 @@
 <div class="pb-[88px] md:pb-8">
-  <div class="bg-primary md:bg-card md:border-b md:border-border px-6 md:px-8 py-4">
-    <!-- Mobile Header -->
-    <div class="md:hidden flex items-center gap-4">
-      <button
-        type="button"
-        (click)="router.navigate(['/inicio'])"
-        class="text-2xl"
-        [ngClass]="accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-white'"
-        aria-label="Voltar para o início"
-        appVoiceRead="Voltar"
-      >
-        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
-      </button>
-      <h1
-        class="text-xl font-bold"
-        [ngClass]="accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-white'"
-      >
-        Voltar para o início
-      </h1>
-    </div>
-    <!-- Desktop Header -->
-    <div class="hidden md:block">
-      <button
-        type="button"
-        (click)="router.navigate(['/inicio'])"
-        class="text-sm font-semibold hover:underline flex items-center gap-1.5"
-        [ngClass]="accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-primary'"
-        appVoiceRead="Voltar para o início"
-      >
-        <fa-icon [icon]="icons.arrowLeft" class="text-xs"></fa-icon>
-        <span>Voltar para o início</span>
-      </button>
-    </div>
-  </div>
+  <header
+    class="border-b bg-card sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
+    [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'"
+  >
+    <button (click)="router.navigate(['/inicio'])" class="p-2 text-primary text-xl">
+      <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+    </button>
+    <h1 class="text-xl font-bold text-foreground">Sala de espera</h1>
+  </header>
 
   <div class="px-6 md:px-8 pt-5 md:max-w-2xl">
     <div
@@ -49,7 +24,7 @@
               class="border rounded-xl px-4 py-3 mt-3 mb-2 flex items-center gap-3 transition-colors"
               [ngClass]="
                 accessibility.theme() === 'high-contrast'
-                  ? 'bg-black border-yellow-400'
+                  ? 'bg-black border-primary-light'
                   : 'bg-success-light border-success/30'
               "
               appVoiceRead="Você está dentro do horário! A aula começa em 15 minutos."
@@ -58,14 +33,14 @@
                 [icon]="icons.check"
                 class="text-xl"
                 [ngClass]="
-                  accessibility.theme() === 'high-contrast' ? 'text-yellow-400' : 'text-success'
+                  accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-success'
                 "
               ></fa-icon>
               <p
                 class="text-sm font-bold"
                 [ngClass]="
                   accessibility.theme() === 'high-contrast'
-                    ? 'text-yellow-400'
+                    ? 'text-primary-light'
                     : 'text-success-dark'
                 "
               >
@@ -81,24 +56,19 @@
     <div class="mt-4 mb-5">
       <button
         type="button"
-        class="w-full font-bold py-3 px-6 rounded-xl shadow-sm hover:opacity-90 active:scale-95 transition-all flex items-center justify-between group"
-        [ngClass]="
-          accessibility.theme() === 'high-contrast'
-            ? 'bg-black border-2 border-yellow-400 text-yellow-400'
-            : 'bg-primary text-white'
-        "
+        class="w-full bg-card border border-border rounded-2xl p-5 flex items-center justify-between hover:bg-primary/5 transition-all text-left group"
         appVoiceRead="Botão Entrar na sala de aula. Ao clicar, sua câmera e microfone serão ligados."
         (click)="router.navigate(['/aula'])"
       >
         <div class="text-left">
-          <span class="block text-lg">Entrar na sala de aula</span>
-          <span class="block text-xs font-normal opacity-90"
+          <span class="block text-lg font-bold">Entrar na sala de aula</span>
+          <span class="text-xs tracking-wide text-primary"
             >Ao clicar, sua câmera e microfone serão ligados.</span
           >
         </div>
         <fa-icon
           [icon]="icons.chevronRight"
-          class="group-hover:translate-x-1 transition-transform"
+          class="text-primary group-hover:translate-x-1 transition-transform"
         ></fa-icon>
       </button>
     </div>
@@ -107,15 +77,14 @@
         type="button"
         (click)="testConnection()"
         [disabled]="connectionStatus === 'loading'"
-        class="w-full font-bold py-3 px-6 rounded-xl shadow-sm transition-all flex items-center justify-between group disabled:opacity-70"
+        class="w-full bg-card border border-border rounded-2xl p-5 flex items-center justify-between hover:bg-primary/5 transition-all text-left group"
         [ngClass]="{
-          'bg-black border-2 border-yellow-400 text-yellow-400':
-            accessibility.theme() === 'high-contrast',
-          'bg-white border-2 border-primary text-primary hover:bg-primary/5':
+          'text-primary-light': accessibility.theme() === 'high-contrast',
+          'text-primary font-semibold':
             accessibility.theme() !== 'high-contrast' && connectionStatus === 'idle',
-          'bg-green-50 border-2 border-green-600 text-green-700':
+          'text-success font-bold':
             accessibility.theme() !== 'high-contrast' && connectionStatus === 'success',
-          'bg-red-50 border-2 border-red-500 text-red-700':
+          'text-danger font-bold':
             accessibility.theme() !== 'high-contrast' && connectionStatus === 'error',
           'opacity-80 cursor-wait': connectionStatus === 'loading',
         }"
@@ -143,24 +112,20 @@
     </div>
 
     <div
-      class="border rounded-2xl flex items-start transition-colors"
-      [ngClass]="{
-        'bg-primary-surface border-primary/20 text-primary':
-          accessibility.theme() !== 'high-contrast',
-        'bg-black border-yellow-400 text-yellow-400': accessibility.theme() === 'high-contrast',
-      }"
-      style="padding: 16px; margin-bottom: 24px; gap: 12px"
+      class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start gap-3 p-4 mb-5"
       appVoiceRead="Precisa de ajuda? Ligue para o suporte: 0800-123-4567. Disponível 24 horas."
     >
       <fa-icon
         [icon]="icons.lightbulb"
-        class="flex-shrink-0"
+        class="flex-shrink-0 text-primary"
         style="font-size: 18px; margin-top: 2px"
       ></fa-icon>
       <div>
-        <p class="font-bold" style="font-size: 15px; margin-bottom: 4px">Precisa de ajuda?</p>
-        <p style="font-size: 14px; line-height: 1.5">Ligue para o suporte: 0800-123-4567</p>
-        <p style="font-size: 14px; line-height: 1.5">Disponível 24 horas</p>
+        <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-1">
+          Precisa de ajuda?
+        </p>
+        <p class="text-sm text-muted leading-relaxed">Ligue para o suporte: 0800-123-4567</p>
+        <p class="text-sm text-muted leading-relaxed mt-0.5">Disponível 24 horas</p>
       </div>
     </div>
   </div>

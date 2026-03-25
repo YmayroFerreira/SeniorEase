@@ -57,7 +57,6 @@ export class WaitingRoomComponent {
     this.connectionStatus = 'loading';
     this.statusMessage = 'Verificando...';
 
-    // Simulação de teste (2.5 segundos)
     setTimeout(() => {
       const isOnline = navigator.onLine;
       if (isOnline) {
@@ -67,13 +66,12 @@ export class WaitingRoomComponent {
         this.connectionStatus = 'error';
         this.statusMessage = 'Sem internet no momento';
       }
-      this.cdr.detectChanges(); // Força a atualização da tela
+      this.cdr.detectChanges();
 
-      // Opcional: Volta ao estado original após 5 segundos
       setTimeout(() => {
         this.connectionStatus = 'idle';
         this.statusMessage = 'Testar minha conexão';
-        this.cdr.detectChanges(); // Força a atualização da tela novamente
+        this.cdr.detectChanges();
       }, 5000);
     }, 2500);
   }

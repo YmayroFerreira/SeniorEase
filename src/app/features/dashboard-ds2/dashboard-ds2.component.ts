@@ -1,4 +1,3 @@
-// c:\FIAP\SeniorEase\src\app\features\dashboard\dashboard.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -12,13 +11,18 @@ import {
   faClipboard,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
-import { BadgeComponent, ButtonComponent, IconComponent } from '@senior-ease/ui';
+import {
+  BadgeComponent,
+  ButtonComponent,
+  DividerComponent,
+  IconComponent,
+  ListItemComponent,
+} from '@senior-ease/ui';
 import { AccessibilityService } from '../../core/services/accessibility.service';
-import { VoiceInputService } from '../../core/services/voice-input.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-dashboard-ds2',
   standalone: true,
   imports: [
     CommonModule,
@@ -27,13 +31,14 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
     IconComponent,
     BadgeComponent,
     ButtonComponent,
+    ListItemComponent,
+    DividerComponent,
   ],
-  templateUrl: './dashboard.component.html',
+  templateUrl: './dashboard-ds2.component.html',
 })
-export class DashboardComponent {
+export class DashboardDs2Component {
   protected readonly accessibility = inject(AccessibilityService);
   protected readonly router = inject(Router);
-  protected readonly voiceInput = inject(VoiceInputService);
 
   protected readonly today = new Date();
   protected isWorkSubmitted = true;
