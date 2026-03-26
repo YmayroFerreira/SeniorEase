@@ -1,0 +1,243 @@
+<div class="pb-[88px] md:pb-8">
+  <!-- Header mobile -->
+  <div class="md:hidden bg-primary px-6 pt-10 pb-6">
+    <h1 class="text-white text-2xl font-bold" appVoiceRead="Olá! Sr. Arnaldo">Olá! Sr. Arnaldo,</h1>
+    <p class="text-primary-light text-sm mb-0.5 first-letter:uppercase">
+      {{ today | date: "EEEE, d 'de' MMMM 'de' y" : '' : 'pt-BR' }}
+    </p>
+    <p class="text-primary-light text-sm mb-0.5 mt-3">O que temos para fazer hoje?</p>
+  </div>
+
+  <!-- Header desktop -->
+  <div class="hidden md:block border-b border-border bg-card px-8 py-5">
+    <h1 class="text-xl font-bold text-foreground">Início</h1>
+    <p class="text-sm text-muted mt-0.5" appVoiceRead="Olá, Sr. Arnaldo">Olá, Sr. Arnaldo</p>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="px-6 md:px-8 pt-5 md:max-w-6xl pb-[88px] md:pb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <div class="lg:col-span-3 space-y-6">
+        <!-- Aula de hoje -->
+        <div
+          class="bg-card rounded-2xl shadow-md overflow-hidden border border-border"
+          appVoiceRead="Aula de hoje: Desenvolvimento Front End. Professor Carlos Mendes."
+        >
+          <div class="bg-primary px-5 py-3 flex justify-between items-center">
+            <p class="text-xs font-semibold uppercase tracking-wide text-primary-light mb-1">
+              Aula de hoje
+            </p>
+            <span class="text-white/80 text-xs hidden md:block italic"
+              >A aula começa em 15 min</span
+            >
+          </div>
+          <div class="p-6">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <h2 class="text-2xl font-bold text-foreground leading-tight">
+                  Desenvolvimento Front End
+                </h2>
+                <p class="text-xs tracking-wide text-primary mt-2">
+                  19:00 - 21:00 • Sala virtual 03
+                </p>
+                <p class="text-xs tracking-wide text-primary">Prof. Dr. Carlos Mendes</p>
+              </div>
+              <div
+                class="hidden md:flex w-20 h-20 bg-primary/10 rounded-2xl items-center justify-center text-primary text-2xl font-bold"
+              >
+                SE
+              </div>
+            </div>
+            <div class="mt-6">
+              <!-- <button
+                type="button"
+                class="w-full md:w-max bg-primary text-white font-bold py-4 px-10 rounded-xl shadow-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-4 group"
+                (click)="router.navigate(['/sala-de-espera'])"
+              >
+                <span class="text-lg">Entrar na sala de aula</span>
+                <ui-icon
+                  [icon]="icons.chevronRight"
+                  class="group-hover:translate-x-1 transition-transform"
+                ></ui-icon>
+              </button> -->
+              <ui-button
+                variant="primary"
+                size="md"
+                ariaLabel="Entrar na sala de aula"
+                (buttonClick)="router.navigate(['/sala-de-espera'])"
+              >
+                Entrar na sala de aula
+                <ui-icon
+                  [icon]="icons.chevronRight"
+                  class="group-hover:translate-x-1 transition-transform"
+                ></ui-icon>
+              </ui-button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de progresso -->
+        <section>
+          <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
+            Meu Progresso no Curso
+          </h2>
+          <div class="bg-card rounded-2xl p-6 border-2 border-border shadow-sm">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div>
+                <span class="text-2xl font-bold text-primary"
+                  >Aula 04 <span class="text-foreground/50 text-base font-normal">de 10</span></span
+                >
+                <p class="text-sm text-muted font-medium mt-1">Módulo: Primeiros Passos no HTML</p>
+              </div>
+              <ui-badge
+                variant="success"
+                label="QUASE NA METADE!"
+                class="text-xs font-bold px-4 py-2 rounded-full border w-max"
+                [ngClass]="
+                  accessibility.theme() === 'high-contrast'
+                    ? 'bg-black text-primary-light border-primary-light'
+                    : 'bg-success/10 text-success border-success/20'
+                "
+              >
+                QUASE NA METADE!
+              </ui-badge>
+            </div>
+            <div
+              class="relative h-8 bg-surface rounded-full overflow-hidden border"
+              [ngClass]="
+                accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'
+              "
+            >
+              <div
+                class="absolute top-0 left-0 h-full transition-all duration-1000 shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)]"
+                [ngClass]="
+                  accessibility.theme() === 'high-contrast' ? 'bg-primary-light' : 'bg-primary'
+                "
+                style="width: 40%"
+              ></div>
+            </div>
+            <div class="flex justify-between mt-4 text-sm font-bold text-muted">
+              <span class="flex items-center gap-2"
+                ><fa-icon
+                  [icon]="icons.check"
+                  class="text-xl text-primary group-hover:translate-x-1 transition-transform"
+                ></fa-icon>
+                3 Aulas Feitas</span
+              >
+              <span>6 Aulas Restantes</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Meu Caderno -->
+        <button
+          type="button"
+          class="w-full bg-card border border-border rounded-2xl p-5 flex items-center justify-between hover:bg-primary/5 transition-all text-left group"
+          (click)="router.navigate(['/meu-caderno'])"
+        >
+          <div class="flex items-center gap-5">
+            <div
+              class="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0"
+              [ngClass]="
+                accessibility.theme() === 'high-contrast'
+                  ? 'bg-primary-light text-black'
+                  : 'bg-primary text-white'
+              "
+            >
+              <fa-icon [icon]="icons.study" class="text-3xl"></fa-icon>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-foreground">Meu Caderno</h2>
+              <p class="text-sm text-muted mt-1">Suas lições salvas aqui.</p>
+            </div>
+          </div>
+          <fa-icon
+            [icon]="icons.chevronRight"
+            class="text-xl text-primary group-hover:translate-x-1 transition-transform"
+          ></fa-icon>
+        </button>
+
+        <!-- Mais para hoje -->
+        <section>
+          <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
+            Mais para hoje
+          </h2>
+          <div class="space-y-4">
+            <button
+              (click)="router.navigate(['/forum'])"
+              class="w-full bg-card border border-border rounded-2xl p-5 flex items-center justify-between hover:bg-primary/5 transition-all text-left group"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 rounded-full bg-primary-surface flex items-center justify-center text-primary"
+                >
+                  <fa-icon [icon]="icons.clipboard"></fa-icon>
+                </div>
+                <div>
+                  <p class="font-bold text-foreground">Fórum: Hackathon</p>
+                  <p class="text-sm text-muted">3 novas mensagens</p>
+                </div>
+              </div>
+              <fa-icon
+                [icon]="icons.chevronRight"
+                class="text-primary group-hover:translate-x-1 transition-transform"
+              ></fa-icon>
+            </button>
+
+            <div
+              class="w-full bg-card border-2 rounded-2xl p-5 relative overflow-hidden"
+              [ngClass]="{
+                'border-primary-light bg-black text-primary-light':
+                  accessibility.theme() === 'high-contrast' && isWorkSubmitted,
+                'border-success bg-success-light/10':
+                  accessibility.theme() !== 'high-contrast' && isWorkSubmitted,
+                'border-border': !isWorkSubmitted,
+              }"
+            >
+              <div
+                *ngIf="isWorkSubmitted"
+                class="absolute -right-2 -top-2 rotate-12"
+                [ngClass]="
+                  accessibility.theme() === 'high-contrast'
+                    ? 'text-primary-light/20'
+                    : 'text-success/10'
+                "
+              >
+                <fa-icon [icon]="icons.check" size="4x"></fa-icon>
+              </div>
+              <div class="flex items-center gap-4 relative z-10">
+                <div
+                  class="w-10 h-10 rounded-full flex items-center justify-center"
+                  [ngClass]="{
+                    'bg-primary-light text-black':
+                      accessibility.theme() === 'high-contrast' && isWorkSubmitted,
+                    'bg-success text-white':
+                      accessibility.theme() !== 'high-contrast' && isWorkSubmitted,
+                    'bg-muted/20 text-muted': !isWorkSubmitted,
+                  }"
+                >
+                  <fa-icon [icon]="isWorkSubmitted ? icons.check : icons.clipboard"></fa-icon>
+                </div>
+                <div class="flex-1">
+                  <p class="font-bold text-foreground">Trabalho Final</p>
+                  <p
+                    class="text-sm font-bold"
+                    [ngClass]="
+                      accessibility.theme() === 'high-contrast' && isWorkSubmitted
+                        ? 'text-primary-light'
+                        : 'text-success-dark'
+                    "
+                  >
+                    ✓ Entregue com sucesso
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

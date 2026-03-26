@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { faTableColumns } from '@fortawesome/free-solid-svg-icons';
 import { DashboardLayoutComponent, NavItemData, SidebarComponent } from '@senior-ease/ui';
 
 @Component({
@@ -30,5 +31,7 @@ export class MainLayoutComponent {
       description: 'Configuracoes da conta',
       ariaLabel: 'Navegar para perfil',
     },
+    { path: '/dashboardDS', icon: faTableColumns, label: 'Dashboard DS' },
+    { path: '/dashboardDS2', icon: faTableColumns, label: 'Dashboard DS2' },
   ];
 }

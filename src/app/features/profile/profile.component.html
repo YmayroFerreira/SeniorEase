@@ -1,10 +1,445 @@
-<div class="p-8">
-  <h1 class="text-2xl font-bold text-foreground mb-6" appVoiceRead="Perfil">Hello World Perfil</h1>
-  <a
-    routerLink="/acessibilidade"
-    appVoiceRead="Ir para Acessibilidade"
-    class="inline-block bg-primary text-white font-semibold px-6 py-3 rounded-2xl hover:bg-primary-dark transition-colors"
-  >
-    Acessibilidade
-  </a>
+<div class="min-h-screen bg-surface" style="padding-bottom: 88px">
+  <!-- Status bar placeholder (mobile) -->
+  <div class="md:hidden">
+    <div class="bg-primary" style="height: 44px"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="bg-primary md:bg-card md:border-b md:border-border" style="padding: 16px 24px 24px">
+    <div class="md:hidden flex items-center" style="gap: 12px; margin-bottom: 4px">
+      <a routerLink="/inicio" class="text-white" style="font-size: 24px; line-height: 1">
+        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+      </a>
+      <h1 class="font-semibold text-white" style="font-size: 20px">Meu Perfil</h1>
+    </div>
+    <div class="hidden md:block">
+      <h1 class="font-bold text-foreground" style="font-size: 20px">Meu Perfil</h1>
+      <p class="text-muted" style="font-size: 14px; margin-top: 2px">Gerencie suas informações</p>
+    </div>
+  </div>
+
+  <div style="padding: 20px 24px 0; max-width: 672px">
+    <!-- Avatar -->
+    <div class="flex flex-col items-center" style="margin-bottom: 28px">
+      <div class="relative" style="width: 96px; height: 96px">
+        @if (profileImage()) {
+          <img
+            [src]="profileImage()"
+            alt="Foto de perfil"
+            class="rounded-full object-cover border-4 border-primary/20"
+            style="width: 96px; height: 96px"
+          />
+        } @else {
+          <div
+            class="rounded-full bg-primary-surface border-4 border-primary/20 flex items-center justify-center"
+            style="width: 96px; height: 96px"
+          >
+            <fa-icon [icon]="icons.user" class="text-primary" style="font-size: 40px"></fa-icon>
+          </div>
+        }
+        <label
+          class="absolute bottom-0 right-0 bg-primary text-white rounded-full flex items-center justify-center cursor-pointer shadow"
+          style="width: 30px; height: 30px"
+          appVoiceRead="Alterar foto de perfil"
+        >
+          <fa-icon [icon]="icons.camera" style="font-size: 13px"></fa-icon>
+          <input type="file" accept="image/*" class="hidden" (change)="onImageSelected($event)" />
+        </label>
+      </div>
+      <p class="font-bold text-foreground" style="font-size: 18px; margin-top: 12px">
+        {{ userName() }}
+      </p>
+    </div>
+
+    <!-- Dados pessoais -->
+    <section style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Dados pessoais
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        <!-- Nome -->
+        <div style="padding: 14px 16px">
+          <div class="flex items-center" style="gap: 8px; margin-bottom: 4px">
+            <fa-icon
+              [icon]="icons.user"
+              class="text-primary flex-shrink-0"
+              style="font-size: 13px; width: 16px"
+            ></fa-icon>
+            <p class="text-muted" style="font-size: 12px">Nome</p>
+          </div>
+          <input
+            type="text"
+            [value]="userName()"
+            (input)="userName.set($any($event.target).value)"
+            appVoiceRead="Campo de nome"
+            class="w-full text-foreground font-semibold bg-transparent focus:outline-none transition-colors border-b"
+            [class.border-border]="!saveAttempted() || nameValid()"
+            [class.focus:border-primary]="!saveAttempted() || nameValid()"
+            [class.border-danger]="saveAttempted() && !nameValid()"
+            style="font-size: 15px; padding: 4px 0"
+            placeholder="Seu nome"
+          />
+          @if (saveAttempted() && !nameValid()) {
+            <p class="text-danger" style="font-size: 11px; margin-top: 4px">Nome obrigatório.</p>
+          }
+        </div>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <!-- E-mail -->
+        <div style="padding: 14px 16px">
+          <div class="flex items-center" style="gap: 8px; margin-bottom: 4px">
+            <fa-icon
+              [icon]="icons.envelope"
+              class="text-primary flex-shrink-0"
+              style="font-size: 13px; width: 16px"
+            ></fa-icon>
+            <p class="text-muted" style="font-size: 12px">E-mail</p>
+          </div>
+          <input
+            type="email"
+            [value]="email()"
+            (input)="email.set($any($event.target).value)"
+            appVoiceRead="Campo de e-mail"
+            class="w-full text-foreground font-semibold bg-transparent focus:outline-none transition-colors border-b"
+            [class.border-border]="!saveAttempted() || emailValid()"
+            [class.focus:border-primary]="!saveAttempted() || emailValid()"
+            [class.border-danger]="saveAttempted() && !emailValid()"
+            style="font-size: 15px; padding: 4px 0"
+            placeholder="Seu e-mail"
+          />
+          @if (saveAttempted() && !emailValid()) {
+            <p class="text-danger" style="font-size: 11px; margin-top: 4px">E-mail inválido.</p>
+          }
+        </div>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <!-- Telefone -->
+        <div style="padding: 14px 16px">
+          <div class="flex items-center" style="gap: 8px; margin-bottom: 4px">
+            <fa-icon
+              [icon]="icons.phone"
+              class="text-primary flex-shrink-0"
+              style="font-size: 13px; width: 16px"
+            ></fa-icon>
+            <p class="text-muted" style="font-size: 12px">Telefone</p>
+          </div>
+          <input
+            type="tel"
+            [value]="phone()"
+            (input)="phone.set($any($event.target).value)"
+            appVoiceRead="Campo de telefone"
+            class="w-full text-foreground font-semibold bg-transparent focus:outline-none transition-colors border-b"
+            [class.border-border]="!saveAttempted() || phoneValid()"
+            [class.focus:border-primary]="!saveAttempted() || phoneValid()"
+            [class.border-danger]="saveAttempted() && !phoneValid()"
+            style="font-size: 15px; padding: 4px 0"
+            placeholder="Seu telefone"
+          />
+          @if (saveAttempted() && !phoneValid()) {
+            <p class="text-danger" style="font-size: 11px; margin-top: 4px">
+              Telefone obrigatório.
+            </p>
+          }
+        </div>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <!-- Data de nascimento -->
+        <div style="padding: 14px 16px">
+          <div class="flex items-center" style="gap: 8px; margin-bottom: 4px">
+            <fa-icon
+              [icon]="icons.calendar"
+              class="text-primary flex-shrink-0"
+              style="font-size: 13px; width: 16px"
+            ></fa-icon>
+            <p class="text-muted" style="font-size: 12px">Data de nascimento</p>
+          </div>
+          <input
+            type="date"
+            [value]="dob()"
+            (input)="dob.set($any($event.target).value)"
+            appVoiceRead="Campo de data de nascimento"
+            class="w-full text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors"
+            style="font-size: 15px; padding: 4px 0"
+          />
+        </div>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <!-- CPF -->
+        <div style="padding: 14px 16px">
+          <div class="flex items-center" style="gap: 8px; margin-bottom: 4px">
+            <fa-icon
+              [icon]="icons.idCard"
+              class="text-primary flex-shrink-0"
+              style="font-size: 13px; width: 16px"
+            ></fa-icon>
+            <p class="text-muted" style="font-size: 12px">CPF</p>
+          </div>
+          <input
+            type="text"
+            [value]="cpf()"
+            (input)="cpf.set($any($event.target).value)"
+            appVoiceRead="Campo de CPF"
+            class="w-full text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors"
+            style="font-size: 15px; padding: 4px 0"
+            placeholder="000.000.000-00"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Preferências -->
+    <section style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Preferências
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        <!-- Modo de navegação -->
+        <div
+          class="flex items-center"
+          style="gap: 12px; padding: 14px 16px"
+          [appVoiceRead]="
+            'Modo de navegação. ' +
+            (simplifiedNav() ? 'Simplificado. Ativado' : 'Padrão. Desativado')
+          "
+        >
+          <fa-icon
+            [icon]="icons.simplifiedNav"
+            class="text-primary text-center flex-shrink-0"
+            style="font-size: 18px; width: 22px"
+          ></fa-icon>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-foreground truncate" style="font-size: 15px">
+              Modo de navegação
+            </p>
+            <p class="text-muted truncate" style="font-size: 12px; margin-top: 2px">
+              {{ simplifiedNav() ? 'Simplificado' : 'Padrão' }}
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            [attr.aria-checked]="simplifiedNav()"
+            (click)="simplifiedNav.set(!simplifiedNav())"
+            class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer"
+            style="width: 48px; height: 26px; min-width: 48px"
+            [class.bg-primary]="simplifiedNav()"
+            [class.bg-toggle-off]="!simplifiedNav()"
+          >
+            <span
+              class="absolute bg-white rounded-full shadow transition-transform"
+              style="width: 20px; height: 20px; top: 3px; left: 3px"
+              [style.transform]="simplifiedNav() ? 'translateX(22px)' : 'translateX(0)'"
+            ></span>
+          </button>
+        </div>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <!-- Confirmações extras -->
+        <div
+          class="flex items-center"
+          style="gap: 12px; padding: 14px 16px"
+          [appVoiceRead]="
+            'Confirmações extras. ' + (extraConfirmations() ? 'Ativado' : 'Desativado')
+          "
+        >
+          <fa-icon
+            [icon]="icons.extraConfirmations"
+            class="text-primary text-center flex-shrink-0"
+            style="font-size: 18px; width: 22px"
+          ></fa-icon>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-foreground truncate" style="font-size: 15px">
+              Confirmações extras
+            </p>
+            <p class="text-muted truncate" style="font-size: 12px; margin-top: 2px">
+              Pedir confirmação antes de ações importantes
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            [attr.aria-checked]="extraConfirmations()"
+            (click)="extraConfirmations.set(!extraConfirmations())"
+            class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer"
+            style="width: 48px; height: 26px; min-width: 48px"
+            [class.bg-primary]="extraConfirmations()"
+            [class.bg-toggle-off]="!extraConfirmations()"
+          >
+            <span
+              class="absolute bg-white rounded-full shadow transition-transform"
+              style="width: 20px; height: 20px; top: 3px; left: 3px"
+              [style.transform]="extraConfirmations() ? 'translateX(22px)' : 'translateX(0)'"
+            ></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conta -->
+    <section style="margin-bottom: 24px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Conta
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        <button
+          type="button"
+          (click)="changePassword()"
+          appVoiceRead="Alterar senha"
+          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
+          style="gap: 16px; padding: 14px 16px"
+        >
+          <fa-icon
+            [icon]="icons.lock"
+            class="text-primary text-center flex-shrink-0"
+            style="font-size: 18px; width: 22px"
+          ></fa-icon>
+          <div class="flex-1 text-left">
+            <p class="font-semibold text-foreground" style="font-size: 15px">Alterar senha</p>
+            <p class="text-muted" style="font-size: 12px; margin-top: 2px">
+              Atualizar sua senha de acesso
+            </p>
+          </div>
+        </button>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <button
+          type="button"
+          (click)="logout()"
+          appVoiceRead="Sair da conta"
+          class="w-full flex items-center hover:bg-danger-light transition-colors cursor-pointer"
+          style="gap: 16px; padding: 14px 16px"
+        >
+          <fa-icon
+            [icon]="icons.logout"
+            class="text-danger text-center flex-shrink-0"
+            style="font-size: 18px; width: 22px"
+          ></fa-icon>
+          <div class="flex-1 text-left">
+            <p class="font-semibold text-danger" style="font-size: 15px">Sair da conta</p>
+            <p class="text-muted" style="font-size: 12px; margin-top: 2px">
+              Encerrar a sessão atual
+            </p>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Suporte -->
+    <section style="margin-bottom: 32px">
+      <h2
+        class="font-semibold text-muted uppercase tracking-wide"
+        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
+      >
+        Suporte
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        <button
+          type="button"
+          appVoiceRead="Fale conosco"
+          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
+          style="gap: 16px; padding: 14px 16px"
+        >
+          <fa-icon
+            [icon]="icons.headset"
+            class="text-primary text-center flex-shrink-0"
+            style="font-size: 18px; width: 22px"
+          ></fa-icon>
+          <div class="flex-1 text-left">
+            <p class="font-semibold text-foreground" style="font-size: 15px">Fale conosco</p>
+            <p class="text-muted" style="font-size: 12px; margin-top: 2px">
+              Dúvidas ou problemas? Estamos aqui
+            </p>
+          </div>
+        </button>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <button
+          type="button"
+          appVoiceRead="Termos de uso e privacidade"
+          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
+          style="gap: 16px; padding: 14px 16px"
+        >
+          <fa-icon
+            [icon]="icons.fileContract"
+            class="text-primary text-center flex-shrink-0"
+            style="font-size: 18px; width: 22px"
+          ></fa-icon>
+          <div class="flex-1 text-left">
+            <p class="font-semibold text-foreground" style="font-size: 15px">
+              Termos de uso e privacidade
+            </p>
+            <p class="text-muted" style="font-size: 12px; margin-top: 2px">
+              Saiba como usamos seus dados
+            </p>
+          </div>
+        </button>
+
+        <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+
+        <div
+          class="flex items-center"
+          style="gap: 16px; padding: 14px 16px"
+          appVoiceRead="Versão do aplicativo 1.0.0"
+        >
+          <fa-icon
+            [icon]="icons.info"
+            class="text-primary text-center flex-shrink-0"
+            style="font-size: 18px; width: 22px"
+          ></fa-icon>
+          <div class="flex-1">
+            <p class="font-semibold text-foreground" style="font-size: 15px">
+              Versão do aplicativo
+            </p>
+          </div>
+          <span class="text-muted font-semibold" style="font-size: 14px">{{ APP_VERSION }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Salvar -->
+    <div style="padding-bottom: 16px">
+      <button
+        type="button"
+        (click)="saveProfile()"
+        appVoiceRead="Salvar alterações"
+        class="w-full bg-primary text-white font-semibold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer"
+        style="font-size: 16px; padding: 16px"
+      >
+        Salvar alterações
+      </button>
+    </div>
+  </div>
 </div>
+
+<!-- Toast -->
+@if (toastVisible()) {
+  <div
+    class="fixed bottom-28 left-1/2 -translate-x-1/2 flex items-center rounded-2xl shadow-lg z-50"
+    style="gap: 10px; padding: 14px 20px; min-width: 260px; max-width: 340px"
+    [class.bg-success]="toastSuccess()"
+    [class.bg-danger]="!toastSuccess()"
+  >
+    <fa-icon
+      [icon]="toastSuccess() ? icons.circleCheck : icons.warning"
+      class="text-white flex-shrink-0"
+      style="font-size: 18px"
+    ></fa-icon>
+    <p class="text-white font-semibold" style="font-size: 14px">{{ toastMessage() }}</p>
+  </div>
+}

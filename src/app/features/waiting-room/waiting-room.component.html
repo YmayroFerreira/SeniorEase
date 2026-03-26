@@ -1,0 +1,132 @@
+<div class="pb-[88px] md:pb-8">
+  <header
+    class="border-b bg-card sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
+    [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'"
+  >
+    <button (click)="router.navigate(['/inicio'])" class="p-2 text-primary text-xl">
+      <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+    </button>
+    <h1 class="text-xl font-bold text-foreground">Sala de espera</h1>
+  </header>
+
+  <div class="px-6 md:px-8 pt-5 md:max-w-2xl">
+    <div
+      class="bg-card rounded-2xl shadow-md overflow-hidden mb-5 border border-border"
+      appVoiceRead="Aula de hoje: Desenvolvimento Front End, das 19 horas às 21 horas. Sala virtual 03. Professor Doutor Carlos Mendes."
+    >
+      <div class="p-5">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex-1 min-w-0">
+            <h2 class="text-xl font-bold leading-snug text-foreground">
+              Desenvolvimento Front-End
+            </h2>
+            <div
+              class="border rounded-xl px-4 py-3 mt-3 mb-2 flex items-center gap-3 transition-colors"
+              [ngClass]="
+                accessibility.theme() === 'high-contrast'
+                  ? 'bg-black border-primary-light'
+                  : 'bg-success-light border-success/30'
+              "
+              appVoiceRead="Você está dentro do horário! A aula começa em 15 minutos."
+            >
+              <fa-icon
+                [icon]="icons.check"
+                class="text-xl"
+                [ngClass]="
+                  accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-success'
+                "
+              ></fa-icon>
+              <p
+                class="text-sm font-bold"
+                [ngClass]="
+                  accessibility.theme() === 'high-contrast'
+                    ? 'text-primary-light'
+                    : 'text-success-dark'
+                "
+              >
+                Você está dentro do horário! A aula começa em 15 minutos.
+              </p>
+            </div>
+            <p class="text-sm text-muted mt-1">Prof. Dr. Carlos Mendes • Sala virtual 03</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 mb-5">
+      <button
+        type="button"
+        class="w-full bg-card border border-border rounded-2xl p-5 flex items-center justify-between hover:bg-primary/5 transition-all text-left group"
+        appVoiceRead="Botão Entrar na sala de aula. Ao clicar, sua câmera e microfone serão ligados."
+        (click)="router.navigate(['/aula'])"
+      >
+        <div class="text-left">
+          <span class="block text-lg font-bold">Entrar na sala de aula</span>
+          <span class="text-xs tracking-wide text-primary"
+            >Ao clicar, sua câmera e microfone serão ligados.</span
+          >
+        </div>
+        <fa-icon
+          [icon]="icons.chevronRight"
+          class="text-primary group-hover:translate-x-1 transition-transform"
+        ></fa-icon>
+      </button>
+    </div>
+    <div class="mt-4 mb-5">
+      <button
+        type="button"
+        (click)="testConnection()"
+        [disabled]="connectionStatus === 'loading'"
+        class="w-full bg-card border border-border rounded-2xl p-5 flex items-center justify-between hover:bg-primary/5 transition-all text-left group"
+        [ngClass]="{
+          'text-primary-light': accessibility.theme() === 'high-contrast',
+          'text-primary font-semibold':
+            accessibility.theme() !== 'high-contrast' && connectionStatus === 'idle',
+          'text-success font-bold':
+            accessibility.theme() !== 'high-contrast' && connectionStatus === 'success',
+          'text-danger font-bold':
+            accessibility.theme() !== 'high-contrast' && connectionStatus === 'error',
+          'opacity-80 cursor-wait': connectionStatus === 'loading',
+        }"
+        [appVoiceRead]="'Botão de teste de conexão. Status atual: ' + statusMessage"
+      >
+        <div class="flex items-center gap-3">
+          @switch (connectionStatus) {
+            @case ('loading') {
+              <fa-icon [icon]="icons.spinner" class="fa-spin"></fa-icon>
+            }
+            @case ('success') {
+              <fa-icon [icon]="icons.check"></fa-icon>
+            }
+            @case ('error') {
+              <fa-icon [icon]="icons.error"></fa-icon>
+            }
+            @default {
+              <fa-icon [icon]="icons.wifi"></fa-icon>
+            }
+          }
+
+          <span class="text-lg">{{ statusMessage }}</span>
+        </div>
+      </button>
+    </div>
+
+    <div
+      class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start gap-3 p-4 mb-5"
+      appVoiceRead="Precisa de ajuda? Ligue para o suporte: 0800-123-4567. Disponível 24 horas."
+    >
+      <fa-icon
+        [icon]="icons.lightbulb"
+        class="flex-shrink-0 text-primary"
+        style="font-size: 18px; margin-top: 2px"
+      ></fa-icon>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-1">
+          Precisa de ajuda?
+        </p>
+        <p class="text-sm text-muted leading-relaxed">Ligue para o suporte: 0800-123-4567</p>
+        <p class="text-sm text-muted leading-relaxed mt-0.5">Disponível 24 horas</p>
+      </div>
+    </div>
+  </div>
+</div>

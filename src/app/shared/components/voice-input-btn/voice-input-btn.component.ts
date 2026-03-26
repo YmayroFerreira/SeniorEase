@@ -1,29 +1,44 @@
+import { NgClass } from '@angular/common';
 import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
+import { AccessibilityService } from '../../../core/services/accessibility.service';
 import { VoiceInputService } from '../../../core/services/voice-input.service';
 
 @Component({
   selector: 'app-voice-input-btn',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, NgClass],
   template: `
     @if (voice.supported) {
       @if (isListening()) {
         <button
           type="button"
-          class="flex items-center justify-center rounded-xl border-2 border-success bg-success-light cursor-pointer flex-shrink-0"
+          class="flex items-center justify-center rounded-xl border-2 cursor-pointer flex-shrink-0"
+          [ngClass]="
+            accessibility.theme() === 'high-contrast'
+              ? 'border-primary-light bg-black'
+              : 'border-success bg-success-light'
+          "
           style="width: 44px; height: 44px"
           (click)="stop()"
           aria-label="Parar gravação"
           title="Gravando... clique para parar"
         >
           <div
-            class="relative bg-white/60 rounded-full overflow-hidden flex-shrink-0"
+            class="relative rounded-full overflow-hidden flex-shrink-0"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast'
+                ? 'border border-primary-light'
+                : 'bg-white/60'
+            "
             style="width: 10px; height: 30px"
           >
             <div
-              class="absolute bottom-0 left-0 right-0 rounded-full bg-success"
+              class="absolute bottom-0 left-0 right-0 rounded-full"
+              [ngClass]="
+                accessibility.theme() === 'high-contrast' ? 'bg-primary-light' : 'bg-success'
+              "
               style="transition: height 80ms ease-out"
               [style.height.%]="volumePct()"
             ></div>
@@ -32,7 +47,12 @@ import { VoiceInputService } from '../../../core/services/voice-input.service';
       } @else {
         <button
           type="button"
-          class="bg-card border border-border rounded-xl flex items-center justify-center cursor-pointer hover:bg-primary-surface transition-colors flex-shrink-0"
+          class="rounded-xl border flex items-center justify-center cursor-pointer transition-colors flex-shrink-0"
+          [ngClass]="
+            accessibility.theme() === 'high-contrast'
+              ? 'bg-black border-primary-light text-primary-light'
+              : 'bg-card border-border hover:bg-primary-surface'
+          "
           style="width: 44px; height: 44px; font-size: 20px"
           (click)="start()"
           aria-label="Usar voz para preencher"
@@ -49,6 +69,7 @@ export class VoiceInputBtnComponent {
   @Output() errorMsg = new EventEmitter<string>();
 
   protected voice = inject(VoiceInputService);
+  protected accessibility = inject(AccessibilityService);
   protected readonly micIcon = faMicrophone;
 
   protected isListening = signal(false);

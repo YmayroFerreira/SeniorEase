@@ -1,0 +1,249 @@
+<div class="pb-[88px] md:pb-8">
+  <!-- Header mobile -->
+  <div class="md:hidden bg-primary px-6 pt-10 pb-6">
+    <p class="text-primary-light text-sm mb-0.5">
+      {{ today | date: "EEEE, d 'de' MMMM" : '' : 'pt-BR' }}
+    </p>
+    <h1
+      class="text-white text-2xl font-bold"
+      appVoiceRead="Olá, Sr. Arnaldo! O que temos para fazer hoje?"
+    >
+      Olá! Sr. Arnaldo,
+    </h1>
+    <p class="text-primary-light text-sm mt-1">O que temos para fazer hoje?</p>
+  </div>
+
+  <!-- Header desktop -->
+  <div class="hidden md:block border-b border-border bg-card px-8 py-5">
+    <h1 class="text-xl font-bold text-foreground">Início</h1>
+    <p class="text-sm text-muted mt-0.5" appVoiceRead="Olá, Sr. Arnaldo">Olá, Sr. Arnaldo</p>
+  </div>
+
+  <!-- Conteúdo -->
+  <div class="px-6 md:px-8 pt-5 md:max-w-2xl">
+    <!-- Aula de hoje -->
+    <div
+      class="bg-primary rounded-2xl p-5 text-white mb-5 shadow-md"
+      appVoiceRead="Aula de hoje: Desenvolvimento Front End. Professor Carlos Mendes. 19 horas às 21 horas, sala virtual 03. A aula começa em 15 minutos."
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold uppercase tracking-wide text-primary-light mb-1">
+            Aula de hoje
+          </p>
+          <h2 class="text-xl font-bold leading-snug">Desenvolvimento Front End</h2>
+          <p class="text-sm text-primary-light mt-1">19:00 – 21:00 · Sala virtual 03</p>
+          <p class="text-sm text-primary-light">Prof. Dr. Carlos Mendes</p>
+        </div>
+      </div>
+      <div class="mt-4 flex items-center justify-between gap-2">
+        <span class="text-xs text-white/70 italic">A aula começa em 15 min</span>
+        <ui-button
+          variant="secondary"
+          size="sm"
+          ariaLabel="Entrar na sala de aula"
+          (buttonClick)="router.navigate(['/sala-de-espera'])"
+        >
+          Entrar na sala
+          <ui-icon [icon]="icons.chevronRight" [decorative]="true"></ui-icon>
+        </ui-button>
+      </div>
+    </div>
+
+    <!-- Barra de progresso -->
+    <section class="mb-5">
+      <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
+        Meu Progresso no Curso
+      </h2>
+      <div class="bg-card rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center justify-between gap-4 mb-4">
+          <span class="text-2xl font-bold text-primary">
+            Aula 04 <span class="text-foreground/50 text-base font-normal">de 10</span>
+          </span>
+          <ui-badge
+            variant="success"
+            label="QUASE NA METADE!"
+            class="text-xs font-bold px-3 py-1 rounded-full border w-max"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast'
+                ? 'bg-black text-primary-light border-primary-light'
+                : 'bg-success/10 text-success border-success/20'
+            "
+          >
+            QUASE NA METADE!
+          </ui-badge>
+        </div>
+        <div
+          class="relative h-6 bg-surface rounded-full overflow-hidden border"
+          role="progressbar"
+          aria-valuenow="40"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-label="Progresso do curso: 40 por cento concluído"
+          [ngClass]="
+            accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'
+          "
+        >
+          <div
+            class="absolute top-0 left-0 h-full transition-all duration-1000"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast' ? 'bg-primary-light' : 'bg-primary'
+            "
+            style="width: 40%"
+          ></div>
+        </div>
+        <div class="flex justify-between mt-3 text-sm font-semibold text-muted">
+          <span class="flex items-center gap-2">
+            <fa-icon [icon]="icons.check" class="text-primary"></fa-icon>
+            3 Aulas Feitas
+          </span>
+          <span>6 Aulas Restantes</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meu Caderno -->
+    <button
+      type="button"
+      class="w-full bg-card border border-border rounded-2xl p-4 flex items-center justify-between hover:bg-primary/5 transition-all text-left group mb-5"
+      (click)="router.navigate(['/meu-caderno'])"
+      appVoiceRead="Meu Caderno. Suas lições salvas aqui."
+    >
+      <div class="flex items-center gap-4">
+        <div
+          class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
+          [ngClass]="
+            accessibility.theme() === 'high-contrast'
+              ? 'bg-primary-light text-black'
+              : 'bg-primary text-white'
+          "
+        >
+          <fa-icon [icon]="icons.study" class="text-2xl"></fa-icon>
+        </div>
+        <div>
+          <h2 class="text-base font-bold text-foreground">Meu Caderno</h2>
+          <p class="text-sm text-muted mt-0.5">Suas lições salvas aqui.</p>
+        </div>
+      </div>
+      <fa-icon
+        [icon]="icons.chevronRight"
+        class="text-primary group-hover:translate-x-1 transition-transform"
+      ></fa-icon>
+    </button>
+
+    <!-- Mais para hoje -->
+    <section class="mb-5">
+      <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">Mais para hoje</h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        <!-- Fórum -->
+        <button
+          type="button"
+          (click)="router.navigate(['/forum'])"
+          class="w-full flex items-center gap-4 px-4 py-4 hover:bg-primary/5 transition-all text-left"
+          appVoiceRead="Fórum: Hackathon. 3 novas mensagens."
+        >
+          <div
+            class="w-8 h-8 rounded-full bg-primary-surface flex items-center justify-center text-primary flex-shrink-0"
+          >
+            <fa-icon [icon]="icons.clipboard"></fa-icon>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-foreground">Fórum: Hackathon</p>
+            <p class="text-xs text-muted mt-0.5">3 novas mensagens</p>
+          </div>
+          <fa-icon [icon]="icons.chevronRight" class="text-primary flex-shrink-0"></fa-icon>
+        </button>
+
+        <div class="h-px bg-border mx-4"></div>
+
+        <!-- Registro de Mentoria -->
+        <div
+          class="flex items-center gap-4 px-4 py-4"
+          appVoiceRead="Registro de Mentoria Pendente. Você não registrou a mentoria de ontem."
+        >
+          <div
+            class="w-8 h-8 rounded-full bg-warning-light flex items-center justify-center text-warning flex-shrink-0"
+          >
+            <fa-icon [icon]="icons.clock"></fa-icon>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-foreground">Registro de Mentoria Pendente</p>
+            <p class="text-xs text-muted mt-0.5">Você não registrou a mentoria de ontem</p>
+          </div>
+          <span
+            class="text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast'
+                ? 'text-primary-light bg-black border border-primary-light'
+                : 'text-warning bg-warning-light'
+            "
+          >
+            Pendente
+          </span>
+        </div>
+
+        <!-- Trabalho Final -->
+        <div
+          class="flex items-center gap-4 px-4 py-4"
+          appVoiceRead="Trabalho Final. Entregue com sucesso."
+        >
+          <div
+            class="w-8 h-8 rounded-full bg-success-light flex items-center justify-center text-success flex-shrink-0"
+          >
+            <fa-icon [icon]="icons.clock"></fa-icon>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-foreground">Trabalho Final</p>
+            <p class="text-xs text-muted mt-0.5">Entregue com sucesso</p>
+          </div>
+          <span
+            class="text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast'
+                ? 'text-primary-light bg-black border border-primary-light'
+                : 'text-success bg-success-light'
+            "
+          >
+            Concluído
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats: progresso -->
+    <div class="grid grid-cols-2 gap-3 mb-5">
+      <div
+        class="bg-card rounded-2xl p-4 shadow-sm"
+        appVoiceRead="Aula 04 de 10. Módulo: Primeiros Passos no HTML."
+      >
+        <p class="text-2xl font-bold text-primary">04</p>
+        <p class="text-xs font-semibold text-muted mt-0.5">de 10 aulas</p>
+        <p class="text-sm text-foreground mt-1 leading-snug">Primeiros Passos no HTML</p>
+      </div>
+      <div
+        class="bg-card rounded-2xl p-4 shadow-sm"
+        appVoiceRead="Progresso geral do curso: 40 por cento concluído."
+      >
+        <p class="text-2xl font-bold text-accent">40%</p>
+        <p class="text-xs font-semibold text-muted mt-0.5">do curso</p>
+        <p class="text-sm text-foreground mt-1 leading-snug">Progresso geral</p>
+      </div>
+    </div>
+
+    <!-- Instituição -->
+    <div
+      class="bg-primary-surface border border-primary/20 rounded-2xl p-4 mb-5"
+      appVoiceRead="Instituição: FIAP, Faculdade de Informática e Administração Paulista. Em parceria com Alura."
+    >
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-2">Instituição</p>
+      <p class="font-bold text-foreground text-base">FIAP</p>
+      <p class="text-sm text-muted leading-relaxed">
+        Faculdade de Informática e Administração Paulista
+      </p>
+      <div class="mt-3 pt-3 border-t border-primary/10 flex items-center gap-2">
+        <span class="text-xs text-muted">Em parceria com</span>
+        <span class="text-xs font-semibold text-primary">Alura</span>
+      </div>
+    </div>
+  </div>
+</div>
