@@ -19,17 +19,19 @@ import {
   faTriangleExclamation,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective],
+  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective, TranslatePipe],
   templateUrl: './profile.component.html',
 })
 export class ProfileComponent {
   private readonly router = inject(Router);
   private readonly accessibilityService = inject(AccessibilityService);
+  private readonly translate = inject(TranslateService);
 
   protected readonly icons = {
     arrowLeft: faArrowLeft,
@@ -52,7 +54,6 @@ export class ProfileComponent {
 
   protected readonly APP_VERSION = '1.0.0';
 
-  // Dados carregados do localStorage
   protected readonly profileImage = signal<string | null>(localStorage.getItem('profile-image'));
   protected readonly userName = signal(localStorage.getItem('profile-name') ?? 'Sr. Arnaldo');
   protected readonly email = signal(localStorage.getItem('profile-email') ?? 'arnaldo@email.com');
@@ -62,13 +63,11 @@ export class ProfileComponent {
   protected readonly simplifiedNav = this.accessibilityService.simplifiedNav;
   protected readonly extraConfirmations = this.accessibilityService.extraConfirmations;
 
-  // UI state
   protected readonly saveAttempted = signal(false);
   protected readonly toastVisible = signal(false);
   protected readonly toastMessage = signal('');
   protected readonly toastSuccess = signal(true);
 
-  // Validações
   protected readonly nameValid = computed(() => this.userName().trim().length > 0);
   protected readonly emailValid = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email()));
   protected readonly phoneValid = computed(() => this.phone().trim().length > 0);
@@ -87,7 +86,7 @@ export class ProfileComponent {
   protected saveProfile(): void {
     this.saveAttempted.set(true);
     if (!this.nameValid() || !this.emailValid() || !this.phoneValid()) {
-      this.showToast('Corrija os campos inválidos antes de salvar.', false);
+      this.showToast(this.translate.instant('PROFILE.TOAST_INVALID'), false);
       return;
     }
     localStorage.setItem('profile-name', this.userName());
@@ -98,11 +97,11 @@ export class ProfileComponent {
     if (this.profileImage()) {
       localStorage.setItem('profile-image', this.profileImage()!);
     }
-    this.showToast('Perfil salvo com sucesso!', true);
+    this.showToast(this.translate.instant('PROFILE.TOAST_SUCCESS'), true);
   }
 
   protected changePassword(): void {
-    this.showToast('Funcionalidade disponível em breve.', true);
+    this.showToast(this.translate.instant('COMMON.SOON'), true);
   }
 
   protected logout(): void {

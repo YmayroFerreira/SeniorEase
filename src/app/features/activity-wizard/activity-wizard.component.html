@@ -12,19 +12,19 @@
         (click)="activeActivity() ? closeActivity() : router.navigate(['/inicio'])"
         class="text-white cursor-pointer text-2xl leading-none bg-transparent border-none p-1 flex-shrink-0"
         [appVoiceRead]="
-          activeActivity() ? 'Voltar para a lista de atividades' : 'Voltar para o início'
+          activeActivity() ? ('ACTIVITY.BACK_LIST' | translate) : ('ACTIVITY.BACK_HOME' | translate)
         "
       >
         <fa-icon [icon]="icons.arrowLeft"></fa-icon>
       </button>
       <div class="min-w-0">
         <p class="text-white/60 text-xs leading-none mb-0.5 truncate">
-          Início
+          {{ 'NAV.HOME' | translate }}
           <fa-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></fa-icon>
           <span
             class="cursor-pointer hover:text-white/90 transition-colors"
             (click)="activeActivity() ? closeActivity() : null"
-            >Minhas Atividades</span
+            >{{ 'ACTIVITY.TITLE' | translate }}</span
           >
           @if (activeActivity()) {
             <fa-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></fa-icon>
@@ -32,7 +32,7 @@
           }
         </p>
         <h1 class="font-semibold text-white text-base leading-snug truncate">
-          {{ activeActivity() ? activeActivity()!.title : 'Minhas Atividades' }}
+          {{ activeActivity() ? activeActivity()!.title : ('ACTIVITY.TITLE' | translate) }}
         </h1>
       </div>
     </div>
@@ -45,7 +45,7 @@
           (click)="router.navigate(['/inicio'])"
           class="hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
         >
-          Início
+          {{ 'NAV.HOME' | translate }}
         </button>
         <fa-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></fa-icon>
         <button
@@ -57,7 +57,7 @@
           [class.font-semibold]="!activeActivity()"
           [class.pointer-events-none]="!activeActivity()"
         >
-          Minhas Atividades
+          {{ 'ACTIVITY.TITLE' | translate }}
         </button>
         @if (activeActivity()) {
           <fa-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></fa-icon>
@@ -66,12 +66,10 @@
       </nav>
 
       <h1 class="font-bold text-foreground text-xl">
-        {{ activeActivity() ? activeActivity()!.title : 'Minhas Atividades' }}
+        {{ activeActivity() ? activeActivity()!.title : ('ACTIVITY.TITLE' | translate) }}
       </h1>
       <p class="text-muted text-sm mt-0.5">
-        {{
-          activeActivity() ? activeActivity()!.description : 'Siga as etapas com calma. Sem pressa.'
-        }}
+        {{ activeActivity() ? activeActivity()!.description : ('ACTIVITY.SUBTITLE' | translate) }}
       </p>
     </div>
   </div>
@@ -106,18 +104,19 @@
             [class.text-white]="allDone()"
           >
             @if (allDone()) {
-              Parabéns! Tudo feito hoje!
+              {{ 'ACTIVITY.ALL_DONE_TITLE' | translate }}
             } @else {
-              {{ totalCompleted() }} de {{ activities.length }} atividades concluídas
+              {{ totalCompleted() }} {{ 'ACTIVITY.OF' | translate }} {{ activities.length }}
+              {{ 'ACTIVITY.ACTIVITIES_COMPLETED' | translate }}
             }
           </p>
           <p class="text-sm" [class.text-success]="!allDone()" [class.text-white]="allDone()">
             @if (allDone()) {
-              Você completou todas as atividades do dia!
+              {{ 'ACTIVITY.ALL_DONE_DESC' | translate }}
             } @else if (totalCompleted() === 0) {
-              Comece pela primeira e vá no seu ritmo.
+              {{ 'ACTIVITY.START_HINT' | translate }}
             } @else {
-              Continue! Você está indo muito bem.
+              {{ 'ACTIVITY.KEEP_GOING' | translate }}
             }
           </p>
         </div>
@@ -126,7 +125,7 @@
       <!-- Lista de atividades -->
       <section>
         <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-          Atividades de hoje
+          {{ 'ACTIVITY.ACTIVITIES_TODAY' | translate }}
         </h2>
         <div class="space-y-3">
           @for (activity of activities; track activity.id; let i = $index) {
@@ -143,7 +142,9 @@
                 ' etapas. ' +
                 activity.estimatedMinutes +
                 ' minutos. ' +
-                (isCompleted(activity.id) ? 'Concluída.' : 'Toque para começar.')
+                (isCompleted(activity.id)
+                  ? ('ACTIVITY.COMPLETED' | translate) + '.'
+                  : ('ACTIVITY.TAP_TO_START' | translate))
               "
               class="w-full bg-card rounded-2xl shadow-sm text-left transition-all px-5 py-4 border-2"
               [class.border-success]="isCompleted(activity.id)"
@@ -198,7 +199,9 @@
                       [class.text-primary]="!isCompleted(activity.id)"
                     >
                       {{
-                        isCompleted(activity.id) ? 'Concluída' : activity.steps.length + ' etapas'
+                        isCompleted(activity.id)
+                          ? ('ACTIVITY.COMPLETED' | translate)
+                          : activity.steps.length + ' ' + ('ACTIVITY.STEPS' | translate)
                       }}
                     </span>
                     <span class="text-muted text-xs"> ~{{ activity.estimatedMinutes }} min </span>
@@ -217,9 +220,9 @@
             type="button"
             (click)="resetProgress()"
             class="text-muted hover:text-foreground transition-colors cursor-pointer text-xs bg-transparent border-none p-2"
-            appVoiceRead="Redefinir progresso das atividades"
+            [appVoiceRead]="'ACTIVITY.RESET_ARIA' | translate"
           >
-            Redefinir progresso
+            {{ 'ACTIVITY.RESET' | translate }}
           </button>
         </div>
       }
@@ -243,10 +246,17 @@
         <p
           class="font-semibold text-primary uppercase tracking-wide text-xs mb-2"
           [appVoiceRead]="
-            'Etapa ' + (activeStepIndex() + 1) + ' de ' + activeActivity()!.steps.length
+            ('ACTIVITY.STEP' | translate) +
+            ' ' +
+            (activeStepIndex() + 1) +
+            ' ' +
+            ('ACTIVITY.OF' | translate) +
+            ' ' +
+            activeActivity()!.steps.length
           "
         >
-          Etapa {{ activeStepIndex() + 1 }} de {{ activeActivity()!.steps.length }}
+          {{ 'ACTIVITY.STEP' | translate }} {{ activeStepIndex() + 1 }}
+          {{ 'ACTIVITY.OF' | translate }} {{ activeActivity()!.steps.length }}
         </p>
 
         @if (!currentStep!.expandedContent) {
@@ -373,7 +383,9 @@
                   <p class="text-muted text-sm mt-0.5">{{ connectionDescription() }}</p>
                 </div>
                 @if (connectionStatus() === 'idle') {
-                  <span class="text-primary text-sm font-bold flex-shrink-0">Testar →</span>
+                  <span class="text-primary text-sm font-bold flex-shrink-0">{{
+                    'ACTIVITY.CONNECTION.TEST_ARROW' | translate
+                  }}</span>
                 }
               </button>
 
@@ -381,12 +393,12 @@
                 <div class="px-5 pb-4 pt-0">
                   <div class="bg-warning-light rounded-xl px-4 py-3">
                     <p class="text-sm text-warning font-semibold mb-1">
-                      O que fazer se o vídeo travar?
+                      {{ 'ACTIVITY.CONNECTION.TROUBLESHOOT_TITLE' | translate }}
                     </p>
                     <ul class="text-sm text-muted space-y-1 list-disc list-inside">
-                      <li>Feche outros aplicativos abertos</li>
-                      <li>Aproxime-se do roteador Wi-Fi</li>
-                      <li>Recarregue a página da aula</li>
+                      <li>{{ 'ACTIVITY.CONNECTION.CLOSE_APPS' | translate }}</li>
+                      <li>{{ 'ACTIVITY.CONNECTION.MOVE_WIFI' | translate }}</li>
+                      <li>{{ 'ACTIVITY.CONNECTION.RELOAD_PAGE' | translate }}</li>
                     </ul>
                   </div>
                 </div>
@@ -399,15 +411,19 @@
                 type="button"
                 (click)="helpExpanded.set(!helpExpanded())"
                 class="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-surface transition-colors cursor-pointer"
-                [appVoiceRead]="helpExpanded() ? 'Fechar ajuda' : 'Abrir ajuda'"
+                [appVoiceRead]="
+                  helpExpanded()
+                    ? ('ACTIVITY.HELP.CLOSE' | translate)
+                    : ('ACTIVITY.HELP.OPEN' | translate)
+                "
               >
                 <fa-icon
                   [icon]="icons.headset"
                   class="text-primary text-lg flex-shrink-0"
                 ></fa-icon>
-                <span class="flex-1 font-semibold text-foreground text-base"
-                  >Precisa de ajuda?</span
-                >
+                <span class="flex-1 font-semibold text-foreground text-base">{{
+                  'ACTIVITY.HELP.TITLE' | translate
+                }}</span>
                 <fa-icon
                   [icon]="helpExpanded() ? icons.chevronUp : icons.chevronDown"
                   class="text-muted text-sm"
@@ -416,18 +432,23 @@
               @if (helpExpanded()) {
                 <div class="px-5 pb-5 flex flex-col gap-3">
                   <div class="bg-primary-surface rounded-xl px-4 py-3">
-                    <p class="text-sm font-semibold text-primary mb-1">Suporte técnico</p>
-                    <p class="text-sm text-muted">
-                      Ligue: <strong class="text-foreground">0800-123-4567</strong>
+                    <p class="text-sm font-semibold text-primary mb-1">
+                      {{ 'ACTIVITY.HELP.SUPPORT_TITLE' | translate }}
                     </p>
-                    <p class="text-sm text-muted">Disponível 24 horas</p>
+                    <p class="text-sm text-muted">
+                      {{ 'ACTIVITY.HELP.PHONE_LABEL' | translate }}
+                      <strong class="text-foreground">0800-123-4567</strong>
+                    </p>
+                    <p class="text-sm text-muted">{{ 'ACTIVITY.HELP.AVAILABLE' | translate }}</p>
                   </div>
                   <div class="bg-surface rounded-xl px-4 py-3">
-                    <p class="text-sm font-semibold text-foreground mb-1">Problemas comuns</p>
+                    <p class="text-sm font-semibold text-foreground mb-1">
+                      {{ 'ACTIVITY.HELP.COMMON_TITLE' | translate }}
+                    </p>
                     <ul class="text-sm text-muted space-y-1 list-disc list-inside">
-                      <li>Sem som: verifique o volume e os fones</li>
-                      <li>Sem câmera: recarregue a página</li>
-                      <li>Sem acesso: verifique o link da aula</li>
+                      <li>{{ 'ACTIVITY.HELP.NO_SOUND' | translate }}</li>
+                      <li>{{ 'ACTIVITY.HELP.NO_CAMERA' | translate }}</li>
+                      <li>{{ 'ACTIVITY.HELP.NO_ACCESS' | translate }}</li>
                     </ul>
                   </div>
                 </div>
@@ -442,10 +463,10 @@
               appVoiceRead="Entrar na aula. Sua câmera e microfone serão ativados."
             >
               <fa-icon [icon]="icons.video" class="text-base"></fa-icon>
-              Entrar na aula
+              {{ 'ACTIVITY.ENTER_CLASS' | translate }}
             </button>
             <p class="text-xs text-muted text-center">
-              Sua câmera e microfone serão ativados ao entrar
+              {{ 'ACTIVITY.CAMERA_WARNING' | translate }}
             </p>
           } @else if (currentStep!.expandedContent === 'post-class') {
             <!-- Card de status -->
@@ -468,9 +489,7 @@
               </div>
               <div class="bg-surface rounded-xl px-4 py-3">
                 <p class="text-sm text-muted leading-relaxed">
-                  Você saiu da aula. Se foi sem querer, toque em
-                  <strong class="text-foreground">Voltar para a aula</strong>. Quando terminar,
-                  toque em <strong class="text-foreground">Concluir atividade</strong>.
+                  {{ 'ACTIVITY.LEFT_CLASS_INSTRUCTION' | translate }}
                 </p>
               </div>
             </div>
@@ -483,7 +502,7 @@
               appVoiceRead="Voltar para a aula. Reabre a sala de aula."
             >
               <fa-icon [icon]="icons.rotateLeft" class="text-base"></fa-icon>
-              Voltar para a aula
+              {{ 'ACTIVITY.RETURN_TO_CLASS' | translate }}
             </button>
 
             <!-- Botão: Concluir -->
@@ -494,7 +513,7 @@
               appVoiceRead="Concluir atividade. Marca a aula como concluída."
             >
               <fa-icon [icon]="icons.checkCircle" class="text-base"></fa-icon>
-              Concluir atividade
+              {{ 'ACTIVITY.COMPLETE_ACTIVITY' | translate }}
             </button>
           } @else if (currentStep!.actionRoute) {
             <button
@@ -513,12 +532,16 @@
               class="w-full bg-success text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-2.5"
               [appVoiceRead]="
                 isLastStep
-                  ? 'Já fiz isso. Concluir atividade.'
-                  : 'Já fiz isso. Ir para a próxima etapa.'
+                  ? ('ACTIVITY.ALREADY_DONE_COMPLETE' | translate) + '.'
+                  : ('ACTIVITY.ALREADY_DONE_NEXT' | translate) + '.'
               "
             >
               <fa-icon [icon]="icons.checkCircle" class="text-base"></fa-icon>
-              {{ isLastStep ? 'Já fiz isso — Concluir' : 'Já fiz isso → Próxima etapa' }}
+              {{
+                isLastStep
+                  ? ('ACTIVITY.ALREADY_DONE_COMPLETE' | translate)
+                  : ('ACTIVITY.ALREADY_DONE_NEXT' | translate)
+              }}
             </button>
           } @else {
             <button
@@ -537,9 +560,9 @@
               type="button"
               (click)="goToPreviousStep()"
               class="w-full bg-card border border-border text-muted font-semibold rounded-2xl hover:bg-surface transition-colors cursor-pointer text-base p-3.5"
-              appVoiceRead="Voltar para a etapa anterior"
+              [appVoiceRead]="'ACTIVITY.BACK_STEP' | translate"
             >
-              Voltar à etapa anterior
+              {{ 'ACTIVITY.BACK_STEP' | translate }}
             </button>
           }
         </div>
@@ -550,7 +573,11 @@
 
 <!-- Toast -->
 <div role="status" aria-live="polite" aria-atomic="true" class="sr-only">
-  {{ showCelebration() ? 'Atividade concluída! Muito bem!' : '' }}
+  {{
+    showCelebration()
+      ? ('ACTIVITY.DONE_DESC' | translate) + ' ' + ('ACTIVITY.DONE_TITLE' | translate)
+      : ''
+  }}
 </div>
 
 @if (showCelebration()) {
@@ -560,8 +587,8 @@
   >
     <fa-icon [icon]="icons.star" class="text-2xl"></fa-icon>
     <div>
-      <p class="font-bold text-base">Muito bem!</p>
-      <p class="text-sm opacity-90">Atividade concluída com sucesso!</p>
+      <p class="font-bold text-base">{{ 'ACTIVITY.DONE_TITLE' | translate }}</p>
+      <p class="text-sm opacity-90">{{ 'ACTIVITY.DONE_DESC' | translate }}</p>
     </div>
   </div>
 }

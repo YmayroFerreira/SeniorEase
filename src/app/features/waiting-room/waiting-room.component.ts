@@ -18,6 +18,7 @@ import {
   faVideo,
   faWifi,
 } from '@fortawesome/free-solid-svg-icons';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
@@ -26,7 +27,13 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
 @Component({
   selector: 'app-waiting-room',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, BreadcrumbComponent],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    VoiceReadDirective,
+    BreadcrumbComponent,
+    TranslatePipe,
+  ],
   templateUrl: './waiting-room.component.html',
 })
 export class WaitingRoomComponent {
@@ -34,6 +41,7 @@ export class WaitingRoomComponent {
   protected readonly router = inject(Router);
   protected readonly voiceInput = inject(VoiceInputService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   protected readonly today = new Date();
 
@@ -54,26 +62,30 @@ export class WaitingRoomComponent {
   };
 
   connectionStatus: 'idle' | 'loading' | 'success' | 'error' = 'idle';
-  statusMessage = 'Testar minha conexão';
+  statusMessage = '';
+
+  constructor() {
+    this.statusMessage = this.translate.instant('WAITING_ROOM.STATUS_IDLE');
+  }
 
   testConnection() {
     this.connectionStatus = 'loading';
-    this.statusMessage = 'Verificando...';
+    this.statusMessage = this.translate.instant('WAITING_ROOM.STATUS_LOADING');
 
     setTimeout(() => {
       const isOnline = navigator.onLine;
       if (isOnline) {
         this.connectionStatus = 'success';
-        this.statusMessage = 'Conexão excelente!';
+        this.statusMessage = this.translate.instant('WAITING_ROOM.STATUS_SUCCESS');
       } else {
         this.connectionStatus = 'error';
-        this.statusMessage = 'Sem internet no momento';
+        this.statusMessage = this.translate.instant('WAITING_ROOM.STATUS_ERROR');
       }
       this.cdr.detectChanges();
 
       setTimeout(() => {
         this.connectionStatus = 'idle';
-        this.statusMessage = 'Testar minha conexão';
+        this.statusMessage = this.translate.instant('WAITING_ROOM.STATUS_IDLE');
         this.cdr.detectChanges();
       }, 5000);
     }, 2500);

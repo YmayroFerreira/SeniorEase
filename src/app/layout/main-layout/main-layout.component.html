@@ -4,8 +4,8 @@
     brand="SeniorEase"
     userName="Sr. Arnaldo"
     userInitials="SA"
-    navAriaLabel="Navegacao principal"
-    mobileNavAriaLabel="Navegacao inferior"
+    [navAriaLabel]="'NAV.MAIN_ARIA' | translate"
+    [mobileNavAriaLabel]="'NAV.MOBILE_ARIA' | translate"
     [items]="navItems()"
   ></ui-sidebar>
 

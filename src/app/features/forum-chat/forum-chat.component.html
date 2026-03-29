@@ -2,7 +2,9 @@
   <header class="bg-primary px-6 py-3 flex items-center gap-4 shadow-md">
     <button
       (click)="goBack()"
-      [appVoiceRead]="fromWizard ? 'Voltar para Minhas Atividades' : 'Voltar para o início'"
+      [appVoiceRead]="
+        fromWizard ? ('FORUM.BACK_ACTIVITIES' | translate) : ('FORUM.BACK_HOME' | translate)
+      "
       class="text-white text-xl p-2 flex-shrink-0 cursor-pointer bg-transparent border-none"
     >
       <fa-icon [icon]="icons.back"></fa-icon>
@@ -15,15 +17,18 @@
           [items]="
             fromWizard
               ? [
-                  { label: 'Início', route: '/inicio' },
-                  { label: 'Minhas Atividades', route: '/minhas-atividades' },
-                  { label: 'Fórum' },
+                  { label: ('NAV.HOME' | translate), route: '/inicio' },
+                  { label: ('ACTIVITY.TITLE' | translate), route: '/minhas-atividades' },
+                  { label: ('FORUM.TITLE' | translate) },
                 ]
-              : [{ label: 'Início', route: '/inicio' }, { label: 'Fórum' }]
+              : [
+                  { label: ('NAV.HOME' | translate), route: '/inicio' },
+                  { label: ('FORUM.TITLE' | translate) },
+                ]
           "
         ></app-breadcrumb>
       } @else {
-        <p class="text-primary-light text-xs">Grupo de dúvidas da turma</p>
+        <p class="text-primary-light text-xs">{{ 'FORUM.GROUP_DESC' | translate }}</p>
       }
       <h1 class="text-white font-bold text-base leading-snug truncate">Fórum: Hackathon</h1>
     </div>
@@ -38,7 +43,7 @@
         class="text-xs font-bold mb-1 px-2"
         [ngClass]="msg.isProfessor ? 'text-primary' : 'text-muted'"
       >
-        {{ msg.sender }} {{ msg.isProfessor ? '• Professor' : '' }}
+        {{ msg.sender }} {{ msg.isProfessor ? '• ' + ('FORUM.TEACHER_ROLE' | translate) : '' }}
       </span>
 
       <div
@@ -49,7 +54,7 @@
           'border-2 border-primary-light bg-black text-primary-light':
             accessibility.theme() === 'high-contrast',
         }"
-        [appVoiceRead]="msg.sender + ' disse: ' + msg.text"
+        [appVoiceRead]="msg.sender + ' ' + ('FORUM.SAID' | translate) + ': ' + msg.text"
       >
         {{ msg.text }}
         <p class="text-[10px] mt-2 opacity-70 text-right">{{ msg.time }}</p>
@@ -63,7 +68,7 @@
         type="text"
         [(ngModel)]="newMessage"
         class="flex-1 bg-surface border-2 border-border rounded-full px-5 py-3 text-lg focus:outline-none focus:border-primary"
-        placeholder="Escreva sua dúvida aqui..."
+        [placeholder]="'FORUM.INPUT_PLACEHOLDER' | translate"
       />
 
       <app-voice-input-btn (result)="newMessage = $event" class="flex-shrink-0" />

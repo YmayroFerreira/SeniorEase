@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -14,6 +15,8 @@ import {
   faVolumeUp,
   faWheelchair,
 } from '@fortawesome/free-solid-svg-icons';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { map } from 'rxjs';
 import {
   AccessibilityService,
   type AnimationSpeed,
@@ -34,12 +37,13 @@ interface AccessibilityPrefs {
 
 @Component({
   selector: 'app-accessibility',
-  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective],
+  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective, TranslatePipe],
   templateUrl: './accessibility.component.html',
 })
 export class AccessibilityComponent {
   private readonly svc = inject(AccessibilityService);
   protected readonly voiceReadingService = inject(VoiceReadingService);
+  protected readonly translate = inject(TranslateService);
   protected readonly router = inject(Router);
 
   protected readonly icons = {
@@ -56,6 +60,10 @@ export class AccessibilityComponent {
     pause: faPause,
   };
 
+  protected readonly activeLang = toSignal(this.translate.onLangChange.pipe(map((e) => e.lang)), {
+    initialValue: this.translate.getCurrentLang(),
+  });
+
   protected readonly selectedFontSize = this.svc.fontSize;
   protected readonly selectedTheme = this.svc.theme;
   protected readonly selectedAnimation = this.svc.animationSpeed;
@@ -71,11 +79,31 @@ export class AccessibilityComponent {
   });
 
   protected readonly fontSizeOptions: { value: FontSize; label: string; description: string }[] = [
-    { value: 'small', label: 'P', description: 'Compacto' },
-    { value: 'medium', label: 'M', description: 'Padrão' },
-    { value: 'large', label: 'G', description: 'Grande' },
-    { value: 'x-large', label: 'XG', description: 'Maior' },
-    { value: 'xx-large', label: 'XXG', description: 'Máximo' },
+    {
+      value: 'small',
+      label: 'ACCESSIBILITY.FONT_SIZE.SMALL_LABEL',
+      description: 'ACCESSIBILITY.FONT_SIZE.SMALL_DESC',
+    },
+    {
+      value: 'medium',
+      label: 'ACCESSIBILITY.FONT_SIZE.MEDIUM_LABEL',
+      description: 'ACCESSIBILITY.FONT_SIZE.MEDIUM_DESC',
+    },
+    {
+      value: 'large',
+      label: 'ACCESSIBILITY.FONT_SIZE.LARGE_LABEL',
+      description: 'ACCESSIBILITY.FONT_SIZE.LARGE_DESC',
+    },
+    {
+      value: 'x-large',
+      label: 'ACCESSIBILITY.FONT_SIZE.X_LARGE_LABEL',
+      description: 'ACCESSIBILITY.FONT_SIZE.X_LARGE_DESC',
+    },
+    {
+      value: 'xx-large',
+      label: 'ACCESSIBILITY.FONT_SIZE.XX_LARGE_LABEL',
+      description: 'ACCESSIBILITY.FONT_SIZE.XX_LARGE_DESC',
+    },
   ];
 
   protected readonly fontIconRem: Record<FontSize, number> = {
@@ -87,15 +115,32 @@ export class AccessibilityComponent {
   };
 
   protected readonly themeOptions: { value: Theme; label: string; description: string }[] = [
-    { value: 'default', label: 'Padrão', description: 'Azul e branco' },
-    { value: 'high-contrast', label: 'Alto Contraste', description: 'Preto e amarelo' },
-    { value: 'soft', label: 'Suave', description: 'Tons pastéis' },
+    {
+      value: 'default',
+      label: 'ACCESSIBILITY.THEME.DEFAULT_LABEL',
+      description: 'ACCESSIBILITY.THEME.DEFAULT_DESC',
+    },
+    {
+      value: 'high-contrast',
+      label: 'ACCESSIBILITY.THEME.HIGH_CONTRAST_LABEL',
+      description: 'ACCESSIBILITY.THEME.HIGH_CONTRAST_DESC',
+    },
+    {
+      value: 'soft',
+      label: 'ACCESSIBILITY.THEME.SOFT_LABEL',
+      description: 'ACCESSIBILITY.THEME.SOFT_DESC',
+    },
   ];
 
   protected readonly animationOptions: { value: AnimationSpeed; label: string }[] = [
-    { value: 'normal', label: 'Normal' },
-    { value: 'slow', label: 'Lenta' },
-    { value: 'none', label: 'Sem animações' },
+    { value: 'normal', label: 'ACCESSIBILITY.ANIMATION.NORMAL' },
+    { value: 'slow', label: 'ACCESSIBILITY.ANIMATION.SLOW' },
+    { value: 'none', label: 'ACCESSIBILITY.ANIMATION.NONE' },
+  ];
+
+  protected readonly languageOptions: { value: string; label: string }[] = [
+    { value: 'pt', label: 'ACCESSIBILITY.LANGUAGE.PT' },
+    { value: 'en', label: 'ACCESSIBILITY.LANGUAGE.EN' },
   ];
 
   protected readonly toggleItems: {
@@ -103,19 +148,35 @@ export class AccessibilityComponent {
     label: string;
     description: string;
   }[] = [
-    { key: 'voiceReading', label: 'Leitura em voz alta', description: 'Narrar textos ao tocar' },
-    { key: 'largerButtons', label: 'Botões maiores', description: 'Aumentar área de toque' },
-    { key: 'simplifiedNav', label: 'Navegação simplificada', description: 'Menos opções de menu' },
-    { key: 'silentMode', label: 'Modo silencioso', description: 'Desativar sons do sistema' },
+    {
+      key: 'voiceReading',
+      label: 'ACCESSIBILITY.FEATURES.VOICE_READING_LABEL',
+      description: 'ACCESSIBILITY.FEATURES.VOICE_READING_DESC',
+    },
+    {
+      key: 'largerButtons',
+      label: 'ACCESSIBILITY.FEATURES.LARGER_BUTTONS_LABEL',
+      description: 'ACCESSIBILITY.FEATURES.LARGER_BUTTONS_DESC',
+    },
+    {
+      key: 'simplifiedNav',
+      label: 'ACCESSIBILITY.FEATURES.SIMPLIFIED_NAV_LABEL',
+      description: 'ACCESSIBILITY.FEATURES.SIMPLIFIED_NAV_DESC',
+    },
+    {
+      key: 'silentMode',
+      label: 'ACCESSIBILITY.FEATURES.SILENT_MODE_LABEL',
+      description: 'ACCESSIBILITY.FEATURES.SILENT_MODE_DESC',
+    },
     {
       key: 'increasedSpacing',
-      label: 'Espaçamento aumentado',
-      description: 'Mais espaço entre elementos',
+      label: 'ACCESSIBILITY.FEATURES.INCREASED_SPACING_LABEL',
+      description: 'ACCESSIBILITY.FEATURES.INCREASED_SPACING_DESC',
     },
     {
       key: 'dyslexiaFont',
-      label: 'Fonte para dislexia',
-      description: 'Facilita a leitura para disléxicos',
+      label: 'ACCESSIBILITY.FEATURES.DYSLEXIA_FONT_LABEL',
+      description: 'ACCESSIBILITY.FEATURES.DYSLEXIA_FONT_DESC',
     },
   ];
 
@@ -125,7 +186,9 @@ export class AccessibilityComponent {
     if (key === 'voiceReading') {
       this.svc.voiceReading.set(val);
       if (val) {
-        this.voiceReadingService.speakDirect('Leitura em voz alta ativada!');
+        this.voiceReadingService.speakDirect(
+          this.translate.instant('ACCESSIBILITY.SPEECH.ACTIVATED_MESSAGE'),
+        );
       } else {
         this.voiceReadingService.stop();
       }
@@ -144,18 +207,22 @@ export class AccessibilityComponent {
       this.voiceReadingService.stop();
     } else {
       this.voiceReadingService.speakDirect(
-        'Olá! Esta é uma demonstração da leitura em voz alta do SeniorEase.',
+        this.translate.instant('ACCESSIBILITY.SPEECH.TEST_MESSAGE'),
       );
     }
   }
 
+  protected changeLang(lang: string): void {
+    this.translate.use(lang);
+  }
+
   protected get speedLabel(): string {
     const rate = this.speechRate();
-    if (rate <= 0.6) return 'Muito lenta';
-    if (rate <= 0.8) return 'Lenta';
-    if (rate <= 1.0) return 'Normal';
-    if (rate <= 1.2) return 'Rápida';
-    return 'Muito rápida';
+    if (rate <= 0.6) return 'ACCESSIBILITY.SPEECH.VERY_SLOW';
+    if (rate <= 0.8) return 'ACCESSIBILITY.SPEECH.SLOW';
+    if (rate <= 1.0) return 'ACCESSIBILITY.SPEECH.NORMAL';
+    if (rate <= 1.2) return 'ACCESSIBILITY.SPEECH.FAST';
+    return 'ACCESSIBILITY.SPEECH.VERY_FAST';
   }
 
   protected resetPreferences(): void {

@@ -10,12 +10,12 @@
     >
       Olá! Sr. Arnaldo,
     </h1>
-    <p class="text-primary-light text-sm mt-1">O que temos para fazer hoje?</p>
+    <p class="text-primary-light text-sm mt-1">{{ 'DASHBOARD.GREETING' | translate }}</p>
   </div>
 
   <!-- Header desktop -->
   <div class="hidden md:block border-b border-border bg-card px-8 py-5">
-    <h1 class="text-xl font-bold text-foreground">Início</h1>
+    <h1 class="text-xl font-bold text-foreground">{{ 'NAV.HOME' | translate }}</h1>
     <p class="text-sm text-muted mt-0.5" appVoiceRead="Olá, Sr. Arnaldo">Olá, Sr. Arnaldo</p>
   </div>
 
@@ -43,7 +43,7 @@
         <div class="flex items-start justify-between gap-3">
           <div class="flex-1 min-w-0">
             <p class="text-xs font-semibold uppercase tracking-wide text-primary-light mb-1">
-              Aula de hoje
+              {{ 'DASHBOARD.TODAY_LESSON' | translate }}
             </p>
             <h2 class="text-xl font-bold leading-snug">Desenvolvimento Front End</h2>
             <p class="text-sm text-primary-light mt-1">19:00 – 21:00 · Sala virtual 03</p>
@@ -51,14 +51,17 @@
           </div>
         </div>
         <div class="mt-4 flex items-center justify-between gap-2">
-          <span class="text-xs text-white/70 italic">A aula começa em 15 min</span>
+          <span class="text-xs text-white/70 italic"
+            >{{ 'DASHBOARD.LESSON_STARTS_IN' | translate }} 15
+            {{ 'DASHBOARD.MINUTES' | translate }}</span
+          >
           <ui-button
             variant="secondary"
             size="sm"
             ariaLabel="Ir para a sala de aula"
             (buttonClick)="router.navigate(['/sala-de-espera'])"
           >
-            Ir para a sala
+            {{ 'DASHBOARD.GO_TO_CLASS' | translate }}
             <ui-icon [icon]="icons.chevronRight" [decorative]="true"></ui-icon>
           </ui-button>
         </div>
@@ -68,11 +71,11 @@
           <div
             class="w-10 h-10 rounded-xl bg-primary-surface flex items-center justify-center flex-shrink-0"
           >
-            <fa-icon [icon]="icons.calendar" class="text-primary"></fa-icon>
+            <ui-icon [icon]="icons.calendar" class="text-primary"></ui-icon>
           </div>
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-muted mb-0.5">
-              Aula de hoje
+              {{ 'DASHBOARD.TODAY_LESSON' | translate }}
             </p>
             <p class="text-sm font-bold text-foreground leading-snug">Desenvolvimento Front End</p>
             <p class="text-xs text-muted">19:00 – 21:00 · Prof. Carlos Mendes</p>
@@ -87,7 +90,9 @@
         type="button"
         class="w-full bg-card border border-border rounded-2xl p-4 flex items-center justify-between hover:bg-primary/5 transition-all text-left group mb-5 cursor-pointer"
         (click)="router.navigate(['/meu-caderno'])"
-        appVoiceRead="Meu Caderno. Suas lições salvas aqui."
+        [appVoiceRead]="
+          ('DASHBOARD.MY_NOTEBOOK' | translate) + '. ' + ('DASHBOARD.NOTEBOOK_DESC' | translate)
+        "
       >
         <div class="flex items-center gap-4">
           <div
@@ -98,17 +103,19 @@
                 : 'bg-primary text-white'
             "
           >
-            <fa-icon [icon]="icons.study" class="text-2xl"></fa-icon>
+            <ui-icon [icon]="icons.study" class="text-2xl"></ui-icon>
           </div>
           <div>
-            <h2 class="text-base font-bold text-foreground">Meu Caderno</h2>
-            <p class="text-sm text-muted mt-0.5">Suas lições salvas aqui.</p>
+            <h2 class="text-base font-bold text-foreground">
+              {{ 'DASHBOARD.MY_NOTEBOOK' | translate }}
+            </h2>
+            <p class="text-sm text-muted mt-0.5">{{ 'DASHBOARD.NOTEBOOK_DESC' | translate }}</p>
           </div>
         </div>
-        <fa-icon
+        <ui-icon
           [icon]="icons.chevronRight"
           class="text-primary group-hover:translate-x-1 transition-transform"
-        ></fa-icon>
+        ></ui-icon>
       </button>
     }
 
@@ -118,7 +125,9 @@
       <button
         type="button"
         (click)="router.navigate(['/minhas-atividades'])"
-        appVoiceRead="Minhas Atividades. Siga as etapas do dia com orientação passo a passo."
+        [appVoiceRead]="
+          ('DASHBOARD.MY_ACTIVITIES' | translate) + '. ' + ('DASHBOARD.ACTIVITIES_DESC' | translate)
+        "
         class="w-full rounded-2xl p-4 flex items-center justify-between bg-card border border-border hover:bg-primary-surface transition-all text-left group mb-5 cursor-pointer"
       >
         <div class="flex items-center gap-4">
@@ -130,17 +139,19 @@
                 : 'bg-primary text-white'
             "
           >
-            <fa-icon [icon]="icons.check" class="text-2xl"></fa-icon>
+            <ui-icon [icon]="icons.check" class="text-2xl"></ui-icon>
           </div>
           <div>
-            <h2 class="text-base font-bold text-foreground">Minhas Atividades</h2>
-            <p class="text-sm mt-0.5 text-muted">Siga as etapas do dia passo a passo</p>
+            <h2 class="text-base font-bold text-foreground">
+              {{ 'DASHBOARD.MY_ACTIVITIES' | translate }}
+            </h2>
+            <p class="text-sm mt-0.5 text-muted">{{ 'DASHBOARD.ACTIVITIES_DESC' | translate }}</p>
           </div>
         </div>
-        <fa-icon
+        <ui-icon
           [icon]="icons.chevronRight"
           class="text-primary group-hover:translate-x-1 transition-transform"
-        ></fa-icon>
+        ></ui-icon>
       </button>
     } @else {
       <!-- Versão simplificada: card grande e destacado -->
@@ -148,11 +159,17 @@
         type="button"
         (click)="router.navigate(['/minhas-atividades'])"
         [appVoiceRead]="
-          'Minhas Atividades. ' +
+          ('DASHBOARD.MY_ACTIVITIES' | translate) +
+          '. ' +
           wizardCompleted() +
-          ' de ' +
+          ' ' +
+          ('ACTIVITY.OF' | translate) +
+          ' ' +
           wizardTotal +
-          ' atividades concluídas. Toque aqui para começar.'
+          ' ' +
+          ('ACTIVITY.ACTIVITIES_COMPLETED' | translate) +
+          '. ' +
+          ('DASHBOARD.START_DAY' | translate)
         "
         [style.order]="-3"
         class="w-full rounded-2xl mb-5 cursor-pointer text-left group overflow-hidden shadow-lg"
@@ -173,7 +190,7 @@
                   : 'bg-white/20 text-white'
               "
             >
-              <fa-icon [icon]="icons.check" class="text-3xl"></fa-icon>
+              <ui-icon [icon]="icons.check" class="text-3xl"></ui-icon>
             </div>
             <div>
               <p
@@ -182,7 +199,7 @@
                   accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-white/70'
                 "
               >
-                Guia do dia
+                {{ 'DASHBOARD.DAY_GUIDE' | translate }}
               </p>
               <h2
                 class="text-2xl font-bold leading-tight"
@@ -190,17 +207,17 @@
                   accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-white'
                 "
               >
-                Minhas Atividades
+                {{ 'DASHBOARD.MY_ACTIVITIES' | translate }}
               </h2>
             </div>
           </div>
-          <fa-icon
+          <ui-icon
             [icon]="icons.chevronRight"
             class="text-2xl mt-1 group-hover:translate-x-1 transition-transform flex-shrink-0"
             [ngClass]="
               accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-white/80'
             "
-          ></fa-icon>
+          ></ui-icon>
         </div>
 
         <!-- Progresso -->
@@ -217,7 +234,10 @@
                 accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-white'
               "
             >
-              {{ wizardCompleted() }} de {{ wizardTotal }} atividades
+              {{
+                'DASHBOARD.ACTIVITIES_COUNT'
+                  | translate: { completed: wizardCompleted(), total: wizardTotal }
+              }}
             </span>
             <span
               class="text-sm font-bold"
@@ -235,7 +255,10 @@
             [attr.aria-valuenow]="wizardCompleted()"
             aria-valuemin="0"
             [attr.aria-valuemax]="wizardTotal"
-            [attr.aria-label]="wizardCompleted() + ' de ' + wizardTotal + ' atividades concluídas'"
+            [attr.aria-label]="
+              'DASHBOARD.ACTIVITIES_ARIA'
+                | translate: { completed: wizardCompleted(), total: wizardTotal }
+            "
           >
             <div
               class="h-full rounded-full transition-all duration-700"
@@ -262,19 +285,19 @@
           >
             {{
               wizardCompleted() === 0
-                ? 'Toque aqui para começar o dia'
+                ? ('DASHBOARD.START_DAY' | translate)
                 : wizardCompleted() === wizardTotal
-                  ? 'Todas as atividades feitas!'
-                  : 'Continuar de onde parou'
+                  ? ('DASHBOARD.ALL_DONE' | translate)
+                  : ('DASHBOARD.CONTINUE' | translate)
             }}
           </span>
-          <fa-icon
+          <ui-icon
             [icon]="icons.chevronRight"
             class="text-lg"
             [ngClass]="
               accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-white'
             "
-          ></fa-icon>
+          ></ui-icon>
         </div>
       </button>
     }
@@ -286,7 +309,7 @@
           class="text-sm font-semibold text-muted uppercase tracking-wide"
           style="letter-spacing: 0.05em"
         >
-          Resumo do dia
+          {{ 'DASHBOARD.DAY_SUMMARY' | translate }}
         </h2>
       </div>
     }
@@ -295,7 +318,7 @@
     <section class="mb-5">
       @if (!accessibility.simplifiedNav()) {
         <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
-          Mais para hoje
+          {{ 'DASHBOARD.MORE_TODAY' | translate }}
         </h2>
       }
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
@@ -310,13 +333,13 @@
             <div
               class="w-8 h-8 rounded-full bg-primary-surface flex items-center justify-center text-primary flex-shrink-0"
             >
-              <fa-icon [icon]="icons.clipboard"></fa-icon>
+              <ui-icon [icon]="icons.clipboard"></ui-icon>
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-semibold text-foreground">Fórum: Hackathon</p>
-              <p class="text-xs text-muted mt-0.5">3 novas mensagens</p>
+              <p class="text-xs text-muted mt-0.5">3 {{ 'DASHBOARD.NEW_MESSAGES' | translate }}</p>
             </div>
-            <fa-icon [icon]="icons.chevronRight" class="text-primary flex-shrink-0"></fa-icon>
+            <ui-icon [icon]="icons.chevronRight" class="text-primary flex-shrink-0"></ui-icon>
           </button>
         } @else {
           <div
@@ -326,11 +349,11 @@
             <div
               class="w-8 h-8 rounded-full bg-primary-surface flex items-center justify-center text-primary flex-shrink-0"
             >
-              <fa-icon [icon]="icons.clipboard"></fa-icon>
+              <ui-icon [icon]="icons.clipboard"></ui-icon>
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-semibold text-foreground">Fórum: Hackathon</p>
-              <p class="text-xs text-muted mt-0.5">3 novas mensagens</p>
+              <p class="text-xs text-muted mt-0.5">3 {{ 'DASHBOARD.NEW_MESSAGES' | translate }}</p>
             </div>
           </div>
         }
@@ -347,11 +370,13 @@
           <div
             class="w-8 h-8 rounded-full bg-success-light flex items-center justify-center text-success flex-shrink-0"
           >
-            <fa-icon [icon]="icons.clock"></fa-icon>
+            <ui-icon [icon]="icons.clock"></ui-icon>
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-semibold text-foreground">Trabalho Final</p>
-            <p class="text-xs text-muted mt-0.5">Nota 9/9 · Entregue com sucesso</p>
+            <p class="text-xs text-muted mt-0.5">
+              Nota 9/9 · {{ 'DASHBOARD.DELIVERED_SUCCESS' | translate }}
+            </p>
           </div>
           @if (!accessibility.simplifiedNav()) {
             <span
@@ -362,7 +387,7 @@
                   : 'text-success bg-success-light'
               "
             >
-              Ver detalhes →
+              {{ 'COMMON.SEE_DETAILS' | translate }}
             </span>
           }
         </button>
@@ -374,7 +399,7 @@
     @if (!accessibility.simplifiedNav()) {
       <section class="mb-5">
         <h2 class="text-sm font-semibold text-muted uppercase tracking-wide mb-3">
-          Meu Progresso no Curso
+          {{ 'DASHBOARD.COURSE_PROGRESS' | translate }}
         </h2>
         <div class="bg-card rounded-2xl p-5 shadow-sm">
           <div class="flex items-center justify-between gap-4 mb-4">
@@ -383,7 +408,7 @@
             </span>
             <ui-badge
               variant="success"
-              label="QUASE NA METADE!"
+              [label]="'DASHBOARD.ALMOST_HALFWAY' | translate"
               class="text-xs font-bold px-3 py-1 rounded-full border w-max"
               [ngClass]="
                 accessibility.theme() === 'high-contrast'
@@ -391,7 +416,7 @@
                   : 'bg-success/10 text-success border-success/20'
               "
             >
-              QUASE NA METADE!
+              {{ 'DASHBOARD.ALMOST_HALFWAY' | translate }}
             </ui-badge>
           </div>
           <div
@@ -415,10 +440,10 @@
           </div>
           <div class="flex justify-between mt-3 text-sm font-semibold text-muted">
             <span class="flex items-center gap-2">
-              <fa-icon [icon]="icons.check" class="text-primary"></fa-icon>
-              3 Aulas Feitas
+              <ui-icon [icon]="icons.check" class="text-primary"></ui-icon>
+              3 {{ 'DASHBOARD.LESSONS_DONE' | translate }}
             </span>
-            <span>6 Aulas Restantes</span>
+            <span>6 {{ 'DASHBOARD.LESSONS_REMAINING' | translate }}</span>
           </div>
         </div>
       </section>
@@ -429,7 +454,9 @@
           appVoiceRead="Aula 04 de 10. Módulo: Primeiros Passos no HTML."
         >
           <p class="text-2xl font-bold text-primary">04</p>
-          <p class="text-xs font-semibold text-muted mt-0.5">de 10 aulas</p>
+          <p class="text-xs font-semibold text-muted mt-0.5">
+            {{ 'DASHBOARD.OF_LESSONS' | translate: { total: 10 } }}
+          </p>
           <p class="text-sm text-foreground mt-1 leading-snug">Primeiros Passos no HTML</p>
         </div>
         <div
@@ -437,8 +464,12 @@
           appVoiceRead="Progresso geral do curso: 40 por cento concluído."
         >
           <p class="text-2xl font-bold text-accent">40%</p>
-          <p class="text-xs font-semibold text-muted mt-0.5">do curso</p>
-          <p class="text-sm text-foreground mt-1 leading-snug">Progresso geral</p>
+          <p class="text-xs font-semibold text-muted mt-0.5">
+            {{ 'DASHBOARD.COURSE_PERCENT' | translate }}
+          </p>
+          <p class="text-sm text-foreground mt-1 leading-snug">
+            {{ 'DASHBOARD.PROGRESS_GENERAL' | translate }}
+          </p>
         </div>
       </div>
     }
@@ -448,13 +479,15 @@
       class="bg-primary-surface border border-primary/20 rounded-2xl p-4 mb-5"
       appVoiceRead="Instituição: FIAP, Faculdade de Informática e Administração Paulista. Em parceria com Alura."
     >
-      <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-2">Instituição</p>
+      <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-2">
+        {{ 'HOME.INSTITUTION' | translate }}
+      </p>
       <p class="font-bold text-foreground text-base">FIAP</p>
       <p class="text-sm text-muted leading-relaxed">
         Faculdade de Informática e Administração Paulista
       </p>
       <div class="mt-3 pt-3 border-t border-primary/10 flex items-center gap-2">
-        <span class="text-xs text-muted">Em parceria com</span>
+        <span class="text-xs text-muted">{{ 'HOME.PARTNERSHIP_WITH' | translate }}</span>
         <span class="text-xs font-semibold text-primary">Alura</span>
       </div>
     </div>
