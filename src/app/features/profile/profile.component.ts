@@ -19,6 +19,7 @@ import {
   faTriangleExclamation,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
@@ -28,6 +29,7 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
 })
 export class ProfileComponent {
   private readonly router = inject(Router);
+  private readonly accessibilityService = inject(AccessibilityService);
 
   protected readonly icons = {
     arrowLeft: faArrowLeft,
@@ -57,12 +59,8 @@ export class ProfileComponent {
   protected readonly phone = signal(localStorage.getItem('profile-phone') ?? '(11) 98765-4321');
   protected readonly dob = signal(localStorage.getItem('profile-dob') ?? '');
   protected readonly cpf = signal(localStorage.getItem('profile-cpf') ?? '');
-  protected readonly simplifiedNav = signal(
-    localStorage.getItem('profile-simplified-nav') === 'true',
-  );
-  protected readonly extraConfirmations = signal(
-    localStorage.getItem('profile-extra-confirmations') === 'true',
-  );
+  protected readonly simplifiedNav = this.accessibilityService.simplifiedNav;
+  protected readonly extraConfirmations = this.accessibilityService.extraConfirmations;
 
   // UI state
   protected readonly saveAttempted = signal(false);
@@ -97,8 +95,6 @@ export class ProfileComponent {
     localStorage.setItem('profile-phone', this.phone());
     localStorage.setItem('profile-dob', this.dob());
     localStorage.setItem('profile-cpf', this.cpf());
-    localStorage.setItem('profile-simplified-nav', String(this.simplifiedNav()));
-    localStorage.setItem('profile-extra-confirmations', String(this.extraConfirmations()));
     if (this.profileImage()) {
       localStorage.setItem('profile-image', this.profileImage()!);
     }

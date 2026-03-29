@@ -10,8 +10,9 @@ export const routes: Routes = [
       {
         path: 'inicio',
         loadComponent: () =>
-          import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
-        // loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
+          import('./features/dashboard-ds2/dashboard-ds2.component').then(
+            (m) => m.DashboardDs2Component,
+          ),
       },
       {
         path: 'perfil',
@@ -24,11 +25,6 @@ export const routes: Routes = [
           import('./features/accessibility/accessibility.component').then(
             (m) => m.AccessibilityComponent,
           ),
-      },
-      {
-        path: 'dash',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
         path: 'sala-de-espera',
@@ -50,16 +46,21 @@ export const routes: Routes = [
           import('./features/notebook/notebook.component').then((m) => m.NotebookComponent),
       },
       {
+        path: 'minhas-atividades',
+        loadComponent: () =>
+          import('./features/activity-wizard/activity-wizard.component').then(
+            (m) => m.ActivityWizardComponent,
+          ),
+      },
+      {
         path: 'forum',
         loadComponent: () =>
           import('./features/forum-chat/forum-chat.component').then((m) => m.ForumChatComponent),
       },
       {
-        path: 'dashboardDS2',
+        path: 'trabalho-final',
         loadComponent: () =>
-          import('./features/dashboard-ds2/dashboard-ds2.component').then(
-            (m) => m.DashboardDs2Component,
-          ),
+          import('./features/final-work/final-work.component').then((m) => m.FinalWorkComponent),
       },
     ],
   },

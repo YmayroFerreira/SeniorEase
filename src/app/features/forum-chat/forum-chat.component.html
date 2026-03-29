@@ -1,11 +1,31 @@
 <div class="flex flex-col h-screen bg-surface">
-  <header class="bg-primary p-4 flex items-center gap-4 shadow-md">
-    <button (click)="router.navigate(['/inicio'])" class="text-white text-xl p-2">
+  <header class="bg-primary px-6 py-3 flex items-center gap-4 shadow-md">
+    <button
+      (click)="goBack()"
+      [appVoiceRead]="fromWizard ? 'Voltar para Minhas Atividades' : 'Voltar para o início'"
+      class="text-white text-xl p-2 flex-shrink-0 cursor-pointer bg-transparent border-none"
+    >
       <fa-icon [icon]="icons.back"></fa-icon>
     </button>
-    <div>
-      <h1 class="text-white font-bold text-lg">Fórum: Hackathon</h1>
-      <p class="text-primary-light text-xs">Grupo de dúvidas da turma</p>
+    <div class="flex-1 min-w-0">
+      @if (!accessibility.simplifiedNav()) {
+        <app-breadcrumb
+          class="mb-0.5 block"
+          variant="dark"
+          [items]="
+            fromWizard
+              ? [
+                  { label: 'Início', route: '/inicio' },
+                  { label: 'Minhas Atividades', route: '/minhas-atividades' },
+                  { label: 'Fórum' },
+                ]
+              : [{ label: 'Início', route: '/inicio' }, { label: 'Fórum' }]
+          "
+        ></app-breadcrumb>
+      } @else {
+        <p class="text-primary-light text-xs">Grupo de dúvidas da turma</p>
+      }
+      <h1 class="text-white font-bold text-base leading-snug truncate">Fórum: Hackathon</h1>
     </div>
   </header>
 

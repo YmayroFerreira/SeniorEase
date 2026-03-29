@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AccessibilityService } from '@senior-ease/ui';
+import { AccessibilityService } from './core/services/accessibility.service';
 
 @Component({
   selector: 'app-root',

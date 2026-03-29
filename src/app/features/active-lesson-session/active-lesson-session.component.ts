@@ -17,6 +17,7 @@ import { debounceTime, Subject } from 'rxjs';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { StorageService } from '../../core/services/storage.service';
 import { VoiceInputService } from '../../core/services/voice-input.service';
+import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceInputBtnComponent } from '../../shared/components/voice-input-btn/voice-input-btn.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 import { VideoSessionComponent } from '../video-session/video-session.component';
@@ -27,6 +28,7 @@ import { VideoSessionComponent } from '../video-session/video-session.component'
     CommonModule,
     FormsModule,
     FontAwesomeModule,
+    BreadcrumbComponent,
     VoiceReadDirective,
     VoiceInputBtnComponent,
     VideoSessionComponent,
@@ -39,6 +41,7 @@ export class ActiveLessonSessionComponent implements OnInit {
   protected readonly router = inject(Router);
   protected readonly voiceInput = inject(VoiceInputService);
   private readonly storage = inject(StorageService);
+  protected readonly fromWizard = !!localStorage.getItem('wizard-session');
 
   protected readonly icons = {
     volumeUp: faVolumeUp,

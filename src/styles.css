@@ -205,3 +205,88 @@ body {
   --color-danger: #904040;
   --color-danger-light: #fdf0f0;
 }
+
+/* ============================================================
+   ACESSIBILIDADE: Espaçamento aumentado
+   Multiplica os tokens de espaço por ~1.6 e aumenta
+   a altura de linha — reduz a densidade visual, facilitando
+   a leitura e a separação entre elementos para idosos.
+   ============================================================ */
+.spacing-increased {
+  --ui-space-1: 0.4rem;
+  --ui-space-2: 0.8rem;
+  --ui-space-3: 1.2rem;
+  --ui-space-4: 1.6rem;
+  --ui-space-5: 2rem;
+  --ui-space-6: 2.4rem;
+  --ui-space-7: 3.2rem;
+  --ui-space-8: 3.6rem;
+  --ui-space-9: 4rem;
+  --ui-line-height-base: 1.8;
+  --ui-line-height-tight: 1.5;
+}
+
+/* Padding interno de cards e seções */
+.spacing-increased .bg-card,
+.spacing-increased section {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+/* Espaço entre parágrafos e labels de formulário */
+.spacing-increased p,
+.spacing-increased label {
+  line-height: 1.8;
+}
+
+/* ============================================================
+   ACESSIBILIDADE: Foco visível para navegação por teclado
+   Essencial para idosos que usam Tab para navegar.
+   :focus-visible só ativa quando o foco vem do teclado,
+   não ao clicar com mouse (evita poluição visual).
+   ============================================================ */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Alto contraste: foco em amarelo para máxima visibilidade */
+.theme-high-contrast :focus-visible {
+  outline-color: #ffff00;
+}
+
+/* ============================================================
+   ACESSIBILIDADE: Redução de movimento
+   Respeita a preferência do sistema operacional do usuário
+   E também o toggle de animação do painel de acessibilidade.
+   Idosos com distúrbios vestibulares são afetados por animações.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Classe aplicada pelo AccessibilityService quando animação está desativada */
+.animation-disabled *,
+.animation-disabled *::before,
+.animation-disabled *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Classe aplicada quando animação está no modo lento */
+.animation-slow *,
+.animation-slow *::before,
+.animation-slow *::after {
+  animation-duration: 2s !important;
+  transition-duration: 0.6s !important;
+}

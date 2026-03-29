@@ -3,54 +3,81 @@
   [ngClass]="accessibility.theme() === 'high-contrast' ? 'bg-black' : 'bg-surface'"
 >
   <header
-    class="border-b bg-card sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
+    class="border-b bg-card sticky top-0 z-10 px-6 py-3 flex items-center gap-4"
     [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'"
   >
-    <button (click)="router.navigate(['/inicio'])" class="p-2 text-primary text-xl">
+    <button
+      (click)="goBack()"
+      [appVoiceRead]="fromWizard ? 'Voltar para Minhas Atividades' : 'Voltar para o início'"
+      class="p-2 text-primary text-xl flex-shrink-0 cursor-pointer bg-transparent border-none"
+    >
       <fa-icon [icon]="icons.arrowLeft"></fa-icon>
     </button>
-    <h1 class="text-xl font-bold text-foreground">Meu Caderno Digital</h1>
+    <div class="flex-1 min-w-0">
+      @if (!accessibility.simplifiedNav()) {
+        <app-breadcrumb
+          class="mb-0.5 block"
+          [items]="
+            fromWizard
+              ? [
+                  { label: 'Início', route: '/inicio' },
+                  { label: 'Minhas Atividades', route: '/minhas-atividades' },
+                  { label: 'Meu Caderno' },
+                ]
+              : [{ label: 'Início', route: '/inicio' }, { label: 'Meu Caderno' }]
+          "
+        ></app-breadcrumb>
+      }
+      <h1 class="text-base font-bold text-foreground leading-snug truncate">Meu Caderno Digital</h1>
+    </div>
   </header>
 
   <div class="px-6 py-6 max-w-2xl">
-    <div *ngIf="savedNotes.length > 0; else emptyState" class="space-y-6">
-      <div
-        *ngFor="let note of savedNotes"
-        class="bg-card rounded-2xl p-6 shadow-md border-2 relative group"
-        [ngClass]="
-          accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-primary/10'
-        "
-      >
-        <div class="flex justify-between items-start mb-3">
-          <div>
-            <h2 class="text-lg font-bold text-primary">{{ note.title }}</h2>
-            <p class="text-xs text-muted">{{ note.date | date: "d 'de' MMMM" : '' : 'pt-BR' }}</p>
-          </div>
-
-          <button
-            class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-90 transition-transform"
-            [appVoiceRead]="'Ouvir anotação: ' + note.content"
+    @if (savedNotes.length > 0) {
+      <div class="space-y-6">
+        @for (note of savedNotes; track note.id) {
+          <div
+            class="bg-card rounded-2xl p-6 shadow-md border-2 relative group"
+            [ngClass]="
+              accessibility.theme() === 'high-contrast'
+                ? 'border-primary-light'
+                : 'border-primary/10'
+            "
           >
-            <fa-icon [icon]="icons.volume"></fa-icon>
-          </button>
-        </div>
-
-        <div class="border-t pt-4 border-border/50">
-          <p class="text-lg leading-relaxed text-foreground italic">"{{ note.content }}"</p>
-        </div>
-
-        <button
-          (click)="deleteNote(note.id)"
-          class="absolute bottom-4 right-4 text-muted hover:text-red-500 opacity-30 hover:opacity-100 p-2"
-        >
-          <fa-icon [icon]="icons.trash" class="text-sm"></fa-icon>
-        </button>
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h2 class="text-lg font-bold text-primary">{{ note.title }}</h2>
+                <p class="text-xs text-muted">
+                  {{ note.date | date: "d 'de' MMMM" : '' : 'pt-BR' }}
+                </p>
+              </div>
+              <button
+                class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-90 transition-transform"
+                [appVoiceRead]="'Ouvir anotação: ' + note.content"
+              >
+                <fa-icon [icon]="icons.volume"></fa-icon>
+              </button>
+            </div>
+            <div class="border-t pt-4 border-border/50">
+              <p class="text-lg leading-relaxed text-foreground italic">"{{ note.content }}"</p>
+            </div>
+            <button
+              type="button"
+              (click)="requestDelete(note.id, note.title)"
+              [appVoiceRead]="'Excluir anotação: ' + note.title"
+              aria-label="Excluir anotação"
+              class="absolute bottom-4 right-4 text-muted hover:text-red-500 opacity-30 hover:opacity-100 p-2"
+            >
+              <fa-icon [icon]="icons.trash" class="text-sm"></fa-icon>
+            </button>
+          </div>
+        }
       </div>
-    </div>
-
-    <ng-template #emptyState>
+    } @else {
       <div class="text-center py-20">
-        <div class="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mb-4">
+        <div
+          class="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mb-4 mx-auto"
+        >
           <fa-icon [icon]="icons.book" class="text-3xl text-muted"></fa-icon>
         </div>
         <p class="text-xl font-bold text-muted">Seu caderno ainda está em branco.</p>
@@ -58,6 +85,47 @@
           As anotações que você fizer nas aulas aparecerão aqui automaticamente.
         </p>
       </div>
-    </ng-template>
+    }
   </div>
 </div>
+
+<!-- Modal de confirmação -->
+@if (confirmModal()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-title"
+    aria-describedby="confirm-desc"
+  >
+    <div class="bg-card rounded-2xl shadow-xl mx-6 w-full max-w-[360px] px-6 py-7">
+      <div class="flex items-center gap-3 mb-3">
+        <fa-icon [icon]="icons.warning" class="text-danger text-2xl"></fa-icon>
+        <h2 id="confirm-title" class="font-bold text-foreground text-lg">Excluir anotação?</h2>
+      </div>
+      <p id="confirm-desc" class="text-muted text-sm mb-2">
+        A anotação <strong class="text-foreground">{{ confirmModal()?.title }}</strong> será
+        excluída.
+      </p>
+      <p class="text-danger font-semibold text-xs mb-6">Esta ação não pode ser desfeita.</p>
+      <div class="flex gap-3">
+        <button
+          type="button"
+          (click)="cancelDelete()"
+          class="flex-1 rounded-2xl border border-border text-foreground font-semibold hover:bg-surface transition-colors text-sm p-3.5"
+          appVoiceRead="Cancelar exclusão"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          (click)="confirmDelete()"
+          class="flex-1 rounded-2xl bg-danger text-white font-semibold hover:opacity-90 transition-opacity text-sm p-3.5"
+          appVoiceRead="Confirmar exclusão da anotação"
+        >
+          Sim, excluir
+        </button>
+      </div>
+    </div>
+  </div>
+}
