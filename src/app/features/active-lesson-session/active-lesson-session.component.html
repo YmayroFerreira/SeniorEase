@@ -1,12 +1,29 @@
 <div class="pb-[88px] md:pb-8">
   <header
-    class="border-b bg-card sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
+    class="border-b bg-card sticky top-0 z-10 px-6 py-3 flex items-center gap-4"
     [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'"
   >
-    <button (click)="router.navigate(['/sala-de-espera'])" class="p-2 text-primary text-xl">
-      <fa-icon [icon]="icons.arrowLeft"></fa-icon>
-    </button>
-    <h1 class="text-xl font-bold text-foreground">Sala de aula</h1>
+    <div class="flex-1 min-w-0">
+      @if (!accessibility.simplifiedNav()) {
+        <app-breadcrumb
+          class="mb-0.5 block"
+          [items]="
+            fromWizard
+              ? [
+                  { label: 'Início', route: '/inicio' },
+                  { label: 'Minhas Atividades', route: '/minhas-atividades' },
+                  { label: 'Participar da Aula' },
+                ]
+              : [
+                  { label: 'Início', route: '/inicio' },
+                  { label: 'Sala de Espera', route: '/sala-de-espera' },
+                  { label: 'Sala de Aula' },
+                ]
+          "
+        ></app-breadcrumb>
+      }
+      <h1 class="text-base font-bold text-foreground leading-snug truncate">Sala de aula</h1>
+    </div>
   </header>
 
   <div class="px-6 md:px-8 pt-5 pb-8 max-w-7xl w-full">
@@ -47,11 +64,13 @@
             <div class="flex items-center gap-2">
               <fa-icon [icon]="isMicMuted ? icons.micSlash : icons.mic" class="text-xl"></fa-icon>
 
-              <div *ngIf="!isMicMuted" class="flex items-end gap-[2px] h-4">
-                <div class="wave-bar bg-current"></div>
-                <div class="wave-bar bg-current" style="animation-delay: 0.2s"></div>
-                <div class="wave-bar bg-current" style="animation-delay: 0.4s"></div>
-              </div>
+              @if (!isMicMuted) {
+                <div class="flex items-end gap-[2px] h-4">
+                  <div class="wave-bar bg-current"></div>
+                  <div class="wave-bar bg-current" style="animation-delay: 0.2s"></div>
+                  <div class="wave-bar bg-current" style="animation-delay: 0.4s"></div>
+                </div>
+              }
             </div>
 
             <div class="flex flex-col">
@@ -104,7 +123,11 @@
           <button
             type="button"
             class="bg-card border border-border flex items-center justify-center gap-3 p-4 rounded-2xl hover:bg-primary/5"
-            (click)="router.navigate(['/sala-de-espera'])"
+            (click)="
+              router.navigate([
+                accessibility.simplifiedNav() ? '/minhas-atividades' : '/sala-de-espera',
+              ])
+            "
             appVoiceRead="Botão Sair da aula"
           >
             <fa-icon [icon]="icons.signOut" class="text-2xl text-red-700"></fa-icon>
@@ -157,8 +180,7 @@
             <textarea
               [(ngModel)]="notes"
               (ngModelChange)="onNotesChange()"
-              class="w-full flex-1 min-h-[150px] lg:min-h-0 bg-surface border-2 border-border rounded-xl px-4 py-3 font-medium text-foreground placeholder:text-muted focus:outline-none focus:border-primary transition-all resize-none"
-              [style.fontSize]="'18px'"
+              class="w-full flex-1 min-h-[150px] lg:min-h-0 bg-surface border-2 border-border rounded-xl px-4 py-3 font-medium text-foreground placeholder:text-muted focus:outline-none focus:border-primary transition-all resize-none text-lg"
               placeholder="As suas anotações aparecerão aqui. Você pode digitar ou usar o microfone acima..."
               appVoiceRead="Área de anotações. Use o botão de microfone para ditar ou o teclado para escrever."
             ></textarea>

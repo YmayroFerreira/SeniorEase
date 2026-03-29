@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { faTableColumns } from '@fortawesome/free-solid-svg-icons';
 import { DashboardLayoutComponent, NavItemData, SidebarComponent } from '@senior-ease/ui';
+import { AccessibilityService } from '../../core/services/accessibility.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -9,7 +9,9 @@ import { DashboardLayoutComponent, NavItemData, SidebarComponent } from '@senior
   templateUrl: './main-layout.component.html',
 })
 export class MainLayoutComponent {
-  protected readonly navItems: NavItemData[] = [
+  private readonly accessibilityService = inject(AccessibilityService);
+
+  private readonly allNavItems: NavItemData[] = [
     {
       label: 'Inicio',
       path: '/inicio',
@@ -31,7 +33,16 @@ export class MainLayoutComponent {
       description: 'Configuracoes da conta',
       ariaLabel: 'Navegar para perfil',
     },
-    { path: '/dashboardDS', icon: faTableColumns, label: 'Dashboard DS' },
-    { path: '/dashboardDS2', icon: faTableColumns, label: 'Dashboard DS2' },
   ];
+
+  private readonly simplifiedPaths = new Set(['/inicio', '/acessibilidade', '/perfil']);
+
+  protected readonly navItems = computed(() => {
+    if (this.accessibilityService.simplifiedNav()) {
+      return this.allNavItems.filter((item) =>
+        this.simplifiedPaths.has(item.path?.toString() ?? ''),
+      );
+    }
+    return this.allNavItems;
+  });
 }

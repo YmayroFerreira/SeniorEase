@@ -1,54 +1,46 @@
-<div class="min-h-screen bg-surface" style="padding-bottom: 88px">
+<div class="min-h-screen bg-surface pb-[88px]">
   <div class="md:hidden">
-    <div class="bg-primary" style="height: 44px"></div>
+    <div class="bg-primary h-11"></div>
   </div>
 
-  <div class="bg-primary md:bg-card md:border-b md:border-border" style="padding: 16px 24px 24px">
-    <div class="md:hidden flex items-center" style="gap: 12px; margin-bottom: 4px">
-      <a routerLink="/inicio" class="text-white" style="font-size: 24px; line-height: 1">
+  <div class="bg-primary md:bg-card md:border-b md:border-border px-6 pt-4 pb-6">
+    <div class="md:hidden flex items-center gap-3 mb-1">
+      <a routerLink="/inicio" class="text-white text-2xl leading-none">
         <fa-icon [icon]="icons.arrowLeft"></fa-icon>
       </a>
-      <h1 class="font-semibold text-white" style="font-size: 20px">Acessibilidade</h1>
+      <h1 class="font-semibold text-white text-xl">Acessibilidade</h1>
     </div>
     <div class="hidden md:block">
-      <h1 class="font-bold text-foreground" style="font-size: 20px">Acessibilidade</h1>
-      <p class="text-muted" style="font-size: 14px; margin-top: 2px">
-        Personalize sua experiência de uso
-      </p>
+      <h1 class="font-bold text-foreground text-xl">Acessibilidade</h1>
+      <p class="text-muted text-sm mt-0.5">Personalize sua experiência de uso</p>
     </div>
   </div>
 
-  <div style="padding: 20px 24px 0; max-width: 672px">
+  <div class="px-6 pt-5 max-w-2xl">
     <div
-      class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start"
-      style="padding: 16px; margin-bottom: 24px; gap: 12px"
+      class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start p-4 mb-6 gap-3"
       appVoiceRead="Ajuste as configurações para tornar o SeniorEase mais confortável para você."
     >
       <fa-icon
         [icon]="icons.wheelchair"
-        class="text-primary flex-shrink-0"
-        style="font-size: 18px; margin-top: 2px"
+        class="text-primary flex-shrink-0 text-lg mt-0.5"
       ></fa-icon>
-      <p class="text-primary" style="font-size: 14px; line-height: 1.5">
+      <p class="text-primary text-sm leading-normal">
         Ajuste as configurações para tornar o SeniorEase mais confortável para você.
       </p>
     </div>
 
-    <section style="margin-bottom: 24px">
-      <h2
-        class="font-semibold text-muted uppercase tracking-wide"
-        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
-      >
+    <section class="mb-6">
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
         Tamanho do Texto
       </h2>
-      <div class="grid grid-cols-5" style="gap: 6px">
+      <div class="grid grid-cols-5 gap-1.5">
         @for (opt of fontSizeOptions; track opt.value) {
           <button
             type="button"
             (click)="selectedFontSize.set(opt.value)"
             [appVoiceRead]="'Tamanho de texto: ' + opt.label + '. ' + opt.description"
-            class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex flex-col items-center justify-center"
-            style="padding: 10px 4px; min-height: 72px"
+            class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex flex-col items-center justify-center px-1 py-2.5 min-h-[4.5rem]"
             [class.border-primary]="selectedFontSize() === opt.value"
             [class.border-transparent]="selectedFontSize() !== opt.value"
             [attr.aria-pressed]="selectedFontSize() === opt.value"
@@ -56,15 +48,12 @@
             <fa-icon
               [icon]="icons.textHeight"
               class="text-primary block"
-              [style.fontSize.px]="fontIconPx[opt.value]"
+              [style.fontSize.rem]="fontIconRem[opt.value]"
             ></fa-icon>
-            <p
-              class="font-bold text-foreground"
-              style="font-size: 11px; margin-top: 6px; line-height: 1"
-            >
+            <p class="font-bold text-foreground text-[0.6875rem] mt-1.5 leading-none">
               {{ opt.label }}
             </p>
-            <p class="text-muted" style="font-size: 9px; margin-top: 3px; line-height: 1.2">
+            <p class="text-muted text-[0.5625rem] mt-0.5 leading-snug">
               {{ opt.description }}
             </p>
           </button>
@@ -72,11 +61,8 @@
       </div>
     </section>
 
-    <section style="margin-bottom: 24px">
-      <h2
-        class="font-semibold text-muted uppercase tracking-wide"
-        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
-      >
+    <section class="mb-6">
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
         Tema de Contraste
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
@@ -85,39 +71,32 @@
             type="button"
             (click)="selectedTheme.set(opt.value)"
             [appVoiceRead]="'Tema: ' + opt.label + '. ' + opt.description"
-            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
-            style="gap: 16px; padding: 14px 16px"
+            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
             [attr.aria-pressed]="selectedTheme() === opt.value"
           >
             <div
-              class="rounded-full border-2 flex items-center justify-center flex-shrink-0"
-              style="width: 20px; height: 20px; min-width: 20px"
+              class="rounded-full border-2 flex items-center justify-center flex-shrink-0 w-5 h-5 min-w-[1.25rem]"
               [class.border-primary]="selectedTheme() === opt.value"
               [class.border-border]="selectedTheme() !== opt.value"
             >
               @if (selectedTheme() === opt.value) {
-                <div class="rounded-full bg-primary" style="width: 10px; height: 10px"></div>
+                <div class="rounded-full bg-primary w-2.5 h-2.5"></div>
               }
             </div>
             <div class="flex-1 text-left">
-              <p class="font-semibold text-foreground" style="font-size: 14px">{{ opt.label }}</p>
-              <p class="text-muted" style="font-size: 12px; margin-top: 2px">
-                {{ opt.description }}
-              </p>
+              <p class="font-semibold text-foreground text-sm">{{ opt.label }}</p>
+              <p class="text-muted text-xs mt-0.5">{{ opt.description }}</p>
             </div>
           </button>
           @if (!last) {
-            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+            <div class="bg-border h-px mx-4"></div>
           }
         }
       </div>
     </section>
 
-    <section class="hidden md:block" style="margin-bottom: 24px">
-      <h2
-        class="font-semibold text-muted uppercase tracking-wide"
-        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
-      >
+    <section class="hidden md:block mb-6">
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
         Velocidade de Animação
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
@@ -126,43 +105,35 @@
             type="button"
             (click)="selectedAnimation.set(opt.value)"
             [appVoiceRead]="'Velocidade de animação: ' + opt.label"
-            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer"
-            style="gap: 16px; padding: 14px 16px"
+            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
             [attr.aria-pressed]="selectedAnimation() === opt.value"
           >
             <div
-              class="rounded-full border-2 flex items-center justify-center flex-shrink-0"
-              style="width: 20px; height: 20px; min-width: 20px"
+              class="rounded-full border-2 flex items-center justify-center flex-shrink-0 w-5 h-5 min-w-[1.25rem]"
               [class.border-primary]="selectedAnimation() === opt.value"
               [class.border-border]="selectedAnimation() !== opt.value"
             >
               @if (selectedAnimation() === opt.value) {
-                <div class="rounded-full bg-primary" style="width: 10px; height: 10px"></div>
+                <div class="rounded-full bg-primary w-2.5 h-2.5"></div>
               }
             </div>
-            <p class="font-semibold text-foreground text-left flex-1" style="font-size: 14px">
-              {{ opt.label }}
-            </p>
+            <p class="font-semibold text-foreground text-left flex-1 text-sm">{{ opt.label }}</p>
           </button>
           @if (!last) {
-            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+            <div class="bg-border h-px mx-4"></div>
           }
         }
       </div>
     </section>
 
-    <section style="margin-bottom: 32px">
-      <h2
-        class="font-semibold text-muted uppercase tracking-wide"
-        style="font-size: 12px; margin-bottom: 12px; letter-spacing: 0.05em"
-      >
+    <section class="mb-8">
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
         Recursos de Acessibilidade
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         @for (item of toggleItems; track item.key; let last = $last) {
           <div
-            class="flex items-center"
-            style="gap: 12px; padding: 14px 16px"
+            class="flex items-center gap-3 px-4 py-3.5"
             [appVoiceRead]="
               item.label +
               '. ' +
@@ -173,47 +144,38 @@
           >
             <fa-icon
               [icon]="icons[item.key]"
-              class="text-primary text-center flex-shrink-0"
-              style="font-size: 18px; width: 22px"
+              class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
             ></fa-icon>
             <div class="flex-1 min-w-0">
-              <p class="font-semibold text-foreground truncate" style="font-size: 15px">
-                {{ item.label }}
-              </p>
-              <p class="text-muted truncate" style="font-size: 12px; margin-top: 2px">
-                {{ item.description }}
-              </p>
+              <p class="font-semibold text-foreground text-sm truncate">{{ item.label }}</p>
+              <p class="text-muted text-xs mt-0.5 truncate">{{ item.description }}</p>
             </div>
             <button
               type="button"
               role="switch"
               [attr.aria-checked]="prefs()[item.key]"
               (click)="togglePref(item.key)"
-              class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer"
-              style="width: 48px; height: 26px; min-width: 48px"
+              class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer w-12 h-[1.625rem] min-w-[3rem]"
               [class.bg-primary]="prefs()[item.key]"
               [class.bg-toggle-off]="!prefs()[item.key]"
             >
               <span
-                class="absolute bg-white rounded-full shadow transition-transform"
-                style="width: 20px; height: 20px; top: 3px; left: 3px"
-                [style.transform]="prefs()[item.key] ? 'translateX(22px)' : 'translateX(0)'"
+                class="absolute bg-white rounded-full shadow transition-transform w-5 h-5 top-[0.1875rem] left-[0.1875rem]"
+                [style.transform]="prefs()[item.key] ? 'translateX(1.375rem)' : 'translateX(0)'"
               ></span>
             </button>
           </div>
 
           @if (item.key === 'voiceReading' && prefs().voiceReading) {
-            <div style="padding: 0 16px 16px">
-              <div class="bg-surface rounded-xl" style="padding: 14px">
-                <div class="flex items-center justify-between" style="margin-bottom: 8px">
-                  <p class="font-semibold text-foreground" style="font-size: 13px">
-                    Velocidade da fala
-                  </p>
+            <div class="px-4 pb-4">
+              <div class="bg-surface rounded-xl p-3.5">
+                <div class="flex items-center justify-between mb-2">
+                  <p class="font-semibold text-foreground text-sm">Velocidade da fala</p>
                   <span
-                    class="font-semibold text-primary bg-primary-surface rounded-full"
-                    style="font-size: 12px; padding: 2px 10px"
-                    >{{ speedLabel }}</span
+                    class="font-semibold text-primary bg-primary-surface rounded-full text-xs px-2.5 py-0.5"
                   >
+                    {{ speedLabel }}
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -226,10 +188,7 @@
                   style="accent-color: var(--color-primary)"
                   aria-label="Velocidade da voz"
                 />
-                <div
-                  class="flex justify-between text-muted"
-                  style="font-size: 11px; margin-top: 4px"
-                >
+                <div class="flex justify-between text-muted text-[0.6875rem] mt-1">
                   <span>Lenta</span>
                   <span>Normal</span>
                   <span>Rápida</span>
@@ -237,14 +196,13 @@
                 <button
                   type="button"
                   (click)="testSpeech()"
-                  class="w-full flex items-center justify-center gap-2 bg-card border border-border font-semibold rounded-xl transition-colors hover:bg-primary-surface cursor-pointer"
-                  style="font-size: 14px; padding: 10px; margin-top: 12px"
+                  class="w-full flex items-center justify-center gap-2 bg-card border border-border font-semibold rounded-xl transition-colors hover:bg-primary-surface cursor-pointer text-sm p-2.5 mt-3"
                   [class.text-primary]="!voiceReadingService.speaking()"
                   [class.text-muted]="voiceReadingService.speaking()"
                 >
                   <fa-icon
                     [icon]="voiceReadingService.speaking() ? icons.pause : icons.play"
-                    style="font-size: 13px"
+                    class="text-sm"
                   ></fa-icon>
                   {{ voiceReadingService.speaking() ? 'Parar' : 'Testar voz' }}
                 </button>
@@ -253,19 +211,18 @@
           }
 
           @if (!last) {
-            <div class="bg-border" style="height: 1px; margin: 0 16px"></div>
+            <div class="bg-border h-px mx-4"></div>
           }
         }
       </div>
     </section>
 
-    <div style="padding-bottom: 16px">
+    <div class="pb-4">
       <button
         type="button"
         (click)="resetPreferences()"
         appVoiceRead="Restaurar Padrões"
-        class="w-full bg-card border border-border text-muted font-semibold rounded-2xl transition-colors hover:bg-surface cursor-pointer"
-        style="font-size: 16px; padding: 16px"
+        class="w-full bg-card border border-border text-muted font-semibold rounded-2xl transition-colors hover:bg-surface cursor-pointer text-base p-4"
       >
         Restaurar Padrões
       </button>

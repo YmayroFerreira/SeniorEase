@@ -15,16 +15,18 @@ import {
   faExclamationTriangle,
   faLightbulb,
   faSpinner,
+  faVideo,
   faWifi,
 } from '@fortawesome/free-solid-svg-icons';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceInputService } from '../../core/services/voice-input.service';
+import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
   selector: 'app-waiting-room',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective],
+  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, BreadcrumbComponent],
   templateUrl: './waiting-room.component.html',
 })
 export class WaitingRoomComponent {
@@ -48,6 +50,7 @@ export class WaitingRoomComponent {
     spinner: faSpinner,
     wifi: faWifi,
     error: faExclamationTriangle,
+    video: faVideo,
   };
 
   connectionStatus: 'idle' | 'loading' | 'success' | 'error' = 'idle';
