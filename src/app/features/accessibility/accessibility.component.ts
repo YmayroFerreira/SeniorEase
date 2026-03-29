@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faArrowLeft,
@@ -16,9 +16,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {
   AccessibilityService,
+  ButtonComponent,
+  IconComponent,
   type FontSize,
   type Theme,
-} from '../../core/services/accessibility.service';
+} from '@senior-ease/ui';
 import { VoiceReadingService } from '../../core/services/voice-reading.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -35,12 +37,13 @@ interface AccessibilityPrefs {
 
 @Component({
   selector: 'app-accessibility',
-  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective],
+  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective, ButtonComponent, IconComponent],
   templateUrl: './accessibility.component.html',
 })
 export class AccessibilityComponent {
   private readonly accessibilityService = inject(AccessibilityService);
   protected readonly voiceReadingService = inject(VoiceReadingService);
+  protected readonly router = inject(Router);
 
   protected readonly icons = {
     wheelchair: faWheelchair,
