@@ -20,12 +20,21 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { CardButtonComponent, DividerComponent, IconComponent } from '@senior-ease/ui';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective, TranslatePipe],
+  imports: [
+    RouterLink,
+    FontAwesomeModule,
+    VoiceReadDirective,
+    TranslatePipe,
+    CardButtonComponent,
+    DividerComponent,
+    IconComponent,
+  ],
   templateUrl: './profile.component.html',
 })
 export class ProfileComponent {

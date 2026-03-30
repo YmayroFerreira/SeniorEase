@@ -12,7 +12,13 @@ import {
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { BadgeComponent, ButtonComponent, IconComponent } from '@senior-ease/ui';
+import {
+  BadgeComponent,
+  ButtonComponent,
+  CardButtonComponent,
+  DividerComponent,
+  IconComponent,
+} from '@senior-ease/ui';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -27,6 +33,8 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
     BadgeComponent,
     ButtonComponent,
     TranslatePipe,
+    CardButtonComponent,
+    DividerComponent,
   ],
   templateUrl: './dashboard-ds2.component.html',
 })

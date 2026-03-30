@@ -86,73 +86,57 @@
 
     <!-- Meu Caderno -->
     @if (!accessibility.simplifiedNav()) {
-      <button
-        type="button"
-        class="w-full bg-card border border-border rounded-2xl p-4 flex items-center justify-between hover:bg-primary/5 transition-all text-left group mb-5 cursor-pointer"
-        (click)="router.navigate(['/meu-caderno'])"
-        [appVoiceRead]="
-          ('DASHBOARD.MY_NOTEBOOK' | translate) + '. ' + ('DASHBOARD.NOTEBOOK_DESC' | translate)
-        "
-      >
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
-            [ngClass]="
-              accessibility.theme() === 'high-contrast'
-                ? 'bg-primary-light text-black'
-                : 'bg-primary text-white'
-            "
-          >
-            <ui-icon [icon]="icons.study" class="text-2xl"></ui-icon>
+      <div class="gap-2 grid mb-5">
+        <ng-template #descriptionNotebook>
+          <div class="flex items-center gap-4">
+            <div>
+              <h2 class="text-base font-bold text-foreground">
+                {{ 'DASHBOARD.MY_NOTEBOOK' | translate }}
+              </h2>
+              <p class="text-sm text-muted mt-0.5">{{ 'DASHBOARD.NOTEBOOK_DESC' | translate }}</p>
+            </div>
           </div>
-          <div>
-            <h2 class="text-base font-bold text-foreground">
-              {{ 'DASHBOARD.MY_NOTEBOOK' | translate }}
-            </h2>
-            <p class="text-sm text-muted mt-0.5">{{ 'DASHBOARD.NOTEBOOK_DESC' | translate }}</p>
-          </div>
-        </div>
-        <ui-icon
-          [icon]="icons.chevronRight"
-          class="text-primary group-hover:translate-x-1 transition-transform"
-        ></ui-icon>
-      </button>
-    }
+        </ng-template>
+        <ui-card-button
+          [useLeadingIcon]="true"
+          [useTrailingIcon]="true"
+          [leading]="icons.study"
+          [trailing]="icons.chevronRight"
+          [description]="descriptionNotebook"
+          type="button"
+          (click)="router.navigate(['/meu-caderno'])"
+          [appVoiceRead]="
+            ('DASHBOARD.MY_NOTEBOOK' | translate) + '. ' + ('DASHBOARD.NOTEBOOK_DESC' | translate)
+          "
+        />
 
-    <!-- Atividades guiadas -->
-    @if (!accessibility.simplifiedNav()) {
-      <!-- Versão padrão: card compacto -->
-      <button
-        type="button"
-        (click)="router.navigate(['/minhas-atividades'])"
-        [appVoiceRead]="
-          ('DASHBOARD.MY_ACTIVITIES' | translate) + '. ' + ('DASHBOARD.ACTIVITIES_DESC' | translate)
-        "
-        class="w-full rounded-2xl p-4 flex items-center justify-between bg-card border border-border hover:bg-primary-surface transition-all text-left group mb-5 cursor-pointer"
-      >
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
-            [ngClass]="
-              accessibility.theme() === 'high-contrast'
-                ? 'bg-primary-light text-black'
-                : 'bg-primary text-white'
-            "
-          >
-            <ui-icon [icon]="icons.check" class="text-2xl"></ui-icon>
+        <!-- Atividades guiadas -->
+        <!-- Versão padrão: card compacto -->
+        <ng-template #descriptionMyActivities>
+          <div class="flex items-center gap-4">
+            <div>
+              <h2 class="text-base font-bold text-foreground">
+                {{ 'DASHBOARD.MY_ACTIVITIES' | translate }}
+              </h2>
+              <p class="text-sm mt-0.5 text-muted">{{ 'DASHBOARD.ACTIVITIES_DESC' | translate }}</p>
+            </div>
           </div>
-          <div>
-            <h2 class="text-base font-bold text-foreground">
-              {{ 'DASHBOARD.MY_ACTIVITIES' | translate }}
-            </h2>
-            <p class="text-sm mt-0.5 text-muted">{{ 'DASHBOARD.ACTIVITIES_DESC' | translate }}</p>
-          </div>
-        </div>
-        <ui-icon
-          [icon]="icons.chevronRight"
-          class="text-primary group-hover:translate-x-1 transition-transform"
-        ></ui-icon>
-      </button>
+        </ng-template>
+        <ui-card-button
+          type="button"
+          [useLeadingIcon]="true"
+          [useTrailingIcon]="true"
+          [leading]="icons.check"
+          [trailing]="icons.chevronRight"
+          [description]="descriptionMyActivities"
+          (click)="router.navigate(['/minhas-atividades'])"
+          [appVoiceRead]="
+            ('DASHBOARD.MY_ACTIVITIES' | translate) +
+            '. ' +
+            ('DASHBOARD.ACTIVITIES_DESC' | translate)
+          "
+        />
+      </div>
     } @else {
       <!-- Versão simplificada: card grande e destacado -->
       <button
@@ -323,74 +307,59 @@
       }
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         <!-- Fórum -->
-        @if (!accessibility.simplifiedNav()) {
-          <button
-            type="button"
-            (click)="router.navigate(['/forum'])"
-            class="w-full flex items-center gap-4 px-4 py-4 hover:bg-primary/5 transition-all text-left cursor-pointer"
-            appVoiceRead="Fórum: Hackathon. 3 novas mensagens."
-          >
-            <div
-              class="w-8 h-8 rounded-full bg-primary-surface flex items-center justify-center text-primary flex-shrink-0"
-            >
-              <ui-icon [icon]="icons.clipboard"></ui-icon>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-foreground">Fórum: Hackathon</p>
-              <p class="text-xs text-muted mt-0.5">3 {{ 'DASHBOARD.NEW_MESSAGES' | translate }}</p>
-            </div>
-            <ui-icon [icon]="icons.chevronRight" class="text-primary flex-shrink-0"></ui-icon>
-          </button>
-        } @else {
+        <ng-template #leadingIconForum>
           <div
-            class="w-full flex items-center gap-4 px-4 py-4"
-            appVoiceRead="Fórum: Hackathon. 3 novas mensagens. Acesse pelo guia de atividades."
+            class="w-8 h-8 rounded-full bg-primary-surface flex items-center justify-center text-primary flex-shrink-0"
           >
-            <div
-              class="w-8 h-8 rounded-full bg-primary-surface flex items-center justify-center text-primary flex-shrink-0"
-            >
-              <ui-icon [icon]="icons.clipboard"></ui-icon>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-foreground">Fórum: Hackathon</p>
-              <p class="text-xs text-muted mt-0.5">3 {{ 'DASHBOARD.NEW_MESSAGES' | translate }}</p>
-            </div>
+            <ui-icon [icon]="icons.clipboard"></ui-icon>
           </div>
-        }
-
-        <div class="h-px bg-border mx-4"></div>
-
-        <!-- Trabalho Final -->
-        <button
+        </ng-template>
+        <ng-template #descriptionForum>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-foreground">Fórum: Hackathon</p>
+            <p class="text-xs text-muted mt-0.5">3 {{ 'DASHBOARD.NEW_MESSAGES' | translate }}</p>
+          </div>
+        </ng-template>
+        <ui-card-button
           type="button"
-          (click)="router.navigate(['/trabalho-final'])"
-          appVoiceRead="Trabalho Final. Nota 9 de 9. Entregue com sucesso. Toque para ver os detalhes."
-          class="w-full flex items-center gap-4 px-4 py-4 text-left hover:bg-surface transition-colors cursor-pointer"
-        >
+          (click)="router.navigate(['/forum'])"
+          appVoiceRead="Fórum: Hackathon. 3 novas mensagens."
+          [useTrailingIcon]="true"
+          [trailing]="!accessibility.simplifiedNav() ? icons.chevronRight : null"
+          [leading]="leadingIconForum"
+          [description]="descriptionForum"
+        />
+        <ui-divider class="mx-4" ariaLabel="Separador horizontal de exemplo"></ui-divider>
+        <!-- Trabalho Final -->
+        <ng-template #leadingIconFinalJob>
           <div
             class="w-8 h-8 rounded-full bg-success-light flex items-center justify-center text-success flex-shrink-0"
           >
             <ui-icon [icon]="icons.clock"></ui-icon>
           </div>
+        </ng-template>
+        <ng-template #trailingIconFinalJob>
+          <ui-badge [variant]="accessibility.theme() === 'high-contrast' ? 'warning' : 'success'">
+            {{ 'COMMON.SEE_DETAILS' | translate }}
+          </ui-badge>
+        </ng-template>
+        <ng-template #descriptionFinalJob>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-semibold text-foreground">Trabalho Final</p>
             <p class="text-xs text-muted mt-0.5">
               Nota 9/9 · {{ 'DASHBOARD.DELIVERED_SUCCESS' | translate }}
             </p>
           </div>
-          @if (!accessibility.simplifiedNav()) {
-            <span
-              class="text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap"
-              [ngClass]="
-                accessibility.theme() === 'high-contrast'
-                  ? 'text-primary-light bg-black border border-primary-light'
-                  : 'text-success bg-success-light'
-              "
-            >
-              {{ 'COMMON.SEE_DETAILS' | translate }}
-            </span>
-          }
-        </button>
+        </ng-template>
+        <ui-card-button
+          type="button"
+          (click)="router.navigate(['/trabalho-final'])"
+          appVoiceRead="Trabalho Final. Nota 9 de 9. Entregue com sucesso. Toque para ver os detalhes."
+          [trailing]="!accessibility.simplifiedNav() ? trailingIconFinalJob : null"
+          [leading]="leadingIconFinalJob"
+          [description]="descriptionFinalJob"
+        >
+        </ui-card-button>
       </div>
     </section>
 

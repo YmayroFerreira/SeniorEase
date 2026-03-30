@@ -335,6 +335,10 @@
   },
   "WAITING_ROOM": {
     "TITLE": "Waiting room",
+    "BREADCRUMB": "Waiting room",
+    "COURSE_TITLE": "Front-End Development",
+    "COURSE_INFO": "Prof. Dr. Carlos Mendes • Virtual room 03",
+    "LESSON_DESCRIPTION": "Today's class: Front End Development, from 7 PM to 9 PM. Virtual room 03. Professor Carlos Mendes.",
     "ON_TIME": "You're on time! The class starts in 15 minutes.",
     "ENTER_BTN_ARIA": "Enter classroom button. When clicked, your camera and microphone will be turned on.",
     "ENTER": "Enter classroom",
@@ -342,12 +346,18 @@
     "CONNECTION_TEST": "Connection test",
     "CONNECTION_BTN_ARIA": "Connection test button. Current status:",
     "NEED_HELP": "Need help?",
+    "NEED_HELP_DESC": "Need help? Call support: 0800-123-4567. Available 24 hours.",
     "SUPPORT_PHONE": "Call support: 0800-123-4567",
     "AVAILABLE_24H": "Available 24 hours",
     "STATUS_IDLE": "Test my connection",
     "STATUS_LOADING": "Checking...",
     "STATUS_SUCCESS": "Excellent connection!",
     "STATUS_ERROR": "No internet right now"
+  },
+  "VIDEO_SESSION": {
+    "VIDEO_AREA": "Video area. Live instructor image.",
+    "LIVE_BADGE": "LIVE",
+    "PLACEHOLDER": "The instructor's image will appear here"
   },
   "FINAL_WORK": {
     "TITLE": "Final Work",
