@@ -1,10 +1,24 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 
 export const routes: Routes = [
   {
+    path: 'auth',
+    children: [
+      {
+        path: 'callback',
+        loadComponent: () =>
+          import('./features/auth-callback/auth-callback.component').then(
+            (m) => m.AuthCallbackComponent,
+          ),
+      },
+    ],
+  },
+  {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'inicio', pathMatch: 'full' },
       {
