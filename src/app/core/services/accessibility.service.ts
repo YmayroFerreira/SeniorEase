@@ -3,6 +3,7 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 
 export type FontSize = 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 export type Theme = 'default' | 'high-contrast' | 'soft';
+export type AnimationSpeed = 'normal' | 'slow' | 'none';
 
 const FONT_CLASS_MAP: Record<FontSize, string> = {
   small: 'font-small',
@@ -26,6 +27,12 @@ const THEME_KEY = 'accessibility-theme';
 const VOICE_KEY = 'accessibility-voice-reading';
 const SPEECH_RATE_KEY = 'accessibility-speech-rate';
 const DYSLEXIA_KEY = 'accessibility-dyslexia-font';
+const ANIMATION_KEY = 'accessibility-animation-speed';
+const EXTRA_CONFIRMATIONS_KEY = 'profile-extra-confirmations';
+const SPACING_KEY = 'accessibility-increased-spacing';
+const SIMPLIFIED_NAV_KEY = 'profile-simplified-nav';
+
+const VALID_ANIMATIONS: AnimationSpeed[] = ['normal', 'slow', 'none'];
 
 @Injectable({ providedIn: 'root' })
 export class AccessibilityService {
@@ -36,6 +43,12 @@ export class AccessibilityService {
   readonly voiceReading = signal<boolean>(this.loadVoiceReading());
   readonly speechRate = signal<number>(this.loadSpeechRate());
   readonly dyslexiaFont = signal<boolean>(this.loadDyslexiaFont());
+  readonly animationSpeed = signal<AnimationSpeed>(this.loadAnimationSpeed());
+  readonly extraConfirmations = signal<boolean>(
+    localStorage.getItem(EXTRA_CONFIRMATIONS_KEY) === 'true',
+  );
+  readonly increasedSpacing = signal<boolean>(localStorage.getItem(SPACING_KEY) === 'true');
+  readonly simplifiedNav = signal<boolean>(localStorage.getItem(SIMPLIFIED_NAV_KEY) === 'true');
 
   private readonly _fontEffect = effect(() => {
     const size = this.fontSize();
@@ -74,6 +87,34 @@ export class AccessibilityService {
     localStorage.setItem(DYSLEXIA_KEY, String(enabled));
   });
 
+  private readonly _extraConfirmationsEffect = effect(() => {
+    localStorage.setItem(EXTRA_CONFIRMATIONS_KEY, String(this.extraConfirmations()));
+  });
+
+  private readonly _simplifiedNavEffect = effect(() => {
+    localStorage.setItem(SIMPLIFIED_NAV_KEY, String(this.simplifiedNav()));
+  });
+
+  private readonly _spacingEffect = effect(() => {
+    const enabled = this.increasedSpacing();
+    const classList = this.document.documentElement.classList;
+    if (enabled) {
+      classList.add('spacing-increased');
+    } else {
+      classList.remove('spacing-increased');
+    }
+    localStorage.setItem(SPACING_KEY, String(enabled));
+  });
+
+  private readonly _animationEffect = effect(() => {
+    const speed = this.animationSpeed();
+    const classList = this.document.documentElement.classList;
+    classList.remove('animation-disabled', 'animation-slow');
+    if (speed === 'none') classList.add('animation-disabled');
+    if (speed === 'slow') classList.add('animation-slow');
+    localStorage.setItem(ANIMATION_KEY, speed);
+  });
+
   private loadFont(): FontSize {
     const stored = localStorage.getItem(FONT_KEY) as FontSize;
     return VALID_FONTS.includes(stored) ? stored : 'medium';
@@ -95,5 +136,10 @@ export class AccessibilityService {
   private loadSpeechRate(): number {
     const stored = parseFloat(localStorage.getItem(SPEECH_RATE_KEY) ?? '');
     return isNaN(stored) ? 0.9 : Math.min(1.5, Math.max(0.5, stored));
+  }
+
+  private loadAnimationSpeed(): AnimationSpeed {
+    const stored = localStorage.getItem(ANIMATION_KEY) as AnimationSpeed;
+    return VALID_ANIMATIONS.includes(stored) ? stored : 'normal';
   }
 }

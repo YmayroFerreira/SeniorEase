@@ -1,0 +1,567 @@
+<div class="min-h-screen bg-surface pb-[88px]">
+  <div class="md:hidden">
+    <div class="bg-primary h-11"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="bg-primary md:bg-card md:border-b md:border-border px-6 pt-4 pb-5">
+    <!-- Mobile -->
+    <div class="md:hidden flex items-center gap-3">
+      <button
+        type="button"
+        (click)="activeActivity() ? closeActivity() : router.navigate(['/inicio'])"
+        class="text-white cursor-pointer text-2xl leading-none bg-transparent border-none p-1 flex-shrink-0"
+        [appVoiceRead]="
+          activeActivity() ? 'Voltar para a lista de atividades' : 'Voltar para o início'
+        "
+      >
+        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+      </button>
+      <div class="min-w-0">
+        <p class="text-white/60 text-xs leading-none mb-0.5 truncate">
+          Início
+          <fa-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></fa-icon>
+          <span
+            class="cursor-pointer hover:text-white/90 transition-colors"
+            (click)="activeActivity() ? closeActivity() : null"
+            >Minhas Atividades</span
+          >
+          @if (activeActivity()) {
+            <fa-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></fa-icon>
+            <span class="text-white/90">{{ activeActivity()!.title }}</span>
+          }
+        </p>
+        <h1 class="font-semibold text-white text-base leading-snug truncate">
+          {{ activeActivity() ? activeActivity()!.title : 'Minhas Atividades' }}
+        </h1>
+      </div>
+    </div>
+
+    <!-- Desktop -->
+    <div class="hidden md:block">
+      <nav class="flex items-center gap-1 text-xs text-muted mb-3" aria-label="Navegação">
+        <button
+          type="button"
+          (click)="router.navigate(['/inicio'])"
+          class="hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
+        >
+          Início
+        </button>
+        <fa-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></fa-icon>
+        <button
+          type="button"
+          (click)="closeActivity()"
+          class="transition-colors cursor-pointer bg-transparent border-none p-0"
+          [class.hover:text-foreground]="!!activeActivity()"
+          [class.text-foreground]="!activeActivity()"
+          [class.font-semibold]="!activeActivity()"
+          [class.pointer-events-none]="!activeActivity()"
+        >
+          Minhas Atividades
+        </button>
+        @if (activeActivity()) {
+          <fa-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></fa-icon>
+          <span class="text-foreground font-semibold">{{ activeActivity()!.title }}</span>
+        }
+      </nav>
+
+      <h1 class="font-bold text-foreground text-xl">
+        {{ activeActivity() ? activeActivity()!.title : 'Minhas Atividades' }}
+      </h1>
+      <p class="text-muted text-sm mt-0.5">
+        {{
+          activeActivity() ? activeActivity()!.description : 'Siga as etapas com calma. Sem pressa.'
+        }}
+      </p>
+    </div>
+  </div>
+
+  <div class="px-6 pt-5 max-w-2xl">
+    <!--LISTA DE ATIVIDADES -->
+    @if (!activeActivity()) {
+      <!-- Banner de progresso -->
+      <div
+        class="rounded-2xl flex items-center p-4 mb-6 gap-4"
+        [class.bg-success-light]="!allDone()"
+        [class.bg-success]="allDone()"
+        [appVoiceRead]="totalCompleted() + ' de ' + activities.length + ' atividades concluídas'"
+      >
+        <div
+          class="rounded-full flex items-center justify-center flex-shrink-0 w-12 h-12"
+          [class.bg-success]="!allDone()"
+          [class.bg-white]="allDone()"
+          [class.bg-opacity-20]="!allDone()"
+        >
+          <fa-icon
+            [icon]="allDone() ? icons.star : icons.checkCircle"
+            class="text-2xl"
+            [class.text-white]="!allDone()"
+            [class.text-success]="allDone()"
+          ></fa-icon>
+        </div>
+        <div>
+          <p
+            class="font-bold text-base"
+            [class.text-success]="!allDone()"
+            [class.text-white]="allDone()"
+          >
+            @if (allDone()) {
+              Parabéns! Tudo feito hoje!
+            } @else {
+              {{ totalCompleted() }} de {{ activities.length }} atividades concluídas
+            }
+          </p>
+          <p class="text-sm" [class.text-success]="!allDone()" [class.text-white]="allDone()">
+            @if (allDone()) {
+              Você completou todas as atividades do dia!
+            } @else if (totalCompleted() === 0) {
+              Comece pela primeira e vá no seu ritmo.
+            } @else {
+              Continue! Você está indo muito bem.
+            }
+          </p>
+        </div>
+      </div>
+
+      <!-- Lista de atividades -->
+      <section>
+        <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
+          Atividades de hoje
+        </h2>
+        <div class="space-y-3">
+          @for (activity of activities; track activity.id; let i = $index) {
+            <button
+              type="button"
+              (click)="openActivity(activity.id)"
+              [disabled]="isCompleted(activity.id)"
+              [appVoiceRead]="
+                activity.title +
+                '. ' +
+                activity.description +
+                '. ' +
+                activity.steps.length +
+                ' etapas. ' +
+                activity.estimatedMinutes +
+                ' minutos. ' +
+                (isCompleted(activity.id) ? 'Concluída.' : 'Toque para começar.')
+              "
+              class="w-full bg-card rounded-2xl shadow-sm text-left transition-all px-5 py-4 border-2"
+              [class.border-success]="isCompleted(activity.id)"
+              [class.border-border]="!isCompleted(activity.id)"
+              [class.opacity-70]="isCompleted(activity.id)"
+              [class.cursor-default]="isCompleted(activity.id)"
+              [class.hover:border-primary]="!isCompleted(activity.id)"
+              [class.hover:shadow-md]="!isCompleted(activity.id)"
+              [class.cursor-pointer]="!isCompleted(activity.id)"
+            >
+              <div class="flex items-start gap-4">
+                <!-- Ícone de status -->
+                <div
+                  class="rounded-full flex items-center justify-center flex-shrink-0 w-11 h-11 mt-0.5"
+                  [class.bg-success]="isCompleted(activity.id)"
+                  [class.bg-primary-surface]="!isCompleted(activity.id)"
+                >
+                  <fa-icon
+                    [icon]="isCompleted(activity.id) ? icons.checkCircle : icons.circle"
+                    class="text-xl"
+                    [class.text-white]="isCompleted(activity.id)"
+                    [class.text-primary]="!isCompleted(activity.id)"
+                  ></fa-icon>
+                </div>
+
+                <!-- Conteúdo -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between gap-2">
+                    <p
+                      class="font-bold text-foreground text-base"
+                      [class.line-through]="isCompleted(activity.id)"
+                      [class.text-muted]="isCompleted(activity.id)"
+                    >
+                      {{ activity.title }}
+                    </p>
+                    @if (!isCompleted(activity.id)) {
+                      <fa-icon
+                        [icon]="icons.chevronRight"
+                        class="text-primary flex-shrink-0 text-base"
+                      ></fa-icon>
+                    }
+                  </div>
+                  <p class="text-muted text-sm mt-0.5">
+                    {{ activity.description }}
+                  </p>
+                  <div class="flex items-center gap-3 mt-2">
+                    <span
+                      class="rounded-full font-semibold text-xs px-2.5 py-0.5"
+                      [class.bg-success-light]="isCompleted(activity.id)"
+                      [class.text-success]="isCompleted(activity.id)"
+                      [class.bg-primary-surface]="!isCompleted(activity.id)"
+                      [class.text-primary]="!isCompleted(activity.id)"
+                    >
+                      {{
+                        isCompleted(activity.id) ? 'Concluída' : activity.steps.length + ' etapas'
+                      }}
+                    </span>
+                    <span class="text-muted text-xs"> ~{{ activity.estimatedMinutes }} min </span>
+                  </div>
+                </div>
+              </div>
+            </button>
+          }
+        </div>
+      </section>
+
+      <!-- Botão de redefinir (discreto, para testes) -->
+      @if (totalCompleted() > 0) {
+        <div class="mt-8 text-center">
+          <button
+            type="button"
+            (click)="resetProgress()"
+            class="text-muted hover:text-foreground transition-colors cursor-pointer text-xs bg-transparent border-none p-2"
+            appVoiceRead="Redefinir progresso das atividades"
+          >
+            Redefinir progresso
+          </button>
+        </div>
+      }
+    }
+
+    <!-- PASSO A PASSO -->
+    @if (activeActivity() && currentStep) {
+      <div>
+        <!-- etapas -->
+        <div class="flex items-center gap-2 mb-7">
+          @for (step of activeActivity()!.steps; track $index) {
+            <div
+              class="rounded-full transition-all h-2"
+              [style.flex]="activeStepIndex() === $index ? '2' : '1'"
+              [class.bg-primary]="activeStepIndex() === $index"
+              [class.bg-success]="$index < activeStepIndex()"
+              [class.bg-border]="$index > activeStepIndex()"
+            ></div>
+          }
+        </div>
+        <p
+          class="font-semibold text-primary uppercase tracking-wide text-xs mb-2"
+          [appVoiceRead]="
+            'Etapa ' + (activeStepIndex() + 1) + ' de ' + activeActivity()!.steps.length
+          "
+        >
+          Etapa {{ activeStepIndex() + 1 }} de {{ activeActivity()!.steps.length }}
+        </p>
+
+        @if (!currentStep!.expandedContent) {
+          <div class="bg-card rounded-2xl shadow-sm border border-border px-6 py-7 mb-5">
+            <h2
+              class="font-bold text-foreground text-xl mb-4 leading-snug"
+              [appVoiceRead]="currentStep!.title"
+            >
+              {{ currentStep!.title }}
+            </h2>
+            <p
+              class="text-muted text-base leading-relaxed"
+              [appVoiceRead]="currentStep!.description"
+            >
+              {{ currentStep!.description }}
+            </p>
+          </div>
+        }
+
+        <!-- Botões de ação -->
+        <div class="flex flex-col gap-3">
+          @if (currentStep!.expandedContent === 'waiting-room') {
+            <!-- Card da aula -->
+            <div
+              class="bg-card rounded-2xl border border-border px-5 py-4 mb-4"
+              appVoiceRead="Desenvolvimento Front-End. Prof. Dr. Carlos Mendes. Das 19h às 21h. Sala virtual 03."
+            >
+              <div class="flex items-center gap-3 mb-2">
+                <div
+                  class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center flex-shrink-0"
+                >
+                  <fa-icon [icon]="icons.video" class="text-white text-base"></fa-icon>
+                </div>
+                <div>
+                  <p class="font-bold text-foreground text-base leading-snug">
+                    Desenvolvimento Front-End
+                  </p>
+                  <p class="text-muted text-sm">Prof. Dr. Carlos Mendes</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 mt-3 pt-3 border-t border-border">
+                <span class="text-xs text-muted font-semibold uppercase tracking-wide"
+                  >Horário</span
+                >
+                <span class="text-sm font-bold text-foreground">19h00 – 21h00</span>
+                <span class="text-xs text-muted">·</span>
+                <span class="text-sm text-muted">Sala virtual 03</span>
+              </div>
+            </div>
+
+            <!-- Status de pontualidade -->
+            <div
+              class="rounded-2xl flex items-center gap-4 px-5 py-4 mb-1"
+              [class.bg-success-light]="punctualityStatus() !== 'late'"
+              [class.bg-warning-light]="punctualityStatus() === 'late'"
+              [appVoiceRead]="punctualityMessage() + '. Prof. Dr. Carlos Mendes. Sala virtual 03.'"
+            >
+              <fa-icon
+                [icon]="icons.clock"
+                class="text-2xl flex-shrink-0"
+                [class.text-success]="punctualityStatus() !== 'late'"
+                [class.text-warning]="punctualityStatus() === 'late'"
+              ></fa-icon>
+              <div>
+                <p
+                  class="font-bold text-base leading-snug"
+                  [class.text-success]="punctualityStatus() !== 'late'"
+                  [class.text-warning]="punctualityStatus() === 'late'"
+                >
+                  {{ punctualityMessage() }}
+                </p>
+                <p class="text-muted text-sm mt-0.5">Prof. Dr. Carlos Mendes · Sala virtual 03</p>
+              </div>
+            </div>
+
+            <!-- Teste de conexão -->
+            <div class="bg-card rounded-2xl border border-border overflow-hidden">
+              <button
+                type="button"
+                (click)="testConnection()"
+                [disabled]="connectionStatus() === 'testing'"
+                class="w-full flex items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-surface cursor-pointer disabled:cursor-wait"
+                [appVoiceRead]="connectionLabel() + '. ' + connectionDescription()"
+              >
+                <!-- Ícone de status -->
+                <div
+                  class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-lg"
+                  [class.bg-primary-surface]="connectionStatus() === 'idle'"
+                  [class.bg-surface]="connectionStatus() === 'testing'"
+                  [class.bg-success-light]="connectionStatus() === 'ok'"
+                  [class.bg-warning-light]="connectionStatus() === 'slow'"
+                  [class.bg-danger-light]="connectionStatus() === 'offline'"
+                >
+                  @switch (connectionStatus()) {
+                    @case ('testing') {
+                      <fa-icon [icon]="icons.spinner" class="fa-spin text-muted"></fa-icon>
+                    }
+                    @case ('ok') {
+                      <fa-icon [icon]="icons.checkCircle" class="text-success"></fa-icon>
+                    }
+                    @case ('slow') {
+                      <fa-icon [icon]="icons.warning" class="text-warning"></fa-icon>
+                    }
+                    @case ('offline') {
+                      <fa-icon [icon]="icons.warning" class="text-danger"></fa-icon>
+                    }
+                    @default {
+                      <fa-icon [icon]="icons.wifi" class="text-primary"></fa-icon>
+                    }
+                  }
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p
+                    class="font-bold text-base"
+                    [class.text-foreground]="
+                      connectionStatus() === 'idle' || connectionStatus() === 'testing'
+                    "
+                    [class.text-success]="connectionStatus() === 'ok'"
+                    [class.text-warning]="connectionStatus() === 'slow'"
+                    [class.text-danger]="connectionStatus() === 'offline'"
+                  >
+                    {{ connectionLabel() }}
+                  </p>
+                  <p class="text-muted text-sm mt-0.5">{{ connectionDescription() }}</p>
+                </div>
+                @if (connectionStatus() === 'idle') {
+                  <span class="text-primary text-sm font-bold flex-shrink-0">Testar →</span>
+                }
+              </button>
+
+              @if (connectionStatus() === 'slow' || connectionStatus() === 'offline') {
+                <div class="px-5 pb-4 pt-0">
+                  <div class="bg-warning-light rounded-xl px-4 py-3">
+                    <p class="text-sm text-warning font-semibold mb-1">
+                      O que fazer se o vídeo travar?
+                    </p>
+                    <ul class="text-sm text-muted space-y-1 list-disc list-inside">
+                      <li>Feche outros aplicativos abertos</li>
+                      <li>Aproxime-se do roteador Wi-Fi</li>
+                      <li>Recarregue a página da aula</li>
+                    </ul>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Ajuda -->
+            <div class="bg-card rounded-2xl border border-border overflow-hidden">
+              <button
+                type="button"
+                (click)="helpExpanded.set(!helpExpanded())"
+                class="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-surface transition-colors cursor-pointer"
+                [appVoiceRead]="helpExpanded() ? 'Fechar ajuda' : 'Abrir ajuda'"
+              >
+                <fa-icon
+                  [icon]="icons.headset"
+                  class="text-primary text-lg flex-shrink-0"
+                ></fa-icon>
+                <span class="flex-1 font-semibold text-foreground text-base"
+                  >Precisa de ajuda?</span
+                >
+                <fa-icon
+                  [icon]="helpExpanded() ? icons.chevronUp : icons.chevronDown"
+                  class="text-muted text-sm"
+                ></fa-icon>
+              </button>
+              @if (helpExpanded()) {
+                <div class="px-5 pb-5 flex flex-col gap-3">
+                  <div class="bg-primary-surface rounded-xl px-4 py-3">
+                    <p class="text-sm font-semibold text-primary mb-1">Suporte técnico</p>
+                    <p class="text-sm text-muted">
+                      Ligue: <strong class="text-foreground">0800-123-4567</strong>
+                    </p>
+                    <p class="text-sm text-muted">Disponível 24 horas</p>
+                  </div>
+                  <div class="bg-surface rounded-xl px-4 py-3">
+                    <p class="text-sm font-semibold text-foreground mb-1">Problemas comuns</p>
+                    <ul class="text-sm text-muted space-y-1 list-disc list-inside">
+                      <li>Sem som: verifique o volume e os fones</li>
+                      <li>Sem câmera: recarregue a página</li>
+                      <li>Sem acesso: verifique o link da aula</li>
+                    </ul>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Botão principal: Entrar na aula -->
+            <button
+              type="button"
+              (click)="enterClass()"
+              class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-3 mt-1"
+              appVoiceRead="Entrar na aula. Sua câmera e microfone serão ativados."
+            >
+              <fa-icon [icon]="icons.video" class="text-base"></fa-icon>
+              Entrar na aula
+            </button>
+            <p class="text-xs text-muted text-center">
+              Sua câmera e microfone serão ativados ao entrar
+            </p>
+          } @else if (currentStep!.expandedContent === 'post-class') {
+            <!-- Card de status -->
+            <div
+              class="bg-card rounded-2xl border border-border px-5 py-5 mb-4"
+              appVoiceRead="Você saiu da aula. Pode voltar ao vídeo ou concluir a atividade."
+            >
+              <div class="flex items-center gap-4 mb-4">
+                <div
+                  class="w-12 h-12 rounded-2xl bg-primary-surface flex items-center justify-center flex-shrink-0"
+                >
+                  <fa-icon [icon]="icons.video" class="text-primary text-xl"></fa-icon>
+                </div>
+                <div>
+                  <p class="font-bold text-foreground text-base leading-snug">
+                    Desenvolvimento Front-End
+                  </p>
+                  <p class="text-muted text-sm">Prof. Dr. Carlos Mendes · Sala virtual 03</p>
+                </div>
+              </div>
+              <div class="bg-surface rounded-xl px-4 py-3">
+                <p class="text-sm text-muted leading-relaxed">
+                  Você saiu da aula. Se foi sem querer, toque em
+                  <strong class="text-foreground">Voltar para a aula</strong>. Quando terminar,
+                  toque em <strong class="text-foreground">Concluir atividade</strong>.
+                </p>
+              </div>
+            </div>
+
+            <!-- Botão: Voltar para a aula -->
+            <button
+              type="button"
+              (click)="returnToClass()"
+              class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-3"
+              appVoiceRead="Voltar para a aula. Reabre a sala de aula."
+            >
+              <fa-icon [icon]="icons.rotateLeft" class="text-base"></fa-icon>
+              Voltar para a aula
+            </button>
+
+            <!-- Botão: Concluir -->
+            <button
+              type="button"
+              (click)="advanceStep()"
+              class="w-full bg-success text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-3"
+              appVoiceRead="Concluir atividade. Marca a aula como concluída."
+            >
+              <fa-icon [icon]="icons.checkCircle" class="text-base"></fa-icon>
+              Concluir atividade
+            </button>
+          } @else if (currentStep!.actionRoute) {
+            <button
+              type="button"
+              (click)="navigateToRoute()"
+              class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-2.5"
+              [appVoiceRead]="currentStep!.actionLabel + '. Abre outra tela.'"
+            >
+              <fa-icon [icon]="icons.externalLink" class="text-base"></fa-icon>
+              {{ currentStep!.actionLabel }}
+            </button>
+
+            <button
+              type="button"
+              (click)="advanceStep()"
+              class="w-full bg-success text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-2.5"
+              [appVoiceRead]="
+                isLastStep
+                  ? 'Já fiz isso. Concluir atividade.'
+                  : 'Já fiz isso. Ir para a próxima etapa.'
+              "
+            >
+              <fa-icon [icon]="icons.checkCircle" class="text-base"></fa-icon>
+              {{ isLastStep ? 'Já fiz isso — Concluir' : 'Já fiz isso → Próxima etapa' }}
+            </button>
+          } @else {
+            <button
+              type="button"
+              (click)="advanceStep()"
+              class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-2.5"
+              [appVoiceRead]="currentStep!.actionLabel"
+            >
+              {{ currentStep!.actionLabel }}
+              <fa-icon [icon]="icons.arrowRight" class="text-base"></fa-icon>
+            </button>
+          }
+
+          @if (activeStepIndex() > 0 && !currentStep!.expandedContent) {
+            <button
+              type="button"
+              (click)="goToPreviousStep()"
+              class="w-full bg-card border border-border text-muted font-semibold rounded-2xl hover:bg-surface transition-colors cursor-pointer text-base p-3.5"
+              appVoiceRead="Voltar para a etapa anterior"
+            >
+              Voltar à etapa anterior
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Toast -->
+<div role="status" aria-live="polite" aria-atomic="true" class="sr-only">
+  {{ showCelebration() ? 'Atividade concluída! Muito bem!' : '' }}
+</div>
+
+@if (showCelebration()) {
+  <div
+    class="fixed bottom-28 left-1/2 -translate-x-1/2 bg-success text-white rounded-2xl shadow-lg flex items-center z-50 gap-3 px-6 py-4 min-w-[280px] max-w-[360px]"
+    aria-hidden="true"
+  >
+    <fa-icon [icon]="icons.star" class="text-2xl"></fa-icon>
+    <div>
+      <p class="font-bold text-base">Muito bem!</p>
+      <p class="text-sm opacity-90">Atividade concluída com sucesso!</p>
+    </div>
+  </div>
+}

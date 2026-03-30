@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faArrowLeft,
@@ -16,13 +16,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {
   AccessibilityService,
+  type AnimationSpeed,
   type FontSize,
   type Theme,
 } from '../../core/services/accessibility.service';
 import { VoiceReadingService } from '../../core/services/voice-reading.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
-
-type Animation = 'normal' | 'slow' | 'none';
 
 interface AccessibilityPrefs {
   voiceReading: boolean;
@@ -39,8 +38,9 @@ interface AccessibilityPrefs {
   templateUrl: './accessibility.component.html',
 })
 export class AccessibilityComponent {
-  private readonly accessibilityService = inject(AccessibilityService);
+  private readonly svc = inject(AccessibilityService);
   protected readonly voiceReadingService = inject(VoiceReadingService);
+  protected readonly router = inject(Router);
 
   protected readonly icons = {
     wheelchair: faWheelchair,
@@ -56,18 +56,18 @@ export class AccessibilityComponent {
     pause: faPause,
   };
 
-  protected readonly selectedFontSize = this.accessibilityService.fontSize;
-  protected readonly selectedTheme = this.accessibilityService.theme;
-  protected readonly selectedAnimation = signal<Animation>('normal');
-  protected readonly speechRate = this.accessibilityService.speechRate;
+  protected readonly selectedFontSize = this.svc.fontSize;
+  protected readonly selectedTheme = this.svc.theme;
+  protected readonly selectedAnimation = this.svc.animationSpeed;
+  protected readonly speechRate = this.svc.speechRate;
 
   protected readonly prefs = signal<AccessibilityPrefs>({
-    voiceReading: this.accessibilityService.voiceReading(),
+    voiceReading: this.svc.voiceReading(),
     largerButtons: true,
-    simplifiedNav: false,
+    simplifiedNav: this.svc.simplifiedNav(),
     silentMode: false,
-    increasedSpacing: false,
-    dyslexiaFont: this.accessibilityService.dyslexiaFont(),
+    increasedSpacing: this.svc.increasedSpacing(),
+    dyslexiaFont: this.svc.dyslexiaFont(),
   });
 
   protected readonly fontSizeOptions: { value: FontSize; label: string; description: string }[] = [
@@ -78,12 +78,12 @@ export class AccessibilityComponent {
     { value: 'xx-large', label: 'XXG', description: 'Máximo' },
   ];
 
-  protected readonly fontIconPx: Record<FontSize, number> = {
-    small: 10,
-    medium: 13,
-    large: 17,
-    'x-large': 21,
-    'xx-large': 25,
+  protected readonly fontIconRem: Record<FontSize, number> = {
+    small: 0.625,
+    medium: 0.8125,
+    large: 1.0625,
+    'x-large': 1.3125,
+    'xx-large': 1.5625,
   };
 
   protected readonly themeOptions: { value: Theme; label: string; description: string }[] = [
@@ -92,7 +92,7 @@ export class AccessibilityComponent {
     { value: 'soft', label: 'Suave', description: 'Tons pastéis' },
   ];
 
-  protected readonly animationOptions: { value: Animation; label: string }[] = [
+  protected readonly animationOptions: { value: AnimationSpeed; label: string }[] = [
     { value: 'normal', label: 'Normal' },
     { value: 'slow', label: 'Lenta' },
     { value: 'none', label: 'Sem animações' },
@@ -121,21 +121,22 @@ export class AccessibilityComponent {
 
   protected togglePref(key: keyof AccessibilityPrefs): void {
     this.prefs.update((p) => ({ ...p, [key]: !p[key] }));
+    const val = this.prefs()[key] as boolean;
     if (key === 'voiceReading') {
-      this.accessibilityService.voiceReading.set(this.prefs()[key]);
-      if (this.prefs()[key]) {
+      this.svc.voiceReading.set(val);
+      if (val) {
         this.voiceReadingService.speakDirect('Leitura em voz alta ativada!');
       } else {
         this.voiceReadingService.stop();
       }
     }
-    if (key === 'dyslexiaFont') {
-      this.accessibilityService.dyslexiaFont.set(this.prefs()[key]);
-    }
+    if (key === 'dyslexiaFont') this.svc.dyslexiaFont.set(val);
+    if (key === 'increasedSpacing') this.svc.increasedSpacing.set(val);
+    if (key === 'simplifiedNav') this.svc.simplifiedNav.set(val);
   }
 
   protected updateSpeechRate(rate: number): void {
-    this.accessibilityService.speechRate.set(rate);
+    this.svc.speechRate.set(rate);
   }
 
   protected testSpeech(): void {
@@ -158,12 +159,14 @@ export class AccessibilityComponent {
   }
 
   protected resetPreferences(): void {
-    this.accessibilityService.fontSize.set('medium');
-    this.accessibilityService.theme.set('default');
-    this.accessibilityService.voiceReading.set(false);
-    this.accessibilityService.speechRate.set(0.9);
-    this.selectedAnimation.set('normal');
-    this.accessibilityService.dyslexiaFont.set(false);
+    this.svc.fontSize.set('medium');
+    this.svc.theme.set('default');
+    this.svc.voiceReading.set(false);
+    this.svc.speechRate.set(0.9);
+    this.svc.animationSpeed.set('normal');
+    this.svc.dyslexiaFont.set(false);
+    this.svc.increasedSpacing.set(false);
+    this.svc.simplifiedNav.set(false);
     this.prefs.set({
       voiceReading: false,
       largerButtons: true,
