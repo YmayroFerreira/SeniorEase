@@ -1,3 +1,5 @@
 {
+  "buildCommand": "npm run build -- --configuration=production",
+  "outputDirectory": "dist/app/browser",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
