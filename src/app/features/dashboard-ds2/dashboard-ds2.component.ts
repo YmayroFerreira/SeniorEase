@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -11,13 +11,7 @@ import {
   faClipboard,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  BadgeComponent,
-  ButtonComponent,
-  DividerComponent,
-  IconComponent,
-  ListItemComponent,
-} from '@senior-ease/ui';
+import { BadgeComponent, ButtonComponent, IconComponent } from '@senior-ease/ui';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -31,8 +25,6 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
     IconComponent,
     BadgeComponent,
     ButtonComponent,
-    ListItemComponent,
-    DividerComponent,
   ],
   templateUrl: './dashboard-ds2.component.html',
 })
@@ -42,6 +34,19 @@ export class DashboardDs2Component {
 
   protected readonly today = new Date();
   protected isWorkSubmitted = true;
+
+  protected readonly wizardTotal = 4;
+  protected readonly wizardCompleted = signal(this.loadWizardCompleted());
+
+  private loadWizardCompleted(): number {
+    try {
+      const raw = localStorage.getItem('wizard-completed-activities');
+      if (!raw) return 0;
+      return (JSON.parse(raw) as string[]).length;
+    } catch {
+      return 0;
+    }
+  }
 
   protected readonly icons = {
     calendar: faCalendarCheck,

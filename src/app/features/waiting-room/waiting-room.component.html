@@ -3,10 +3,13 @@
     class="border-b bg-card sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
     [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'"
   >
-    <button (click)="router.navigate(['/inicio'])" class="p-2 text-primary text-xl">
-      <fa-icon [icon]="icons.arrowLeft"></fa-icon>
-    </button>
-    <h1 class="text-xl font-bold text-foreground">Sala de espera</h1>
+    <div class="flex-1 min-w-0">
+      <app-breadcrumb
+        class="mb-0.5 block"
+        [items]="[{ label: 'Início', route: '/inicio' }, { label: 'Sala de espera' }]"
+      ></app-breadcrumb>
+      <h1 class="text-xl font-bold text-foreground">Sala de espera</h1>
+    </div>
   </header>
 
   <div class="px-6 md:px-8 pt-5 md:max-w-2xl">
@@ -53,16 +56,17 @@
       </div>
     </div>
 
-    <div class="mt-4 mb-5">
+    <div class="flex flex-col gap-3">
       <button
         type="button"
-        class="w-full bg-card border border-border rounded-2xl p-5 flex items-center justify-between hover:bg-primary/5 transition-all text-left group"
+        class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-left text-lg px-6 py-4 gap-3 mt-1"
         appVoiceRead="Botão Entrar na sala de aula. Ao clicar, sua câmera e microfone serão ligados."
         (click)="router.navigate(['/aula'])"
       >
+        <fa-icon [icon]="icons.video" class="text-base"></fa-icon>
         <div class="text-left">
           <span class="block text-lg font-bold">Entrar na sala de aula</span>
-          <span class="text-xs tracking-wide text-primary"
+          <span class="text-xs tracking-wide text-white"
             >Ao clicar, sua câmera e microfone serão ligados.</span
           >
         </div>
