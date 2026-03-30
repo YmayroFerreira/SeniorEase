@@ -10,7 +10,7 @@ import {
   faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceInputBtnComponent } from '../../shared/components/voice-input-btn/voice-input-btn.component';
@@ -35,6 +35,7 @@ interface Message {
     FormsModule,
     BreadcrumbComponent,
     TranslatePipe,
+    IconComponent,
   ],
   templateUrl: './forum-chat.component.html',
 })

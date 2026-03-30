@@ -35,13 +35,13 @@
               "
               [appVoiceRead]="'WAITING_ROOM.ON_TIME' | translate"
             >
-              <fa-icon
+              <ui-icon
                 [icon]="icons.check"
                 class="text-xl"
                 [ngClass]="
                   accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-success'
                 "
-              ></fa-icon>
+              ></ui-icon>
               <p
                 class="text-sm font-bold"
                 [ngClass]="
@@ -60,24 +60,27 @@
     </div>
 
     <div class="flex flex-col gap-3">
-      <button
-        type="button"
-        class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-left text-lg px-6 py-4 gap-3 mt-1"
-        [appVoiceRead]="'WAITING_ROOM.ENTER_BTN_ARIA' | translate"
-        (click)="router.navigate(['/aula'])"
-      >
-        <fa-icon [icon]="icons.video" class="text-base"></fa-icon>
+      <ng-template #descriptionWaitingRoomEnter>
         <div class="text-left">
           <span class="block text-lg font-bold">{{ 'WAITING_ROOM.ENTER' | translate }}</span>
           <span class="text-xs tracking-wide text-white">{{
             'WAITING_ROOM.ENTER_WARNING' | translate
           }}</span>
         </div>
-        <fa-icon
-          [icon]="icons.chevronRight"
-          class="text-primary group-hover:translate-x-1 transition-transform"
-        ></fa-icon>
-      </button>
+      </ng-template>
+      <ng-template #trailingWaitingRoomEnter>
+        <ui-icon [icon]="icons.chevronRight" class="text-amber-50"></ui-icon>
+      </ng-template>
+      <ui-card-button
+        type="button"
+        [variant]="accessibility.theme() === 'high-contrast' ? 'secondary' : 'primary'"
+        [appVoiceRead]="'WAITING_ROOM.ENTER_BTN_ARIA' | translate"
+        (click)="router.navigate(['/aula'])"
+        [leading]="icons.video"
+        [useLeadingIcon]="true"
+        [trailing]="trailingWaitingRoomEnter"
+        [description]="descriptionWaitingRoomEnter"
+      />
     </div>
     <div class="mt-4 mb-5">
       <button
@@ -100,16 +103,16 @@
         <div class="flex items-center gap-3">
           @switch (connectionStatus) {
             @case ('loading') {
-              <fa-icon [icon]="icons.spinner" class="fa-spin"></fa-icon>
+              <ui-icon [icon]="icons.spinner" class="fa-spin"></ui-icon>
             }
             @case ('success') {
-              <fa-icon [icon]="icons.check"></fa-icon>
+              <ui-icon [icon]="icons.check"></ui-icon>
             }
             @case ('error') {
-              <fa-icon [icon]="icons.error"></fa-icon>
+              <ui-icon [icon]="icons.error"></ui-icon>
             }
             @default {
-              <fa-icon [icon]="icons.wifi"></fa-icon>
+              <ui-icon [icon]="icons.wifi"></ui-icon>
             }
           }
 
@@ -122,11 +125,11 @@
       class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start gap-3 p-4 mb-5"
       [appVoiceRead]="'WAITING_ROOM.NEED_HELP_DESC' | translate"
     >
-      <fa-icon
+      <ui-icon
         [icon]="icons.lightbulb"
         class="flex-shrink-0 text-primary"
         style="font-size: 18px; margin-top: 2px"
-      ></fa-icon>
+      ></ui-icon>
       <div>
         <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-1">
           {{ 'WAITING_ROOM.NEED_HELP' | translate }}

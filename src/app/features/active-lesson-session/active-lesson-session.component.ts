@@ -14,8 +14,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faVideo } from '@fortawesome/free-solid-svg-icons/faVideo';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AccessibilityService, CardButtonComponent, IconComponent } from '@senior-ease/ui';
 import { debounceTime, Subject } from 'rxjs';
-import { AccessibilityService } from '../../core/services/accessibility.service';
 import { StorageService } from '../../core/services/storage.service';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
@@ -34,6 +34,8 @@ import { VideoSessionComponent } from '../video-session/video-session.component'
     VoiceInputBtnComponent,
     VideoSessionComponent,
     TranslatePipe,
+    IconComponent,
+    CardButtonComponent,
   ],
   templateUrl: './active-lesson-session.component.html',
   styleUrls: ['./active-lesson-session.component.scss'],

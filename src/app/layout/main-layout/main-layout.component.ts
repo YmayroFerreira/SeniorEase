@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DashboardLayoutComponent, NavItemData, SidebarComponent } from '@senior-ease/ui';
-import { map } from 'rxjs';
+import { map, merge } from 'rxjs';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 
 @Component({
@@ -15,9 +15,13 @@ export class MainLayoutComponent {
   private readonly accessibilityService = inject(AccessibilityService);
   private readonly translate = inject(TranslateService);
 
-  private readonly langChange = toSignal(this.translate.onLangChange.pipe(map((e) => e.lang)), {
-    initialValue: this.translate.getCurrentLang(),
-  });
+  private readonly langChange = toSignal(
+    merge(
+      this.translate.onLangChange.pipe(map((e) => e.lang)),
+      this.translate.onTranslationChange.pipe(map((e) => e.lang)),
+    ),
+    { initialValue: this.translate.getCurrentLang() },
+  );
 
   private readonly allNavItems = computed<NavItemData[]>(() => {
     this.langChange();

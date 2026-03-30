@@ -98,6 +98,7 @@
           </div>
         </ng-template>
         <ui-card-button
+          [variant]="'secondary'"
           [useLeadingIcon]="true"
           [useTrailingIcon]="true"
           [leading]="icons.study"
@@ -124,6 +125,7 @@
         </ng-template>
         <ui-card-button
           type="button"
+          [variant]="'secondary'"
           [useLeadingIcon]="true"
           [useTrailingIcon]="true"
           [leading]="icons.check"
@@ -324,12 +326,15 @@
           type="button"
           (click)="router.navigate(['/forum'])"
           appVoiceRead="Fórum: Hackathon. 3 novas mensagens."
+          [variant]="'ghost'"
           [useTrailingIcon]="true"
           [trailing]="!accessibility.simplifiedNav() ? icons.chevronRight : null"
           [leading]="leadingIconForum"
           [description]="descriptionForum"
         />
+
         <ui-divider class="mx-4" ariaLabel="Separador horizontal de exemplo"></ui-divider>
+
         <!-- Trabalho Final -->
         <ng-template #leadingIconFinalJob>
           <div
@@ -355,6 +360,7 @@
           type="button"
           (click)="router.navigate(['/trabalho-final'])"
           appVoiceRead="Trabalho Final. Nota 9 de 9. Entregue com sucesso. Toque para ver os detalhes."
+          [variant]="'ghost'"
           [trailing]="!accessibility.simplifiedNav() ? trailingIconFinalJob : null"
           [leading]="leadingIconFinalJob"
           [description]="descriptionFinalJob"

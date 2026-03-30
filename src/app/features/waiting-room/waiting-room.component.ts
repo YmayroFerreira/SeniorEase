@@ -19,7 +19,7 @@ import {
   faWifi,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { AccessibilityService, CardButtonComponent, IconComponent } from '@senior-ease/ui';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
@@ -33,6 +33,8 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
     VoiceReadDirective,
     BreadcrumbComponent,
     TranslatePipe,
+    IconComponent,
+    CardButtonComponent,
   ],
   templateUrl: './waiting-room.component.html',
 })

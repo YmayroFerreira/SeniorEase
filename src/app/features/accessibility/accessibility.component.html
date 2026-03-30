@@ -6,7 +6,7 @@
   <div class="bg-primary md:bg-card md:border-b md:border-border px-6 pt-4 pb-6">
     <div class="md:hidden flex items-center gap-3 mb-1">
       <a routerLink="/inicio" class="text-white text-2xl leading-none">
-        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+        <ui-icon [icon]="icons.arrowLeft"></ui-icon>
       </a>
       <h1 class="font-semibold text-white text-xl">{{ 'ACCESSIBILITY.TITLE' | translate }}</h1>
     </div>
@@ -21,10 +21,10 @@
       class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start p-4 mb-6 gap-3"
       [appVoiceRead]="'ACCESSIBILITY.HINT' | translate"
     >
-      <fa-icon
+      <ui-icon
         [icon]="icons.wheelchair"
         class="text-primary flex-shrink-0 text-lg mt-0.5"
-      ></fa-icon>
+      ></ui-icon>
       <p class="text-primary text-sm leading-normal">
         {{ 'ACCESSIBILITY.HINT' | translate }}
       </p>
@@ -45,11 +45,11 @@
             [class.border-transparent]="selectedFontSize() !== opt.value"
             [attr.aria-pressed]="selectedFontSize() === opt.value"
           >
-            <fa-icon
+            <ui-icon
               [icon]="icons.textHeight"
               class="text-primary block"
               [style.fontSize.rem]="fontIconRem[opt.value]"
-            ></fa-icon>
+            ></ui-icon>
             <p class="font-bold text-foreground text-[0.6875rem] mt-1.5 leading-none">
               {{ opt.label | translate }}
             </p>
@@ -180,10 +180,10 @@
               ) | translate)
             "
           >
-            <fa-icon
+            <ui-icon
               [icon]="icons[item.key]"
               class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-            ></fa-icon>
+            ></ui-icon>
             <div class="flex-1 min-w-0">
               <p class="font-semibold text-foreground text-sm truncate">
                 {{ item.label | translate }}
@@ -242,10 +242,10 @@
                   [class.text-primary]="!voiceReadingService.speaking()"
                   [class.text-muted]="voiceReadingService.speaking()"
                 >
-                  <fa-icon
+                  <ui-icon
                     [icon]="voiceReadingService.speaking() ? icons.pause : icons.play"
                     class="text-sm"
-                  ></fa-icon>
+                  ></ui-icon>
                   {{
                     (voiceReadingService.speaking()
                       ? 'ACCESSIBILITY.SPEECH.STOP'

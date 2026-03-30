@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { IconComponent } from '@senior-ease/ui';
 
 export interface BreadcrumbItem {
   label: string;
@@ -12,7 +13,7 @@ export interface BreadcrumbItem {
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, IconComponent],
   template: `
     <nav
       class="flex items-center gap-1 text-xs flex-wrap"
@@ -29,7 +30,7 @@ export interface BreadcrumbItem {
           >
             {{ item.label }}
           </button>
-          <fa-icon [icon]="chevronRight" class="text-[0.5rem] opacity-50"></fa-icon>
+          <ui-icon [icon]="chevronRight" class="text-[0.5rem] opacity-50"></ui-icon>
         } @else {
           <span class="font-semibold" [class]="currentClass()">{{ item.label }}</span>
         }

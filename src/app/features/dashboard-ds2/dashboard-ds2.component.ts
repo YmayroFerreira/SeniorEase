@@ -13,13 +13,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
+  AccessibilityService,
   BadgeComponent,
   ButtonComponent,
   CardButtonComponent,
   DividerComponent,
   IconComponent,
 } from '@senior-ease/ui';
-import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({

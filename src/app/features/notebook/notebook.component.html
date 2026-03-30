@@ -13,7 +13,7 @@
       "
       class="p-2 text-primary text-xl flex-shrink-0 cursor-pointer bg-transparent border-none"
     >
-      <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+      <ui-icon [icon]="icons.arrowLeft"></ui-icon>
     </button>
     <div class="flex-1 min-w-0">
       @if (!accessibility.simplifiedNav()) {
@@ -62,7 +62,7 @@
                 class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-90 transition-transform"
                 [appVoiceRead]="('NOTEBOOK.LISTEN' | translate) + ': ' + note.content"
               >
-                <fa-icon [icon]="icons.volume"></fa-icon>
+                <ui-icon [icon]="icons.volume"></ui-icon>
               </button>
             </div>
             <div class="border-t pt-4 border-border/50">
@@ -75,7 +75,7 @@
               aria-label="Excluir anotação"
               class="absolute bottom-4 right-4 text-muted hover:text-red-500 opacity-30 hover:opacity-100 p-2"
             >
-              <fa-icon [icon]="icons.trash" class="text-sm"></fa-icon>
+              <ui-icon [icon]="icons.trash" class="text-sm"></ui-icon>
             </button>
           </div>
         }
@@ -85,7 +85,7 @@
         <div
           class="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mb-4 mx-auto"
         >
-          <fa-icon [icon]="icons.book" class="text-3xl text-muted"></fa-icon>
+          <ui-icon [icon]="icons.book" class="text-3xl text-muted"></ui-icon>
         </div>
         <p class="text-xl font-bold text-muted">{{ 'NOTEBOOK.EMPTY' | translate }}</p>
         <p class="text-sm text-muted mt-2">
@@ -107,7 +107,7 @@
   >
     <div class="bg-card rounded-2xl shadow-xl mx-6 w-full max-w-[360px] px-6 py-7">
       <div class="flex items-center gap-3 mb-3">
-        <fa-icon [icon]="icons.warning" class="text-danger text-2xl"></fa-icon>
+        <ui-icon [icon]="icons.warning" class="text-danger text-2xl"></ui-icon>
         <h2 id="confirm-title" class="font-bold text-foreground text-lg">
           {{ 'NOTEBOOK.DELETE_TITLE' | translate }}
         </h2>

@@ -11,7 +11,7 @@ import {
   faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
@@ -32,6 +32,7 @@ interface Note {
     VoiceReadDirective,
     BreadcrumbComponent,
     TranslatePipe,
+    IconComponent,
   ],
   templateUrl: './notebook.component.html',
 })

@@ -20,8 +20,12 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CardButtonComponent, DividerComponent, IconComponent } from '@senior-ease/ui';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import {
+  AccessibilityService,
+  CardButtonComponent,
+  DividerComponent,
+  IconComponent,
+} from '@senior-ease/ui';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({

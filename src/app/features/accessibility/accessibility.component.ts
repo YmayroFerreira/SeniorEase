@@ -17,12 +17,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
+
 import {
   AccessibilityService,
+  IconComponent,
   type AnimationSpeed,
   type FontSize,
   type Theme,
-} from '../../core/services/accessibility.service';
+} from '@senior-ease/ui';
 import { VoiceReadingService } from '../../core/services/voice-reading.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -37,7 +39,7 @@ interface AccessibilityPrefs {
 
 @Component({
   selector: 'app-accessibility',
-  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective, TranslatePipe],
+  imports: [RouterLink, FontAwesomeModule, VoiceReadDirective, TranslatePipe, IconComponent],
   templateUrl: './accessibility.component.html',
 })
 export class AccessibilityComponent {

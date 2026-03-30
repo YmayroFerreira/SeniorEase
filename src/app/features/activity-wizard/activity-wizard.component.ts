@@ -24,7 +24,7 @@ import {
   faWifi,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 export type ConnectionStatus = 'idle' | 'testing' | 'ok' | 'slow' | 'offline';
@@ -48,95 +48,10 @@ export interface Activity {
 const COMPLETED_KEY = 'wizard-completed-activities';
 const SESSION_KEY = 'wizard-session';
 
-const ACTIVITIES: Activity[] = [
-  {
-    id: 'aula',
-    title: 'ACTIVITY.ATTEND_CLASS',
-    description: 'ACTIVITY.ATTEND_CLASS_DESC',
-    estimatedMinutes: 120,
-    steps: [
-      {
-        title: 'ACTIVITY.PREPARE_CLASS',
-        description: 'ACTIVITY.PREPARE_CLASS_DESC',
-        actionLabel: 'ACTIVITY.IM_READY',
-      },
-      {
-        title: 'ACTIVITY.WAITING_ROOM',
-        description: 'ACTIVITY.WAITING_ROOM_DESC',
-        actionLabel: 'ACTIVITY.ENTER_CLASS',
-        expandedContent: 'waiting-room',
-      },
-      {
-        title: 'ACTIVITY.LEFT_CLASS',
-        description: 'ACTIVITY.LEFT_CLASS_DESC',
-        actionLabel: 'ACTIVITY.COMPLETE_ACTIVITY',
-        expandedContent: 'post-class',
-      },
-    ],
-  },
-  {
-    id: 'caderno',
-    title: 'ACTIVITY.REVIEW_NOTES',
-    description: 'ACTIVITY.REVIEW_NOTES_DESC',
-    estimatedMinutes: 15,
-    steps: [
-      {
-        title: 'ACTIVITY.OPEN_NOTEBOOK',
-        description: 'ACTIVITY.OPEN_NOTEBOOK_DESC',
-        actionLabel: 'ACTIVITY.OPEN_NOTEBOOK_BTN',
-        actionRoute: '/meu-caderno',
-      },
-      {
-        title: 'ACTIVITY.NOTES_REVIEWED',
-        description: 'ACTIVITY.NOTES_REVIEWED_DESC',
-        actionLabel: 'ACTIVITY.ACTIVITY_COMPLETED_BTN',
-      },
-    ],
-  },
-  {
-    id: 'forum',
-    title: 'ACTIVITY.JOIN_FORUM',
-    description: 'ACTIVITY.JOIN_FORUM_DESC',
-    estimatedMinutes: 10,
-    steps: [
-      {
-        title: 'ACTIVITY.OPEN_FORUM',
-        description: 'ACTIVITY.OPEN_FORUM_DESC',
-        actionLabel: 'ACTIVITY.OPEN_FORUM_BTN',
-        actionRoute: '/forum',
-      },
-      {
-        title: 'ACTIVITY.FORUM_JOINED',
-        description: 'ACTIVITY.FORUM_JOINED_DESC',
-        actionLabel: 'ACTIVITY.ACTIVITY_COMPLETED_BTN',
-      },
-    ],
-  },
-  {
-    id: 'trabalho',
-    title: 'ACTIVITY.FINAL_WORK',
-    description: 'ACTIVITY.FINAL_WORK_DESC',
-    estimatedMinutes: 5,
-    steps: [
-      {
-        title: 'ACTIVITY.CHECK_DELIVERY',
-        description: 'ACTIVITY.CHECK_DELIVERY_DESC',
-        actionLabel: 'ACTIVITY.SEE_STATUS_BTN',
-        actionRoute: '/trabalho-final',
-      },
-      {
-        title: 'ACTIVITY.WORK_DELIVERED',
-        description: 'ACTIVITY.WORK_DELIVERED_DESC',
-        actionLabel: 'ACTIVITY.UNDERSTOOD',
-      },
-    ],
-  },
-];
-
 @Component({
   selector: 'app-activity-wizard',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, TranslatePipe],
+  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, TranslatePipe, IconComponent],
   templateUrl: './activity-wizard.component.html',
 })
 export class ActivityWizardComponent {
@@ -165,6 +80,91 @@ export class ActivityWizardComponent {
     warning: faExclamationTriangle,
     rotateLeft: faRotateLeft,
   };
+
+  protected readonly activities: Activity[] = [
+    {
+      id: 'aula',
+      title: this.translate.instant('ACTIVITY.ATTEND_CLASS'),
+      description: this.translate.instant('ACTIVITY.ATTEND_CLASS_DESC'),
+      estimatedMinutes: 120,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.PREPARE_CLASS'),
+          description: this.translate.instant('ACTIVITY.PREPARE_CLASS_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.IM_READY'),
+        },
+        {
+          title: this.translate.instant('ACTIVITY.WAITING_ROOM'),
+          description: this.translate.instant('ACTIVITY.WAITING_ROOM_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.ENTER_CLASS'),
+          expandedContent: 'waiting-room',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.LEFT_CLASS'),
+          description: this.translate.instant('ACTIVITY.LEFT_CLASS_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.COMPLETE_ACTIVITY'),
+          expandedContent: 'post-class',
+        },
+      ],
+    },
+    {
+      id: 'caderno',
+      title: this.translate.instant('ACTIVITY.REVIEW_NOTES'),
+      description: this.translate.instant('ACTIVITY.REVIEW_NOTES_DESC'),
+      estimatedMinutes: 15,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.OPEN_NOTEBOOK'),
+          description: this.translate.instant('ACTIVITY.OPEN_NOTEBOOK_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.OPEN_NOTEBOOK_BTN'),
+          actionRoute: '/meu-caderno',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.NOTES_REVIEWED'),
+          description: this.translate.instant('ACTIVITY.NOTES_REVIEWED_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.ACTIVITY_COMPLETED_BTN'),
+        },
+      ],
+    },
+    {
+      id: 'forum',
+      title: this.translate.instant('ACTIVITY.JOIN_FORUM'),
+      description: this.translate.instant('ACTIVITY.JOIN_FORUM_DESC'),
+      estimatedMinutes: 10,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.OPEN_FORUM'),
+          description: this.translate.instant('ACTIVITY.OPEN_FORUM_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.OPEN_FORUM_BTN'),
+          actionRoute: '/forum',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.FORUM_JOINED'),
+          description: this.translate.instant('ACTIVITY.FORUM_JOINED_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.ACTIVITY_COMPLETED_BTN'),
+        },
+      ],
+    },
+    {
+      id: 'trabalho',
+      title: this.translate.instant('ACTIVITY.FINAL_WORK'),
+      description: this.translate.instant('ACTIVITY.FINAL_WORK_DESC'),
+      estimatedMinutes: 5,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.CHECK_DELIVERY'),
+          description: this.translate.instant('ACTIVITY.CHECK_DELIVERY_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.SEE_STATUS_BTN'),
+          actionRoute: '/trabalho-final',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.WORK_DELIVERED'),
+          description: this.translate.instant('ACTIVITY.WORK_DELIVERED_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.UNDERSTOOD'),
+        },
+      ],
+    },
+  ];
 
   private readonly classHour = 19;
   private readonly classMinute = 0;
@@ -252,8 +252,6 @@ export class ActivityWizardComponent {
     this.saveSession(this.activeActivityId()!, nextIndex);
     this.router.navigate(['/aula']);
   }
-
-  protected readonly activities = ACTIVITIES;
 
   protected readonly completedIds = signal<Set<string>>(this.loadCompleted());
   protected readonly activeActivityId = signal<string | null>(this.loadSession().activityId);

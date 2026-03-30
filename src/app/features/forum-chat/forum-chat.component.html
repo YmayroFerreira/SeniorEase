@@ -7,7 +7,7 @@
       "
       class="text-white text-xl p-2 flex-shrink-0 cursor-pointer bg-transparent border-none"
     >
-      <fa-icon [icon]="icons.back"></fa-icon>
+      <ui-icon [icon]="icons.back"></ui-icon>
     </button>
     <div class="flex-1 min-w-0">
       @if (!accessibility.simplifiedNav()) {
@@ -77,7 +77,7 @@
         (click)="sendMessage()"
         class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg active:scale-95"
       >
-        <fa-icon [icon]="icons.send" class="text-xl"></fa-icon>
+        <ui-icon [icon]="icons.send" class="text-xl"></ui-icon>
       </button>
     </div>
   </footer>

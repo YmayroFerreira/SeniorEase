@@ -12,7 +12,7 @@ import {
   faUserCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -36,6 +36,7 @@ interface TimelineStage {
     VoiceReadDirective,
     BreadcrumbComponent,
     TranslatePipe,
+    IconComponent,
   ],
   templateUrl: './final-work.component.html',
   styles: [

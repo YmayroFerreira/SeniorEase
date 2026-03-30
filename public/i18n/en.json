@@ -183,7 +183,8 @@
     "TERMS_DESC": "Learn how we use your data",
     "SAVE": "Save changes",
     "TOAST_INVALID": "Fix the invalid fields before saving.",
-    "TOAST_SUCCESS": "Profile saved successfully!"
+    "TOAST_SUCCESS": "Profile saved successfully!",
+    "APP_VERSION": "App version"
   },
   "NOTEBOOK": {
     "TITLE": "My Digital Notebook",

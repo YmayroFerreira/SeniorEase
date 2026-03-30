@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-surface pb-[88px]">
+<div class="bg-surface pb-22">
   <!-- Status bar placeholder (mobile) -->
   <div class="md:hidden">
     <div class="bg-primary h-11"></div>
@@ -8,7 +8,7 @@
   <div class="bg-primary md:bg-card md:border-b md:border-border px-6 pt-4 pb-6">
     <div class="md:hidden flex items-center gap-3 mb-1">
       <a routerLink="/inicio" class="text-white text-2xl leading-none">
-        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+        <ui-icon [icon]="icons.arrowLeft"></ui-icon>
       </a>
       <h1 class="font-semibold text-white text-xl">{{ 'PROFILE.TITLE' | translate }}</h1>
     </div>
@@ -32,14 +32,14 @@
           <div
             class="rounded-full bg-primary-surface border-4 border-primary/20 flex items-center justify-center w-24 h-24"
           >
-            <fa-icon [icon]="icons.user" class="text-primary text-[2.5rem]"></fa-icon>
+            <ui-icon [icon]="icons.user" class="text-primary text-[2.5rem]"></ui-icon>
           </div>
         }
         <label
           class="absolute bottom-0 right-0 bg-primary text-white rounded-full flex items-center justify-center cursor-pointer shadow w-8 h-8"
           [appVoiceRead]="'PROFILE.CHANGE_PHOTO' | translate"
         >
-          <fa-icon [icon]="icons.camera" class="text-sm"></fa-icon>
+          <ui-icon [icon]="icons.camera" class="text-sm"></ui-icon>
           <input type="file" accept="image/*" class="hidden" (change)="onImageSelected($event)" />
         </label>
       </div>
@@ -55,7 +55,7 @@
         <!-- Nome -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon [icon]="icons.user" class="text-primary flex-shrink-0 text-sm w-4"></fa-icon>
+            <ui-icon [icon]="icons.user" class="text-primary flex-shrink-0 text-sm w-4"></ui-icon>
             <label for="profile-name" class="text-muted text-xs">{{
               'PROFILE.NAME' | translate
             }}</label>
@@ -84,10 +84,10 @@
         <!-- E-mail -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon
+            <ui-icon
               [icon]="icons.envelope"
               class="text-primary flex-shrink-0 text-sm w-4"
-            ></fa-icon>
+            ></ui-icon>
             <label for="profile-email" class="text-muted text-xs">{{
               'PROFILE.EMAIL' | translate
             }}</label>
@@ -116,7 +116,7 @@
         <!-- Telefone -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon [icon]="icons.phone" class="text-primary flex-shrink-0 text-sm w-4"></fa-icon>
+            <ui-icon [icon]="icons.phone" class="text-primary flex-shrink-0 text-sm w-4"></ui-icon>
             <label for="profile-phone" class="text-muted text-xs">{{
               'PROFILE.PHONE' | translate
             }}</label>
@@ -145,10 +145,10 @@
         <!-- Data de nascimento -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon
+            <ui-icon
               [icon]="icons.calendar"
               class="text-primary flex-shrink-0 text-sm w-4"
-            ></fa-icon>
+            ></ui-icon>
             <label for="profile-dob" class="text-muted text-xs">{{
               'PROFILE.BIRTH_DATE' | translate
             }}</label>
@@ -168,7 +168,7 @@
         <!-- CPF -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon [icon]="icons.idCard" class="text-primary flex-shrink-0 text-sm w-4"></fa-icon>
+            <ui-icon [icon]="icons.idCard" class="text-primary flex-shrink-0 text-sm w-4"></ui-icon>
             <label for="profile-cpf" class="text-muted text-xs">{{
               'PROFILE.CPF' | translate
             }}</label>
@@ -193,10 +193,10 @@
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         <ng-template #leadingChangePassword>
-          <fa-icon
+          <ui-icon
             [icon]="icons.lock"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
         </ng-template>
         <ng-template #descriptionChangePassword>
           <div class="flex-1 text-left">
@@ -220,10 +220,10 @@
         <ui-divider class="mx-4" />
 
         <ng-template #leadingLogout>
-          <fa-icon
+          <ui-icon
             [icon]="icons.logout"
             class="text-danger text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
         </ng-template>
         <ng-template #descriptionLogout>
           <div class="flex-1 text-left">
@@ -249,50 +249,60 @@
         {{ 'PROFILE.SUPPORT' | translate }}
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
-        <button
-          type="button"
-          [appVoiceRead]="'PROFILE.CONTACT_US' | translate"
-          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
-        >
-          <fa-icon
+        <ng-template #leadingContactUs>
+          <ui-icon
             [icon]="icons.headset"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
+        </ng-template>
+        <ng-template #descriptionContactUs>
           <div class="flex-1 text-left">
             <p class="font-semibold text-foreground text-sm">
               {{ 'PROFILE.CONTACT_US' | translate }}
             </p>
             <p class="text-muted text-xs mt-0.5">{{ 'PROFILE.CONTACT_US_DESC' | translate }}</p>
           </div>
-        </button>
-
-        <div class="bg-border h-px mx-4"></div>
-
-        <button
+        </ng-template>
+        <ui-card-button
           type="button"
-          [appVoiceRead]="'PROFILE.TERMS' | translate"
-          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
-        >
-          <fa-icon
+          [appVoiceRead]="'PROFILE.CONTACT_US' | translate"
+          [variant]="'ghost'"
+          [leading]="leadingContactUs"
+          [description]="descriptionContactUs"
+        />
+
+        <ui-divider class="mx-4" />
+
+        <ng-template #leadingTerms>
+          <ui-icon
             [icon]="icons.fileContract"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
+        </ng-template>
+        <ng-template #descriptionTerms>
           <div class="flex-1 text-left">
             <p class="font-semibold text-foreground text-sm">{{ 'PROFILE.TERMS' | translate }}</p>
             <p class="text-muted text-xs mt-0.5">{{ 'PROFILE.TERMS_DESC' | translate }}</p>
           </div>
-        </button>
+        </ng-template>
+        <ui-card-button
+          type="button"
+          [variant]="'ghost'"
+          [leading]="leadingTerms"
+          [description]="descriptionTerms"
+          [appVoiceRead]="'PROFILE.TERMS' | translate"
+        />
 
-        <div class="bg-border h-px mx-4"></div>
+        <ui-divider class="mx-4" />
 
         <div
           class="flex items-center gap-4 px-4 py-3.5"
           [appVoiceRead]="('PROFILE.APP_VERSION' | translate) + ' ' + APP_VERSION"
         >
-          <fa-icon
+          <ui-icon
             [icon]="icons.info"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
           <div class="flex-1">
             <p class="font-semibold text-foreground text-sm">
               {{ 'PROFILE.APP_VERSION' | translate }}
@@ -328,10 +338,10 @@
     [class.bg-danger]="!toastSuccess()"
     aria-hidden="true"
   >
-    <fa-icon
+    <ui-icon
       [icon]="toastSuccess() ? icons.circleCheck : icons.warning"
       class="text-white flex-shrink-0 text-lg"
-    ></fa-icon>
+    ></ui-icon>
     <p class="text-white font-semibold text-sm">{{ toastMessage() }}</p>
   </div>
 }

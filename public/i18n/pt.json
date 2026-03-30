@@ -183,7 +183,8 @@
     "TERMS_DESC": "Saiba como usamos seus dados",
     "SAVE": "Salvar alterações",
     "TOAST_INVALID": "Corrija os campos inválidos antes de salvar.",
-    "TOAST_SUCCESS": "Perfil salvo com sucesso!"
+    "TOAST_SUCCESS": "Perfil salvo com sucesso!",
+    "APP_VERSION": "Versão do aplicativo"
   },
   "NOTEBOOK": {
     "TITLE": "Meu Caderno Digital",

@@ -126,11 +126,11 @@
                 : ('LESSON.CLASS_LISTENING' | translate)
             "
           >
-            <fa-icon
+            <ui-icon
               [icon]="isSpeakerMuted ? icons.volumeMute : icons.volumeUp"
               class="text-2xl"
               [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-primary' : ''"
-            ></fa-icon>
+            ></ui-icon>
             <span
               class="font-bold text-sm"
               [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-foreground' : ''"
@@ -152,7 +152,7 @@
             "
             [appVoiceRead]="'LESSON.EXIT_BTN_ARIA' | translate"
           >
-            <fa-icon [icon]="icons.signOut" class="text-2xl text-red-700"></fa-icon>
+            <ui-icon [icon]="icons.signOut" class="text-2xl text-red-700"></ui-icon>
             <span class="font-bold text-sm">{{ 'LESSON.EXIT' | translate }}</span>
           </button>
         </div>
