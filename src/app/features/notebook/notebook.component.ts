@@ -10,7 +10,8 @@ import {
   faTriangleExclamation,
   faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
@@ -25,7 +26,14 @@ interface Note {
 @Component({
   selector: 'app-notebook',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, BreadcrumbComponent],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    VoiceReadDirective,
+    BreadcrumbComponent,
+    TranslatePipe,
+    IconComponent,
+  ],
   templateUrl: './notebook.component.html',
 })
 export class NotebookComponent implements OnInit {

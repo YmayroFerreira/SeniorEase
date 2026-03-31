@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
   selector: 'app-video-session',
   standalone: true,
-  imports: [CommonModule, VoiceReadDirective],
+  imports: [CommonModule, VoiceReadDirective, TranslatePipe],
   templateUrl: './video-session.component.html',
   styleUrls: ['./video-session.component.scss'],
 })

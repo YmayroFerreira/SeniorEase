@@ -9,7 +9,8 @@ import {
   faMicrophone,
   faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceInputBtnComponent } from '../../shared/components/voice-input-btn/voice-input-btn.component';
@@ -33,6 +34,8 @@ interface Message {
     VoiceInputBtnComponent,
     FormsModule,
     BreadcrumbComponent,
+    TranslatePipe,
+    IconComponent,
   ],
   templateUrl: './forum-chat.component.html',
 })
@@ -47,6 +50,7 @@ export class ForumChatComponent {
   private readonly location = inject(Location);
   protected readonly accessibility = inject(AccessibilityService);
   protected readonly voiceInput = inject(VoiceInputService);
+  private readonly translate = inject(TranslateService);
 
   protected readonly fromWizard = !!localStorage.getItem('wizard-session');
 
@@ -69,7 +73,7 @@ export class ForumChatComponent {
       isMe: false,
     },
     {
-      sender: 'Sr. Arnaldo (Você)',
+      sender: 'Sr. Arnaldo',
       text: 'Eu já consegui entregar o meu!',
       time: '10:15',
       isMe: true,
@@ -81,9 +85,9 @@ export class ForumChatComponent {
   protected sendMessage() {
     if (this.newMessage.trim()) {
       this.messages.push({
-        sender: 'Sr. Arnaldo (Você)',
+        sender: 'Sr. Arnaldo',
         text: this.newMessage,
-        time: 'Agora',
+        time: this.translate.instant('FORUM.NOW'),
         isMe: true,
       });
       this.newMessage = '';

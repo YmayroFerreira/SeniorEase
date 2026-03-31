@@ -2,13 +2,13 @@ import { NgClass } from '@angular/common';
 import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMicrophone } from '@fortawesome/free-solid-svg-icons';
-import { AccessibilityService } from '../../../core/services/accessibility.service';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { VoiceInputService } from '../../../core/services/voice-input.service';
 
 @Component({
   selector: 'app-voice-input-btn',
   standalone: true,
-  imports: [FontAwesomeModule, NgClass],
+  imports: [FontAwesomeModule, NgClass, IconComponent],
   template: `
     @if (voice.supported) {
       @if (isListening()) {
@@ -58,7 +58,7 @@ import { VoiceInputService } from '../../../core/services/voice-input.service';
           aria-label="Usar voz para preencher"
           title="Preencher por voz"
         >
-          <fa-icon [icon]="micIcon" style="font-size: 18px"></fa-icon>
+          <ui-icon [icon]="micIcon" style="font-size: 18px"></ui-icon>
         </button>
       }
     }

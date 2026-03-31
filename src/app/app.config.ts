@@ -3,7 +3,9 @@ import localePt from '@angular/common/locales/pt';
 import {
   ApplicationConfig,
   LOCALE_ID,
+  inject,
   isDevMode,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -12,8 +14,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideServiceWorker } from '@angular/service-worker';
-import { provideTranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 
@@ -34,6 +37,10 @@ export const appConfig: ApplicationConfig = {
         prefix: '/i18n/',
         suffix: '.json',
       }),
+    }),
+    provideAppInitializer(() => {
+      const translate = inject(TranslateService);
+      return firstValueFrom(translate.use('pt'));
     }),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

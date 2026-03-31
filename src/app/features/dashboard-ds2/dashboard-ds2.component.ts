@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -11,8 +11,15 @@ import {
   faClipboard,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
-import { BadgeComponent, ButtonComponent, IconComponent } from '@senior-ease/ui';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import {
+  AccessibilityService,
+  BadgeComponent,
+  ButtonComponent,
+  CardButtonComponent,
+  DividerComponent,
+  IconComponent,
+} from '@senior-ease/ui';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
@@ -25,18 +32,29 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
     IconComponent,
     BadgeComponent,
     ButtonComponent,
+    TranslatePipe,
+    CardButtonComponent,
+    DividerComponent,
   ],
   templateUrl: './dashboard-ds2.component.html',
 })
 export class DashboardDs2Component {
   protected readonly accessibility = inject(AccessibilityService);
   protected readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
 
   protected readonly today = new Date();
   protected isWorkSubmitted = true;
 
   protected readonly wizardTotal = 4;
   protected readonly wizardCompleted = signal(this.loadWizardCompleted());
+
+  protected readonly activitiesAriaLabel = computed(() =>
+    this.translate.instant('DASHBOARD.ACTIVITIES_ARIA', {
+      completed: this.wizardCompleted(),
+      total: this.wizardTotal,
+    }),
+  );
 
   private loadWizardCompleted(): number {
     try {

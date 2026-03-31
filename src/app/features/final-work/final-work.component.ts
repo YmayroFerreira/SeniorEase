@@ -11,7 +11,8 @@ import {
   faUpload,
   faUserCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -29,7 +30,14 @@ interface TimelineStage {
 @Component({
   selector: 'app-final-work',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, BreadcrumbComponent],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    VoiceReadDirective,
+    BreadcrumbComponent,
+    TranslatePipe,
+    IconComponent,
+  ],
   templateUrl: './final-work.component.html',
   styles: [
     `
@@ -82,6 +90,7 @@ export class FinalWorkComponent {
   protected readonly accessibility = inject(AccessibilityService);
   private readonly location = inject(Location);
   protected readonly router = inject(Router);
+  protected readonly translate = inject(TranslateService);
 
   protected readonly fromWizard = !!localStorage.getItem('wizard-session');
   protected goBack(): void {
@@ -100,41 +109,41 @@ export class FinalWorkComponent {
   protected readonly stages: TimelineStage[] = [
     {
       id: 'submitted',
-      label: 'Entrega realizada',
+      label: 'FINAL_WORK.STAGE_SUBMITTED_LABEL',
       date: '15/03/2026',
-      description: 'Seu arquivo foi enviado com sucesso para a plataforma.',
+      description: 'FINAL_WORK.STAGE_SUBMITTED_DESC',
       icon: this.icons.upload,
       type: 'default',
     },
     {
       id: 'received',
-      label: 'Recebido pela plataforma',
+      label: 'FINAL_WORK.STAGE_RECEIVED_LABEL',
       date: '15/03/2026',
-      description: 'A entrega foi confirmada e registrada pelo sistema.',
+      description: 'FINAL_WORK.STAGE_RECEIVED_DESC',
       icon: this.icons.check,
       type: 'default',
     },
     {
       id: 'reviewing',
-      label: 'Em avaliação',
+      label: 'FINAL_WORK.STAGE_REVIEWING_LABEL',
       date: '18/03/2026',
-      description: 'O Prof. Dr. Carlos Mendes avaliou seu trabalho.',
+      description: 'FINAL_WORK.STAGE_REVIEWING_DESC',
       icon: this.icons.review,
       type: 'default',
     },
     {
       id: 'evaluated',
-      label: 'Avaliação concluída',
+      label: 'FINAL_WORK.STAGE_EVALUATED_LABEL',
       date: '22/03/2026',
-      description: 'A correção foi finalizada e a nota atribuída.',
+      description: 'FINAL_WORK.STAGE_EVALUATED_DESC',
       icon: this.icons.checkDouble,
       type: 'default',
     },
     {
       id: 'grade',
-      label: 'Nota final',
+      label: 'FINAL_WORK.STAGE_GRADE_LABEL',
       date: '22/03/2026',
-      description: 'Parabéns! Você concluiu o trabalho com excelência.',
+      description: 'FINAL_WORK.STAGE_GRADE_DESC',
       icon: this.icons.trophy,
       type: 'grade',
       grade: 9,

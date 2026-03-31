@@ -6,22 +6,25 @@
     <div class="flex-1 min-w-0">
       <app-breadcrumb
         class="mb-0.5 block"
-        [items]="[{ label: 'Início', route: '/inicio' }, { label: 'Sala de espera' }]"
+        [items]="[
+          { label: 'NAV.HOME' | translate, route: '/inicio' },
+          { label: 'WAITING_ROOM.BREADCRUMB' | translate },
+        ]"
       ></app-breadcrumb>
-      <h1 class="text-xl font-bold text-foreground">Sala de espera</h1>
+      <h1 class="text-xl font-bold text-foreground">{{ 'WAITING_ROOM.TITLE' | translate }}</h1>
     </div>
   </header>
 
   <div class="px-6 md:px-8 pt-5 md:max-w-2xl">
     <div
       class="bg-card rounded-2xl shadow-md overflow-hidden mb-5 border border-border"
-      appVoiceRead="Aula de hoje: Desenvolvimento Front End, das 19 horas às 21 horas. Sala virtual 03. Professor Doutor Carlos Mendes."
+      [appVoiceRead]="'WAITING_ROOM.LESSON_DESCRIPTION' | translate"
     >
       <div class="p-5">
         <div class="flex items-start justify-between gap-3">
           <div class="flex-1 min-w-0">
             <h2 class="text-xl font-bold leading-snug text-foreground">
-              Desenvolvimento Front-End
+              {{ 'WAITING_ROOM.COURSE_TITLE' | translate }}
             </h2>
             <div
               class="border rounded-xl px-4 py-3 mt-3 mb-2 flex items-center gap-3 transition-colors"
@@ -30,15 +33,15 @@
                   ? 'bg-black border-primary-light'
                   : 'bg-success-light border-success/30'
               "
-              appVoiceRead="Você está dentro do horário! A aula começa em 15 minutos."
+              [appVoiceRead]="'WAITING_ROOM.ON_TIME' | translate"
             >
-              <fa-icon
+              <ui-icon
                 [icon]="icons.check"
                 class="text-xl"
                 [ngClass]="
                   accessibility.theme() === 'high-contrast' ? 'text-primary-light' : 'text-success'
                 "
-              ></fa-icon>
+              ></ui-icon>
               <p
                 class="text-sm font-bold"
                 [ngClass]="
@@ -47,34 +50,37 @@
                     : 'text-success-dark'
                 "
               >
-                Você está dentro do horário! A aula começa em 15 minutos.
+                {{ 'WAITING_ROOM.ON_TIME' | translate }}
               </p>
             </div>
-            <p class="text-sm text-muted mt-1">Prof. Dr. Carlos Mendes • Sala virtual 03</p>
+            <p class="text-sm text-muted mt-1">{{ 'WAITING_ROOM.COURSE_INFO' | translate }}</p>
           </div>
         </div>
       </div>
     </div>
 
     <div class="flex flex-col gap-3">
-      <button
-        type="button"
-        class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-left text-lg px-6 py-4 gap-3 mt-1"
-        appVoiceRead="Botão Entrar na sala de aula. Ao clicar, sua câmera e microfone serão ligados."
-        (click)="router.navigate(['/aula'])"
-      >
-        <fa-icon [icon]="icons.video" class="text-base"></fa-icon>
+      <ng-template #descriptionWaitingRoomEnter>
         <div class="text-left">
-          <span class="block text-lg font-bold">Entrar na sala de aula</span>
-          <span class="text-xs tracking-wide text-white"
-            >Ao clicar, sua câmera e microfone serão ligados.</span
-          >
+          <span class="block text-lg font-bold">{{ 'WAITING_ROOM.ENTER' | translate }}</span>
+          <span class="text-xs tracking-wide text-white">{{
+            'WAITING_ROOM.ENTER_WARNING' | translate
+          }}</span>
         </div>
-        <fa-icon
-          [icon]="icons.chevronRight"
-          class="text-primary group-hover:translate-x-1 transition-transform"
-        ></fa-icon>
-      </button>
+      </ng-template>
+      <ng-template #trailingWaitingRoomEnter>
+        <ui-icon [icon]="icons.chevronRight" class="text-amber-50"></ui-icon>
+      </ng-template>
+      <ui-card-button
+        type="button"
+        [variant]="accessibility.theme() === 'high-contrast' ? 'secondary' : 'primary'"
+        [appVoiceRead]="'WAITING_ROOM.ENTER_BTN_ARIA' | translate"
+        (click)="router.navigate(['/aula'])"
+        [leading]="icons.video"
+        [useLeadingIcon]="true"
+        [trailing]="trailingWaitingRoomEnter"
+        [description]="descriptionWaitingRoomEnter"
+      />
     </div>
     <div class="mt-4 mb-5">
       <button
@@ -92,21 +98,21 @@
             accessibility.theme() !== 'high-contrast' && connectionStatus === 'error',
           'opacity-80 cursor-wait': connectionStatus === 'loading',
         }"
-        [appVoiceRead]="'Botão de teste de conexão. Status atual: ' + statusMessage"
+        [appVoiceRead]="('WAITING_ROOM.CONNECTION_BTN_ARIA' | translate) + ' ' + statusMessage"
       >
         <div class="flex items-center gap-3">
           @switch (connectionStatus) {
             @case ('loading') {
-              <fa-icon [icon]="icons.spinner" class="fa-spin"></fa-icon>
+              <ui-icon [icon]="icons.spinner" class="fa-spin"></ui-icon>
             }
             @case ('success') {
-              <fa-icon [icon]="icons.check"></fa-icon>
+              <ui-icon [icon]="icons.check"></ui-icon>
             }
             @case ('error') {
-              <fa-icon [icon]="icons.error"></fa-icon>
+              <ui-icon [icon]="icons.error"></ui-icon>
             }
             @default {
-              <fa-icon [icon]="icons.wifi"></fa-icon>
+              <ui-icon [icon]="icons.wifi"></ui-icon>
             }
           }
 
@@ -117,19 +123,23 @@
 
     <div
       class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start gap-3 p-4 mb-5"
-      appVoiceRead="Precisa de ajuda? Ligue para o suporte: 0800-123-4567. Disponível 24 horas."
+      [appVoiceRead]="'WAITING_ROOM.NEED_HELP_DESC' | translate"
     >
-      <fa-icon
+      <ui-icon
         [icon]="icons.lightbulb"
         class="flex-shrink-0 text-primary"
         style="font-size: 18px; margin-top: 2px"
-      ></fa-icon>
+      ></ui-icon>
       <div>
         <p class="text-xs font-semibold uppercase tracking-wide text-primary mb-1">
-          Precisa de ajuda?
+          {{ 'WAITING_ROOM.NEED_HELP' | translate }}
         </p>
-        <p class="text-sm text-muted leading-relaxed">Ligue para o suporte: 0800-123-4567</p>
-        <p class="text-sm text-muted leading-relaxed mt-0.5">Disponível 24 horas</p>
+        <p class="text-sm text-muted leading-relaxed">
+          {{ 'WAITING_ROOM.SUPPORT_PHONE' | translate }}
+        </p>
+        <p class="text-sm text-muted leading-relaxed mt-0.5">
+          {{ 'WAITING_ROOM.AVAILABLE_24H' | translate }}
+        </p>
       </div>
     </div>
   </div>
