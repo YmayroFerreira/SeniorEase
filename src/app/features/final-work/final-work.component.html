@@ -14,7 +14,7 @@
       [appVoiceRead]="fromWizard ? 'Voltar para Minhas Atividades' : 'Voltar para o início'"
       class="p-2 text-primary text-xl flex-shrink-0 cursor-pointer bg-transparent border-none"
     >
-      <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+      <ui-icon [icon]="icons.arrowLeft"></ui-icon>
     </button>
     <div class="flex-1 min-w-0">
       @if (!accessibility.simplifiedNav()) {
@@ -51,11 +51,11 @@
         class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
         [ngClass]="accessibility.theme() === 'high-contrast' ? 'bg-primary-light' : 'bg-white/20'"
       >
-        <fa-icon
+        <ui-icon
           [icon]="icons.trophy"
           class="text-3xl"
           [ngClass]="accessibility.theme() === 'high-contrast' ? 'text-black' : 'text-white'"
-        ></fa-icon>
+        ></ui-icon>
       </div>
       <div>
         <p

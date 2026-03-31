@@ -13,8 +13,9 @@ import {
   faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { faVideo } from '@fortawesome/free-solid-svg-icons/faVideo';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AccessibilityService, CardButtonComponent, IconComponent } from '@senior-ease/ui';
 import { debounceTime, Subject } from 'rxjs';
-import { AccessibilityService } from '../../core/services/accessibility.service';
 import { StorageService } from '../../core/services/storage.service';
 import { VoiceInputService } from '../../core/services/voice-input.service';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
@@ -32,6 +33,9 @@ import { VideoSessionComponent } from '../video-session/video-session.component'
     VoiceReadDirective,
     VoiceInputBtnComponent,
     VideoSessionComponent,
+    TranslatePipe,
+    IconComponent,
+    CardButtonComponent,
   ],
   templateUrl: './active-lesson-session.component.html',
   styleUrls: ['./active-lesson-session.component.scss'],
@@ -62,14 +66,13 @@ export class ActiveLessonSessionComponent implements OnInit {
   protected errorText = '';
   protected transcriptionEnabled = signal(false);
 
-  private readonly lessonId = 'front-end-101'; // ID único da aula atual
+  private readonly lessonId = 'front-end-101';
   private notesUpdateSubject = new Subject<string>();
 
   ngOnInit() {
     this.notes = this.storage.getNotes(this.lessonId);
     this.notesUpdateSubject.pipe(debounceTime(1000)).subscribe((content) => {
       this.storage.saveNotes(this.lessonId, content);
-      console.log('Anotação salva com segurança!');
     });
   }
 

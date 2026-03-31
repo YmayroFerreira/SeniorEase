@@ -6,55 +6,55 @@
   <div class="bg-primary md:bg-card md:border-b md:border-border px-6 pt-4 pb-6">
     <div class="md:hidden flex items-center gap-3 mb-1">
       <a routerLink="/inicio" class="text-white text-2xl leading-none">
-        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+        <ui-icon [icon]="icons.arrowLeft"></ui-icon>
       </a>
-      <h1 class="font-semibold text-white text-xl">Acessibilidade</h1>
+      <h1 class="font-semibold text-white text-xl">{{ 'ACCESSIBILITY.TITLE' | translate }}</h1>
     </div>
     <div class="hidden md:block">
-      <h1 class="font-bold text-foreground text-xl">Acessibilidade</h1>
-      <p class="text-muted text-sm mt-0.5">Personalize sua experiência de uso</p>
+      <h1 class="font-bold text-foreground text-xl">{{ 'ACCESSIBILITY.TITLE' | translate }}</h1>
+      <p class="text-muted text-sm mt-0.5">{{ 'ACCESSIBILITY.SUBTITLE' | translate }}</p>
     </div>
   </div>
 
   <div class="px-6 pt-5 max-w-2xl">
     <div
       class="bg-primary-surface border border-primary/20 rounded-2xl flex items-start p-4 mb-6 gap-3"
-      appVoiceRead="Ajuste as configurações para tornar o SeniorEase mais confortável para você."
+      [appVoiceRead]="'ACCESSIBILITY.HINT' | translate"
     >
-      <fa-icon
+      <ui-icon
         [icon]="icons.wheelchair"
         class="text-primary flex-shrink-0 text-lg mt-0.5"
-      ></fa-icon>
+      ></ui-icon>
       <p class="text-primary text-sm leading-normal">
-        Ajuste as configurações para tornar o SeniorEase mais confortável para você.
+        {{ 'ACCESSIBILITY.HINT' | translate }}
       </p>
     </div>
 
     <section class="mb-6">
       <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-        Tamanho do Texto
+        {{ 'ACCESSIBILITY.FONT_SIZE.TITLE' | translate }}
       </h2>
       <div class="grid grid-cols-5 gap-1.5">
         @for (opt of fontSizeOptions; track opt.value) {
           <button
             type="button"
             (click)="selectedFontSize.set(opt.value)"
-            [appVoiceRead]="'Tamanho de texto: ' + opt.label + '. ' + opt.description"
+            [appVoiceRead]="opt.description | translate"
             class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex flex-col items-center justify-center px-1 py-2.5 min-h-[4.5rem]"
             [class.border-primary]="selectedFontSize() === opt.value"
             [class.border-transparent]="selectedFontSize() !== opt.value"
             [attr.aria-pressed]="selectedFontSize() === opt.value"
           >
-            <fa-icon
+            <ui-icon
               [icon]="icons.textHeight"
               class="text-primary block"
               [style.fontSize.rem]="fontIconRem[opt.value]"
-            ></fa-icon>
+            ></ui-icon>
             <p class="font-bold text-foreground text-[0.6875rem] mt-1.5 leading-none">
-              {{ opt.label }}
+              {{ opt.label | translate }}
             </p>
             <p class="text-muted text-[0.5625rem] mt-0.5 leading-snug">
-              {{ opt.description }}
+              {{ opt.description | translate }}
             </p>
           </button>
         }
@@ -63,14 +63,14 @@
 
     <section class="mb-6">
       <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-        Tema de Contraste
+        {{ 'ACCESSIBILITY.THEME.TITLE' | translate }}
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         @for (opt of themeOptions; track opt.value; let last = $last) {
           <button
             type="button"
             (click)="selectedTheme.set(opt.value)"
-            [appVoiceRead]="'Tema: ' + opt.label + '. ' + opt.description"
+            [appVoiceRead]="(opt.label | translate) + '. ' + (opt.description | translate)"
             class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
             [attr.aria-pressed]="selectedTheme() === opt.value"
           >
@@ -84,8 +84,8 @@
               }
             </div>
             <div class="flex-1 text-left">
-              <p class="font-semibold text-foreground text-sm">{{ opt.label }}</p>
-              <p class="text-muted text-xs mt-0.5">{{ opt.description }}</p>
+              <p class="font-semibold text-foreground text-sm">{{ opt.label | translate }}</p>
+              <p class="text-muted text-xs mt-0.5">{{ opt.description | translate }}</p>
             </div>
           </button>
           @if (!last) {
@@ -97,14 +97,47 @@
 
     <section class="hidden md:block mb-6">
       <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-        Velocidade de Animação
+        {{ 'ACCESSIBILITY.LANGUAGE.TITLE' | translate }}
+      </h2>
+      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
+        @for (opt of languageOptions; track opt.value; let last = $last) {
+          <button
+            type="button"
+            (click)="changeLang(opt.value)"
+            [appVoiceRead]="opt.label | translate"
+            class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
+            [attr.aria-pressed]="activeLang() === opt.value"
+          >
+            <div
+              class="rounded-full border-2 flex items-center justify-center flex-shrink-0 w-5 h-5 min-w-[1.25rem]"
+              [class.border-primary]="activeLang() === opt.value"
+              [class.border-border]="activeLang() !== opt.value"
+            >
+              @if (activeLang() === opt.value) {
+                <div class="rounded-full bg-primary w-2.5 h-2.5"></div>
+              }
+            </div>
+            <p class="font-semibold text-foreground text-left flex-1 text-sm">
+              {{ opt.label | translate }}
+            </p>
+          </button>
+          @if (!last) {
+            <div class="bg-border h-px mx-4"></div>
+          }
+        }
+      </div>
+    </section>
+
+    <section class="hidden md:block mb-6">
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
+        {{ 'ACCESSIBILITY.ANIMATION.TITLE' | translate }}
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         @for (opt of animationOptions; track opt.value; let last = $last) {
           <button
             type="button"
             (click)="selectedAnimation.set(opt.value)"
-            [appVoiceRead]="'Velocidade de animação: ' + opt.label"
+            [appVoiceRead]="opt.label | translate"
             class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
             [attr.aria-pressed]="selectedAnimation() === opt.value"
           >
@@ -117,7 +150,9 @@
                 <div class="rounded-full bg-primary w-2.5 h-2.5"></div>
               }
             </div>
-            <p class="font-semibold text-foreground text-left flex-1 text-sm">{{ opt.label }}</p>
+            <p class="font-semibold text-foreground text-left flex-1 text-sm">
+              {{ opt.label | translate }}
+            </p>
           </button>
           @if (!last) {
             <div class="bg-border h-px mx-4"></div>
@@ -128,27 +163,32 @@
 
     <section class="mb-8">
       <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-        Recursos de Acessibilidade
+        {{ 'ACCESSIBILITY.FEATURES.TITLE' | translate }}
       </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         @for (item of toggleItems; track item.key; let last = $last) {
           <div
             class="flex items-center gap-3 px-4 py-3.5"
             [appVoiceRead]="
-              item.label +
+              (item.label | translate) +
               '. ' +
-              item.description +
+              (item.description | translate) +
               '. ' +
-              (prefs()[item.key] ? 'Ativado' : 'Desativado')
+              ((prefs()[item.key]
+                ? 'ACCESSIBILITY.FEATURES.ACTIVATED'
+                : 'ACCESSIBILITY.FEATURES.DEACTIVATED'
+              ) | translate)
             "
           >
-            <fa-icon
+            <ui-icon
               [icon]="icons[item.key]"
               class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-            ></fa-icon>
+            ></ui-icon>
             <div class="flex-1 min-w-0">
-              <p class="font-semibold text-foreground text-sm truncate">{{ item.label }}</p>
-              <p class="text-muted text-xs mt-0.5 truncate">{{ item.description }}</p>
+              <p class="font-semibold text-foreground text-sm truncate">
+                {{ item.label | translate }}
+              </p>
+              <p class="text-muted text-xs mt-0.5 truncate">{{ item.description | translate }}</p>
             </div>
             <button
               type="button"
@@ -170,11 +210,13 @@
             <div class="px-4 pb-4">
               <div class="bg-surface rounded-xl p-3.5">
                 <div class="flex items-center justify-between mb-2">
-                  <p class="font-semibold text-foreground text-sm">Velocidade da fala</p>
+                  <p class="font-semibold text-foreground text-sm">
+                    {{ 'ACCESSIBILITY.SPEECH.TITLE' | translate }}
+                  </p>
                   <span
                     class="font-semibold text-primary bg-primary-surface rounded-full text-xs px-2.5 py-0.5"
                   >
-                    {{ speedLabel }}
+                    {{ speedLabel | translate }}
                   </span>
                 </div>
                 <input
@@ -186,12 +228,12 @@
                   (input)="updateSpeechRate(+$any($event.target).value)"
                   class="w-full cursor-pointer"
                   style="accent-color: var(--color-primary)"
-                  aria-label="Velocidade da voz"
+                  [attr.aria-label]="'ACCESSIBILITY.SPEECH.ARIA_LABEL' | translate"
                 />
                 <div class="flex justify-between text-muted text-[0.6875rem] mt-1">
-                  <span>Lenta</span>
-                  <span>Normal</span>
-                  <span>Rápida</span>
+                  <span>{{ 'ACCESSIBILITY.SPEECH.RANGE_SLOW' | translate }}</span>
+                  <span>{{ 'ACCESSIBILITY.SPEECH.RANGE_NORMAL' | translate }}</span>
+                  <span>{{ 'ACCESSIBILITY.SPEECH.RANGE_FAST' | translate }}</span>
                 </div>
                 <button
                   type="button"
@@ -200,11 +242,16 @@
                   [class.text-primary]="!voiceReadingService.speaking()"
                   [class.text-muted]="voiceReadingService.speaking()"
                 >
-                  <fa-icon
+                  <ui-icon
                     [icon]="voiceReadingService.speaking() ? icons.pause : icons.play"
                     class="text-sm"
-                  ></fa-icon>
-                  {{ voiceReadingService.speaking() ? 'Parar' : 'Testar voz' }}
+                  ></ui-icon>
+                  {{
+                    (voiceReadingService.speaking()
+                      ? 'ACCESSIBILITY.SPEECH.STOP'
+                      : 'ACCESSIBILITY.SPEECH.TEST'
+                    ) | translate
+                  }}
                 </button>
               </div>
             </div>
@@ -221,10 +268,10 @@
       <button
         type="button"
         (click)="resetPreferences()"
-        appVoiceRead="Restaurar Padrões"
+        [appVoiceRead]="'ACCESSIBILITY.RESET' | translate"
         class="w-full bg-card border border-border text-muted font-semibold rounded-2xl transition-colors hover:bg-surface cursor-pointer text-base p-4"
       >
-        Restaurar Padrões
+        {{ 'ACCESSIBILITY.RESET' | translate }}
       </button>
     </div>
   </div>

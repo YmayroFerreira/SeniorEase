@@ -12,27 +12,27 @@
         (click)="activeActivity() ? closeActivity() : router.navigate(['/inicio'])"
         class="text-white cursor-pointer text-2xl leading-none bg-transparent border-none p-1 flex-shrink-0"
         [appVoiceRead]="
-          activeActivity() ? 'Voltar para a lista de atividades' : 'Voltar para o início'
+          activeActivity() ? ('ACTIVITY.BACK_LIST' | translate) : ('ACTIVITY.BACK_HOME' | translate)
         "
       >
-        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+        <ui-icon [icon]="icons.arrowLeft"></ui-icon>
       </button>
       <div class="min-w-0">
         <p class="text-white/60 text-xs leading-none mb-0.5 truncate">
-          Início
-          <fa-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></fa-icon>
+          {{ 'NAV.HOME' | translate }}
+          <ui-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></ui-icon>
           <span
             class="cursor-pointer hover:text-white/90 transition-colors"
             (click)="activeActivity() ? closeActivity() : null"
-            >Minhas Atividades</span
+            >{{ 'ACTIVITY.TITLE' | translate }}</span
           >
           @if (activeActivity()) {
-            <fa-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></fa-icon>
+            <ui-icon [icon]="icons.chevronRight" class="text-[0.5rem] mx-1"></ui-icon>
             <span class="text-white/90">{{ activeActivity()!.title }}</span>
           }
         </p>
         <h1 class="font-semibold text-white text-base leading-snug truncate">
-          {{ activeActivity() ? activeActivity()!.title : 'Minhas Atividades' }}
+          {{ activeActivity() ? activeActivity()!.title : ('ACTIVITY.TITLE' | translate) }}
         </h1>
       </div>
     </div>
@@ -45,9 +45,9 @@
           (click)="router.navigate(['/inicio'])"
           class="hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0"
         >
-          Início
+          {{ 'NAV.HOME' | translate }}
         </button>
-        <fa-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></fa-icon>
+        <ui-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></ui-icon>
         <button
           type="button"
           (click)="closeActivity()"
@@ -57,21 +57,19 @@
           [class.font-semibold]="!activeActivity()"
           [class.pointer-events-none]="!activeActivity()"
         >
-          Minhas Atividades
+          {{ 'ACTIVITY.TITLE' | translate }}
         </button>
         @if (activeActivity()) {
-          <fa-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></fa-icon>
+          <ui-icon [icon]="icons.chevronRight" class="text-[0.6rem]"></ui-icon>
           <span class="text-foreground font-semibold">{{ activeActivity()!.title }}</span>
         }
       </nav>
 
       <h1 class="font-bold text-foreground text-xl">
-        {{ activeActivity() ? activeActivity()!.title : 'Minhas Atividades' }}
+        {{ activeActivity() ? activeActivity()!.title : ('ACTIVITY.TITLE' | translate) }}
       </h1>
       <p class="text-muted text-sm mt-0.5">
-        {{
-          activeActivity() ? activeActivity()!.description : 'Siga as etapas com calma. Sem pressa.'
-        }}
+        {{ activeActivity() ? activeActivity()!.description : ('ACTIVITY.SUBTITLE' | translate) }}
       </p>
     </div>
   </div>
@@ -92,12 +90,12 @@
           [class.bg-white]="allDone()"
           [class.bg-opacity-20]="!allDone()"
         >
-          <fa-icon
+          <ui-icon
             [icon]="allDone() ? icons.star : icons.checkCircle"
             class="text-2xl"
             [class.text-white]="!allDone()"
             [class.text-success]="allDone()"
-          ></fa-icon>
+          ></ui-icon>
         </div>
         <div>
           <p
@@ -106,18 +104,19 @@
             [class.text-white]="allDone()"
           >
             @if (allDone()) {
-              Parabéns! Tudo feito hoje!
+              {{ 'ACTIVITY.ALL_DONE_TITLE' | translate }}
             } @else {
-              {{ totalCompleted() }} de {{ activities.length }} atividades concluídas
+              {{ totalCompleted() }} {{ 'ACTIVITY.OF' | translate }} {{ activities.length }}
+              {{ 'ACTIVITY.ACTIVITIES_COMPLETED' | translate }}
             }
           </p>
           <p class="text-sm" [class.text-success]="!allDone()" [class.text-white]="allDone()">
             @if (allDone()) {
-              Você completou todas as atividades do dia!
+              {{ 'ACTIVITY.ALL_DONE_DESC' | translate }}
             } @else if (totalCompleted() === 0) {
-              Comece pela primeira e vá no seu ritmo.
+              {{ 'ACTIVITY.START_HINT' | translate }}
             } @else {
-              Continue! Você está indo muito bem.
+              {{ 'ACTIVITY.KEEP_GOING' | translate }}
             }
           </p>
         </div>
@@ -126,7 +125,7 @@
       <!-- Lista de atividades -->
       <section>
         <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
-          Atividades de hoje
+          {{ 'ACTIVITY.ACTIVITIES_TODAY' | translate }}
         </h2>
         <div class="space-y-3">
           @for (activity of activities; track activity.id; let i = $index) {
@@ -135,15 +134,17 @@
               (click)="openActivity(activity.id)"
               [disabled]="isCompleted(activity.id)"
               [appVoiceRead]="
-                activity.title +
+                (activity.title | translate) +
                 '. ' +
-                activity.description +
+                (activity.description | translate) +
                 '. ' +
                 activity.steps.length +
                 ' etapas. ' +
                 activity.estimatedMinutes +
                 ' minutos. ' +
-                (isCompleted(activity.id) ? 'Concluída.' : 'Toque para começar.')
+                (isCompleted(activity.id)
+                  ? ('ACTIVITY.COMPLETED' | translate) + '.'
+                  : ('ACTIVITY.TAP_TO_START' | translate))
               "
               class="w-full bg-card rounded-2xl shadow-sm text-left transition-all px-5 py-4 border-2"
               [class.border-success]="isCompleted(activity.id)"
@@ -161,12 +162,12 @@
                   [class.bg-success]="isCompleted(activity.id)"
                   [class.bg-primary-surface]="!isCompleted(activity.id)"
                 >
-                  <fa-icon
+                  <ui-icon
                     [icon]="isCompleted(activity.id) ? icons.checkCircle : icons.circle"
                     class="text-xl"
                     [class.text-white]="isCompleted(activity.id)"
                     [class.text-primary]="!isCompleted(activity.id)"
-                  ></fa-icon>
+                  ></ui-icon>
                 </div>
 
                 <!-- Conteúdo -->
@@ -177,17 +178,17 @@
                       [class.line-through]="isCompleted(activity.id)"
                       [class.text-muted]="isCompleted(activity.id)"
                     >
-                      {{ activity.title }}
+                      {{ activity.title | translate }}
                     </p>
                     @if (!isCompleted(activity.id)) {
-                      <fa-icon
+                      <ui-icon
                         [icon]="icons.chevronRight"
                         class="text-primary flex-shrink-0 text-base"
-                      ></fa-icon>
+                      ></ui-icon>
                     }
                   </div>
                   <p class="text-muted text-sm mt-0.5">
-                    {{ activity.description }}
+                    {{ activity.description | translate }}
                   </p>
                   <div class="flex items-center gap-3 mt-2">
                     <span
@@ -198,7 +199,9 @@
                       [class.text-primary]="!isCompleted(activity.id)"
                     >
                       {{
-                        isCompleted(activity.id) ? 'Concluída' : activity.steps.length + ' etapas'
+                        isCompleted(activity.id)
+                          ? ('ACTIVITY.COMPLETED' | translate)
+                          : activity.steps.length + ' ' + ('ACTIVITY.STEPS' | translate)
                       }}
                     </span>
                     <span class="text-muted text-xs"> ~{{ activity.estimatedMinutes }} min </span>
@@ -217,9 +220,9 @@
             type="button"
             (click)="resetProgress()"
             class="text-muted hover:text-foreground transition-colors cursor-pointer text-xs bg-transparent border-none p-2"
-            appVoiceRead="Redefinir progresso das atividades"
+            [appVoiceRead]="'ACTIVITY.RESET_ARIA' | translate"
           >
-            Redefinir progresso
+            {{ 'ACTIVITY.RESET' | translate }}
           </button>
         </div>
       }
@@ -243,10 +246,17 @@
         <p
           class="font-semibold text-primary uppercase tracking-wide text-xs mb-2"
           [appVoiceRead]="
-            'Etapa ' + (activeStepIndex() + 1) + ' de ' + activeActivity()!.steps.length
+            ('ACTIVITY.STEP' | translate) +
+            ' ' +
+            (activeStepIndex() + 1) +
+            ' ' +
+            ('ACTIVITY.OF' | translate) +
+            ' ' +
+            activeActivity()!.steps.length
           "
         >
-          Etapa {{ activeStepIndex() + 1 }} de {{ activeActivity()!.steps.length }}
+          {{ 'ACTIVITY.STEP' | translate }} {{ activeStepIndex() + 1 }}
+          {{ 'ACTIVITY.OF' | translate }} {{ activeActivity()!.steps.length }}
         </p>
 
         @if (!currentStep!.expandedContent) {
@@ -278,7 +288,7 @@
                 <div
                   class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center flex-shrink-0"
                 >
-                  <fa-icon [icon]="icons.video" class="text-white text-base"></fa-icon>
+                  <ui-icon [icon]="icons.video" class="text-white text-base"></ui-icon>
                 </div>
                 <div>
                   <p class="font-bold text-foreground text-base leading-snug">
@@ -304,12 +314,12 @@
               [class.bg-warning-light]="punctualityStatus() === 'late'"
               [appVoiceRead]="punctualityMessage() + '. Prof. Dr. Carlos Mendes. Sala virtual 03.'"
             >
-              <fa-icon
+              <ui-icon
                 [icon]="icons.clock"
                 class="text-2xl flex-shrink-0"
                 [class.text-success]="punctualityStatus() !== 'late'"
                 [class.text-warning]="punctualityStatus() === 'late'"
-              ></fa-icon>
+              ></ui-icon>
               <div>
                 <p
                   class="font-bold text-base leading-snug"
@@ -342,19 +352,19 @@
                 >
                   @switch (connectionStatus()) {
                     @case ('testing') {
-                      <fa-icon [icon]="icons.spinner" class="fa-spin text-muted"></fa-icon>
+                      <ui-icon [icon]="icons.spinner" class="fa-spin text-muted"></ui-icon>
                     }
                     @case ('ok') {
-                      <fa-icon [icon]="icons.checkCircle" class="text-success"></fa-icon>
+                      <ui-icon [icon]="icons.checkCircle" class="text-success"></ui-icon>
                     }
                     @case ('slow') {
-                      <fa-icon [icon]="icons.warning" class="text-warning"></fa-icon>
+                      <ui-icon [icon]="icons.warning" class="text-warning"></ui-icon>
                     }
                     @case ('offline') {
-                      <fa-icon [icon]="icons.warning" class="text-danger"></fa-icon>
+                      <ui-icon [icon]="icons.warning" class="text-danger"></ui-icon>
                     }
                     @default {
-                      <fa-icon [icon]="icons.wifi" class="text-primary"></fa-icon>
+                      <ui-icon [icon]="icons.wifi" class="text-primary"></ui-icon>
                     }
                   }
                 </div>
@@ -373,7 +383,9 @@
                   <p class="text-muted text-sm mt-0.5">{{ connectionDescription() }}</p>
                 </div>
                 @if (connectionStatus() === 'idle') {
-                  <span class="text-primary text-sm font-bold flex-shrink-0">Testar →</span>
+                  <span class="text-primary text-sm font-bold flex-shrink-0">{{
+                    'ACTIVITY.CONNECTION.TEST_ARROW' | translate
+                  }}</span>
                 }
               </button>
 
@@ -381,12 +393,12 @@
                 <div class="px-5 pb-4 pt-0">
                   <div class="bg-warning-light rounded-xl px-4 py-3">
                     <p class="text-sm text-warning font-semibold mb-1">
-                      O que fazer se o vídeo travar?
+                      {{ 'ACTIVITY.CONNECTION.TROUBLESHOOT_TITLE' | translate }}
                     </p>
                     <ul class="text-sm text-muted space-y-1 list-disc list-inside">
-                      <li>Feche outros aplicativos abertos</li>
-                      <li>Aproxime-se do roteador Wi-Fi</li>
-                      <li>Recarregue a página da aula</li>
+                      <li>{{ 'ACTIVITY.CONNECTION.CLOSE_APPS' | translate }}</li>
+                      <li>{{ 'ACTIVITY.CONNECTION.MOVE_WIFI' | translate }}</li>
+                      <li>{{ 'ACTIVITY.CONNECTION.RELOAD_PAGE' | translate }}</li>
                     </ul>
                   </div>
                 </div>
@@ -399,35 +411,44 @@
                 type="button"
                 (click)="helpExpanded.set(!helpExpanded())"
                 class="w-full flex items-center gap-4 px-5 py-4 text-left hover:bg-surface transition-colors cursor-pointer"
-                [appVoiceRead]="helpExpanded() ? 'Fechar ajuda' : 'Abrir ajuda'"
+                [appVoiceRead]="
+                  helpExpanded()
+                    ? ('ACTIVITY.HELP.CLOSE' | translate)
+                    : ('ACTIVITY.HELP.OPEN' | translate)
+                "
               >
-                <fa-icon
+                <ui-icon
                   [icon]="icons.headset"
                   class="text-primary text-lg flex-shrink-0"
-                ></fa-icon>
-                <span class="flex-1 font-semibold text-foreground text-base"
-                  >Precisa de ajuda?</span
-                >
-                <fa-icon
+                ></ui-icon>
+                <span class="flex-1 font-semibold text-foreground text-base">{{
+                  'ACTIVITY.HELP.TITLE' | translate
+                }}</span>
+                <ui-icon
                   [icon]="helpExpanded() ? icons.chevronUp : icons.chevronDown"
                   class="text-muted text-sm"
-                ></fa-icon>
+                ></ui-icon>
               </button>
               @if (helpExpanded()) {
                 <div class="px-5 pb-5 flex flex-col gap-3">
                   <div class="bg-primary-surface rounded-xl px-4 py-3">
-                    <p class="text-sm font-semibold text-primary mb-1">Suporte técnico</p>
-                    <p class="text-sm text-muted">
-                      Ligue: <strong class="text-foreground">0800-123-4567</strong>
+                    <p class="text-sm font-semibold text-primary mb-1">
+                      {{ 'ACTIVITY.HELP.SUPPORT_TITLE' | translate }}
                     </p>
-                    <p class="text-sm text-muted">Disponível 24 horas</p>
+                    <p class="text-sm text-muted">
+                      {{ 'ACTIVITY.HELP.PHONE_LABEL' | translate }}
+                      <strong class="text-foreground">0800-123-4567</strong>
+                    </p>
+                    <p class="text-sm text-muted">{{ 'ACTIVITY.HELP.AVAILABLE' | translate }}</p>
                   </div>
                   <div class="bg-surface rounded-xl px-4 py-3">
-                    <p class="text-sm font-semibold text-foreground mb-1">Problemas comuns</p>
+                    <p class="text-sm font-semibold text-foreground mb-1">
+                      {{ 'ACTIVITY.HELP.COMMON_TITLE' | translate }}
+                    </p>
                     <ul class="text-sm text-muted space-y-1 list-disc list-inside">
-                      <li>Sem som: verifique o volume e os fones</li>
-                      <li>Sem câmera: recarregue a página</li>
-                      <li>Sem acesso: verifique o link da aula</li>
+                      <li>{{ 'ACTIVITY.HELP.NO_SOUND' | translate }}</li>
+                      <li>{{ 'ACTIVITY.HELP.NO_CAMERA' | translate }}</li>
+                      <li>{{ 'ACTIVITY.HELP.NO_ACCESS' | translate }}</li>
                     </ul>
                   </div>
                 </div>
@@ -441,11 +462,11 @@
               class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-3 mt-1"
               appVoiceRead="Entrar na aula. Sua câmera e microfone serão ativados."
             >
-              <fa-icon [icon]="icons.video" class="text-base"></fa-icon>
-              Entrar na aula
+              <ui-icon [icon]="icons.video" class="text-base"></ui-icon>
+              {{ 'ACTIVITY.ENTER_CLASS' | translate }}
             </button>
             <p class="text-xs text-muted text-center">
-              Sua câmera e microfone serão ativados ao entrar
+              {{ 'ACTIVITY.CAMERA_WARNING' | translate }}
             </p>
           } @else if (currentStep!.expandedContent === 'post-class') {
             <!-- Card de status -->
@@ -457,7 +478,7 @@
                 <div
                   class="w-12 h-12 rounded-2xl bg-primary-surface flex items-center justify-center flex-shrink-0"
                 >
-                  <fa-icon [icon]="icons.video" class="text-primary text-xl"></fa-icon>
+                  <ui-icon [icon]="icons.video" class="text-primary text-xl"></ui-icon>
                 </div>
                 <div>
                   <p class="font-bold text-foreground text-base leading-snug">
@@ -468,9 +489,7 @@
               </div>
               <div class="bg-surface rounded-xl px-4 py-3">
                 <p class="text-sm text-muted leading-relaxed">
-                  Você saiu da aula. Se foi sem querer, toque em
-                  <strong class="text-foreground">Voltar para a aula</strong>. Quando terminar,
-                  toque em <strong class="text-foreground">Concluir atividade</strong>.
+                  {{ 'ACTIVITY.LEFT_CLASS_INSTRUCTION' | translate }}
                 </p>
               </div>
             </div>
@@ -482,8 +501,8 @@
               class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-3"
               appVoiceRead="Voltar para a aula. Reabre a sala de aula."
             >
-              <fa-icon [icon]="icons.rotateLeft" class="text-base"></fa-icon>
-              Voltar para a aula
+              <ui-icon [icon]="icons.rotateLeft" class="text-base"></ui-icon>
+              {{ 'ACTIVITY.RETURN_TO_CLASS' | translate }}
             </button>
 
             <!-- Botão: Concluir -->
@@ -493,8 +512,8 @@
               class="w-full bg-success text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-3"
               appVoiceRead="Concluir atividade. Marca a aula como concluída."
             >
-              <fa-icon [icon]="icons.checkCircle" class="text-base"></fa-icon>
-              Concluir atividade
+              <ui-icon [icon]="icons.checkCircle" class="text-base"></ui-icon>
+              {{ 'ACTIVITY.COMPLETE_ACTIVITY' | translate }}
             </button>
           } @else if (currentStep!.actionRoute) {
             <button
@@ -503,7 +522,7 @@
               class="w-full bg-primary text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-2.5"
               [appVoiceRead]="currentStep!.actionLabel + '. Abre outra tela.'"
             >
-              <fa-icon [icon]="icons.externalLink" class="text-base"></fa-icon>
+              <ui-icon [icon]="icons.externalLink" class="text-base"></ui-icon>
               {{ currentStep!.actionLabel }}
             </button>
 
@@ -513,12 +532,16 @@
               class="w-full bg-success text-white font-bold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center text-lg px-6 py-4 gap-2.5"
               [appVoiceRead]="
                 isLastStep
-                  ? 'Já fiz isso. Concluir atividade.'
-                  : 'Já fiz isso. Ir para a próxima etapa.'
+                  ? ('ACTIVITY.ALREADY_DONE_COMPLETE' | translate) + '.'
+                  : ('ACTIVITY.ALREADY_DONE_NEXT' | translate) + '.'
               "
             >
-              <fa-icon [icon]="icons.checkCircle" class="text-base"></fa-icon>
-              {{ isLastStep ? 'Já fiz isso — Concluir' : 'Já fiz isso → Próxima etapa' }}
+              <ui-icon [icon]="icons.checkCircle" class="text-base"></ui-icon>
+              {{
+                isLastStep
+                  ? ('ACTIVITY.ALREADY_DONE_COMPLETE' | translate)
+                  : ('ACTIVITY.ALREADY_DONE_NEXT' | translate)
+              }}
             </button>
           } @else {
             <button
@@ -528,7 +551,7 @@
               [appVoiceRead]="currentStep!.actionLabel"
             >
               {{ currentStep!.actionLabel }}
-              <fa-icon [icon]="icons.arrowRight" class="text-base"></fa-icon>
+              <ui-icon [icon]="icons.arrowRight" class="text-base"></ui-icon>
             </button>
           }
 
@@ -537,9 +560,9 @@
               type="button"
               (click)="goToPreviousStep()"
               class="w-full bg-card border border-border text-muted font-semibold rounded-2xl hover:bg-surface transition-colors cursor-pointer text-base p-3.5"
-              appVoiceRead="Voltar para a etapa anterior"
+              [appVoiceRead]="'ACTIVITY.BACK_STEP' | translate"
             >
-              Voltar à etapa anterior
+              {{ 'ACTIVITY.BACK_STEP' | translate }}
             </button>
           }
         </div>
@@ -550,7 +573,11 @@
 
 <!-- Toast -->
 <div role="status" aria-live="polite" aria-atomic="true" class="sr-only">
-  {{ showCelebration() ? 'Atividade concluída! Muito bem!' : '' }}
+  {{
+    showCelebration()
+      ? ('ACTIVITY.DONE_DESC' | translate) + ' ' + ('ACTIVITY.DONE_TITLE' | translate)
+      : ''
+  }}
 </div>
 
 @if (showCelebration()) {
@@ -558,10 +585,10 @@
     class="fixed bottom-28 left-1/2 -translate-x-1/2 bg-success text-white rounded-2xl shadow-lg flex items-center z-50 gap-3 px-6 py-4 min-w-[280px] max-w-[360px]"
     aria-hidden="true"
   >
-    <fa-icon [icon]="icons.star" class="text-2xl"></fa-icon>
+    <ui-icon [icon]="icons.star" class="text-2xl"></ui-icon>
     <div>
-      <p class="font-bold text-base">Muito bem!</p>
-      <p class="text-sm opacity-90">Atividade concluída com sucesso!</p>
+      <p class="font-bold text-base">{{ 'ACTIVITY.DONE_TITLE' | translate }}</p>
+      <p class="text-sm opacity-90">{{ 'ACTIVITY.DONE_DESC' | translate }}</p>
     </div>
   </div>
 }

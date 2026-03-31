@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-surface pb-[88px]">
+<div class="bg-surface pb-22">
   <!-- Status bar placeholder (mobile) -->
   <div class="md:hidden">
     <div class="bg-primary h-11"></div>
@@ -8,13 +8,13 @@
   <div class="bg-primary md:bg-card md:border-b md:border-border px-6 pt-4 pb-6">
     <div class="md:hidden flex items-center gap-3 mb-1">
       <a routerLink="/inicio" class="text-white text-2xl leading-none">
-        <fa-icon [icon]="icons.arrowLeft"></fa-icon>
+        <ui-icon [icon]="icons.arrowLeft"></ui-icon>
       </a>
-      <h1 class="font-semibold text-white text-xl">Meu Perfil</h1>
+      <h1 class="font-semibold text-white text-xl">{{ 'PROFILE.TITLE' | translate }}</h1>
     </div>
     <div class="hidden md:block">
-      <h1 class="font-bold text-foreground text-xl">Meu Perfil</h1>
-      <p class="text-muted text-sm mt-0.5">Gerencie suas informações</p>
+      <h1 class="font-bold text-foreground text-xl">{{ 'PROFILE.TITLE' | translate }}</h1>
+      <p class="text-muted text-sm mt-0.5">{{ 'PROFILE.SUBTITLE' | translate }}</p>
     </div>
   </div>
 
@@ -25,21 +25,21 @@
         @if (profileImage()) {
           <img
             [src]="profileImage()"
-            alt="Foto de perfil"
+            [alt]="'PROFILE.PHOTO' | translate"
             class="rounded-full object-cover border-4 border-primary/20 w-24 h-24"
           />
         } @else {
           <div
             class="rounded-full bg-primary-surface border-4 border-primary/20 flex items-center justify-center w-24 h-24"
           >
-            <fa-icon [icon]="icons.user" class="text-primary text-[2.5rem]"></fa-icon>
+            <ui-icon [icon]="icons.user" class="text-primary text-[2.5rem]"></ui-icon>
           </div>
         }
         <label
           class="absolute bottom-0 right-0 bg-primary text-white rounded-full flex items-center justify-center cursor-pointer shadow w-8 h-8"
-          appVoiceRead="Alterar foto de perfil"
+          [appVoiceRead]="'PROFILE.CHANGE_PHOTO' | translate"
         >
-          <fa-icon [icon]="icons.camera" class="text-sm"></fa-icon>
+          <ui-icon [icon]="icons.camera" class="text-sm"></ui-icon>
           <input type="file" accept="image/*" class="hidden" (change)="onImageSelected($event)" />
         </label>
       </div>
@@ -48,28 +48,34 @@
 
     <!-- Dados pessoais -->
     <section class="mb-6">
-      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">Dados pessoais</h2>
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
+        {{ 'PROFILE.PERSONAL_DATA' | translate }}
+      </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
         <!-- Nome -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon [icon]="icons.user" class="text-primary flex-shrink-0 text-sm w-4"></fa-icon>
-            <label for="profile-name" class="text-muted text-xs">Nome</label>
+            <ui-icon [icon]="icons.user" class="text-primary flex-shrink-0 text-sm w-4"></ui-icon>
+            <label for="profile-name" class="text-muted text-xs">{{
+              'PROFILE.NAME' | translate
+            }}</label>
           </div>
           <input
             id="profile-name"
             type="text"
             [value]="userName()"
             (input)="userName.set($any($event.target).value)"
-            appVoiceRead="Campo de nome"
+            [appVoiceRead]="'PROFILE.NAME_ARIA' | translate"
             class="w-full text-foreground font-semibold bg-transparent focus:outline-none transition-colors border-b text-base py-1"
             [class.border-border]="!saveAttempted() || nameValid()"
             [class.focus:border-primary]="!saveAttempted() || nameValid()"
             [class.border-danger]="saveAttempted() && !nameValid()"
-            placeholder="Seu nome"
+            [placeholder]="'PROFILE.NAME_PLACEHOLDER' | translate"
           />
           @if (saveAttempted() && !nameValid()) {
-            <p class="text-danger text-[0.6875rem] mt-1">Nome obrigatório.</p>
+            <p class="text-danger text-[0.6875rem] mt-1">
+              {{ 'PROFILE.NAME_REQUIRED' | translate }}
+            </p>
           }
         </div>
 
@@ -78,26 +84,30 @@
         <!-- E-mail -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon
+            <ui-icon
               [icon]="icons.envelope"
               class="text-primary flex-shrink-0 text-sm w-4"
-            ></fa-icon>
-            <label for="profile-email" class="text-muted text-xs">E-mail</label>
+            ></ui-icon>
+            <label for="profile-email" class="text-muted text-xs">{{
+              'PROFILE.EMAIL' | translate
+            }}</label>
           </div>
           <input
             id="profile-email"
             type="email"
             [value]="email()"
             (input)="email.set($any($event.target).value)"
-            appVoiceRead="Campo de e-mail"
+            [appVoiceRead]="'PROFILE.EMAIL_ARIA' | translate"
             class="w-full text-foreground font-semibold bg-transparent focus:outline-none transition-colors border-b text-base py-1"
             [class.border-border]="!saveAttempted() || emailValid()"
             [class.focus:border-primary]="!saveAttempted() || emailValid()"
             [class.border-danger]="saveAttempted() && !emailValid()"
-            placeholder="Seu e-mail"
+            [placeholder]="'PROFILE.EMAIL_PLACEHOLDER' | translate"
           />
           @if (saveAttempted() && !emailValid()) {
-            <p class="text-danger text-[0.6875rem] mt-1">E-mail inválido.</p>
+            <p class="text-danger text-[0.6875rem] mt-1">
+              {{ 'PROFILE.EMAIL_INVALID' | translate }}
+            </p>
           }
         </div>
 
@@ -106,23 +116,27 @@
         <!-- Telefone -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon [icon]="icons.phone" class="text-primary flex-shrink-0 text-sm w-4"></fa-icon>
-            <label for="profile-phone" class="text-muted text-xs">Telefone</label>
+            <ui-icon [icon]="icons.phone" class="text-primary flex-shrink-0 text-sm w-4"></ui-icon>
+            <label for="profile-phone" class="text-muted text-xs">{{
+              'PROFILE.PHONE' | translate
+            }}</label>
           </div>
           <input
             id="profile-phone"
             type="tel"
             [value]="phone()"
             (input)="phone.set($any($event.target).value)"
-            appVoiceRead="Campo de telefone"
+            [appVoiceRead]="'PROFILE.PHONE_ARIA' | translate"
             class="w-full text-foreground font-semibold bg-transparent focus:outline-none transition-colors border-b text-base py-1"
             [class.border-border]="!saveAttempted() || phoneValid()"
             [class.focus:border-primary]="!saveAttempted() || phoneValid()"
             [class.border-danger]="saveAttempted() && !phoneValid()"
-            placeholder="Seu telefone"
+            [placeholder]="'PROFILE.PHONE_PLACEHOLDER' | translate"
           />
           @if (saveAttempted() && !phoneValid()) {
-            <p class="text-danger text-[0.6875rem] mt-1">Telefone obrigatório.</p>
+            <p class="text-danger text-[0.6875rem] mt-1">
+              {{ 'PROFILE.PHONE_REQUIRED' | translate }}
+            </p>
           }
         </div>
 
@@ -131,18 +145,20 @@
         <!-- Data de nascimento -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon
+            <ui-icon
               [icon]="icons.calendar"
               class="text-primary flex-shrink-0 text-sm w-4"
-            ></fa-icon>
-            <label for="profile-dob" class="text-muted text-xs">Data de nascimento</label>
+            ></ui-icon>
+            <label for="profile-dob" class="text-muted text-xs">{{
+              'PROFILE.BIRTH_DATE' | translate
+            }}</label>
           </div>
           <input
             id="profile-dob"
             type="date"
             [value]="dob()"
             (input)="dob.set($any($event.target).value)"
-            appVoiceRead="Campo de data de nascimento"
+            [appVoiceRead]="'PROFILE.BIRTH_DATE_ARIA' | translate"
             class="w-full text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors text-base py-1"
           />
         </div>
@@ -152,15 +168,17 @@
         <!-- CPF -->
         <div class="px-4 py-3.5">
           <div class="flex items-center gap-2 mb-1">
-            <fa-icon [icon]="icons.idCard" class="text-primary flex-shrink-0 text-sm w-4"></fa-icon>
-            <label for="profile-cpf" class="text-muted text-xs">CPF</label>
+            <ui-icon [icon]="icons.idCard" class="text-primary flex-shrink-0 text-sm w-4"></ui-icon>
+            <label for="profile-cpf" class="text-muted text-xs">{{
+              'PROFILE.CPF' | translate
+            }}</label>
           </div>
           <input
             id="profile-cpf"
             type="text"
             [value]="cpf()"
             (input)="cpf.set($any($event.target).value)"
-            appVoiceRead="Campo de CPF"
+            [appVoiceRead]="'PROFILE.CPF_ARIA' | translate"
             class="w-full text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors text-base py-1"
             placeholder="000.000.000-00"
           />
@@ -168,166 +186,127 @@
       </div>
     </section>
 
-    <!-- Preferências -->
-    <section class="mb-6">
-      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">Preferências</h2>
-      <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
-        <!-- Modo de navegação -->
-        <div
-          class="flex items-center gap-3 px-4 py-3.5"
-          [appVoiceRead]="
-            'Modo de navegação. ' +
-            (simplifiedNav() ? 'Simplificado. Ativado' : 'Padrão. Desativado')
-          "
-        >
-          <fa-icon
-            [icon]="icons.simplifiedNav"
-            class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
-          <div class="flex-1 min-w-0">
-            <p class="font-semibold text-foreground text-sm truncate">Modo de navegação</p>
-            <p class="text-muted text-xs mt-0.5 truncate">
-              {{ simplifiedNav() ? 'Simplificado' : 'Padrão' }}
-            </p>
-          </div>
-          <button
-            type="button"
-            role="switch"
-            [attr.aria-checked]="simplifiedNav()"
-            (click)="simplifiedNav.set(!simplifiedNav())"
-            class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer w-12 h-[1.625rem] min-w-[3rem]"
-            [class.bg-primary]="simplifiedNav()"
-            [class.bg-toggle-off]="!simplifiedNav()"
-          >
-            <span
-              class="absolute bg-white rounded-full shadow transition-transform w-5 h-5 top-[0.1875rem] left-[0.1875rem]"
-              [style.transform]="simplifiedNav() ? 'translateX(1.375rem)' : 'translateX(0)'"
-            ></span>
-          </button>
-        </div>
-
-        <div class="bg-border h-px mx-4"></div>
-
-        <!-- Confirmações extras -->
-        <div
-          class="flex items-center gap-3 px-4 py-3.5"
-          [appVoiceRead]="
-            'Confirmações extras. ' + (extraConfirmations() ? 'Ativado' : 'Desativado')
-          "
-        >
-          <fa-icon
-            [icon]="icons.extraConfirmations"
-            class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
-          <div class="flex-1 min-w-0">
-            <p class="font-semibold text-foreground text-sm truncate">Confirmações extras</p>
-            <p class="text-muted text-xs mt-0.5 truncate">
-              Pedir confirmação antes de ações importantes
-            </p>
-          </div>
-          <button
-            type="button"
-            role="switch"
-            [attr.aria-checked]="extraConfirmations()"
-            (click)="extraConfirmations.set(!extraConfirmations())"
-            class="relative rounded-full transition-colors flex-shrink-0 cursor-pointer w-12 h-[1.625rem] min-w-[3rem]"
-            [class.bg-primary]="extraConfirmations()"
-            [class.bg-toggle-off]="!extraConfirmations()"
-          >
-            <span
-              class="absolute bg-white rounded-full shadow transition-transform w-5 h-5 top-[0.1875rem] left-[0.1875rem]"
-              [style.transform]="extraConfirmations() ? 'translateX(1.375rem)' : 'translateX(0)'"
-            ></span>
-          </button>
-        </div>
-      </div>
-    </section>
-
     <!-- Conta -->
     <section class="mb-6">
-      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">Conta</h2>
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
+        {{ 'PROFILE.ACCOUNT' | translate }}
+      </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
-        <button
-          type="button"
-          (click)="changePassword()"
-          appVoiceRead="Alterar senha"
-          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
-        >
-          <fa-icon
+        <ng-template #leadingChangePassword>
+          <ui-icon
             [icon]="icons.lock"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
+        </ng-template>
+        <ng-template #descriptionChangePassword>
           <div class="flex-1 text-left">
-            <p class="font-semibold text-foreground text-sm">Alterar senha</p>
-            <p class="text-muted text-xs mt-0.5">Atualizar sua senha de acesso</p>
+            <p class="font-semibold text-foreground text-sm">
+              {{ 'PROFILE.CHANGE_PASSWORD' | translate }}
+            </p>
+            <p class="text-muted text-xs mt-0.5">
+              {{ 'PROFILE.CHANGE_PASSWORD_DESC' | translate }}
+            </p>
           </div>
-        </button>
-
-        <div class="bg-border h-px mx-4"></div>
-
-        <button
+        </ng-template>
+        <ui-card-button
           type="button"
-          (click)="logout()"
-          appVoiceRead="Sair da conta"
-          class="w-full flex items-center hover:bg-danger-light transition-colors cursor-pointer gap-4 px-4 py-3.5"
-        >
-          <fa-icon
+          (click)="changePassword()"
+          [variant]="'ghost'"
+          [leading]="leadingChangePassword"
+          [description]="descriptionChangePassword"
+          [appVoiceRead]="'PROFILE.CHANGE_PASSWORD' | translate"
+        />
+
+        <ui-divider class="mx-4" />
+
+        <ng-template #leadingLogout>
+          <ui-icon
             [icon]="icons.logout"
             class="text-danger text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
+        </ng-template>
+        <ng-template #descriptionLogout>
           <div class="flex-1 text-left">
-            <p class="font-semibold text-danger text-sm">Sair da conta</p>
-            <p class="text-muted text-xs mt-0.5">Encerrar a sessão atual</p>
+            <p class="font-semibold text-danger text-sm">{{ 'PROFILE.LOGOUT' | translate }}</p>
+            <p class="text-muted text-xs mt-0.5">{{ 'PROFILE.LOGOUT_DESC' | translate }}</p>
           </div>
-        </button>
+        </ng-template>
+        <ui-card-button
+          type="button"
+          (click)="logout()"
+          [variant]="'ghost'"
+          [leading]="leadingLogout"
+          [description]="descriptionLogout"
+          [appVoiceRead]="'PROFILE.LOGOUT' | translate"
+          class="logout-btn"
+        />
       </div>
     </section>
 
     <!-- Suporte -->
     <section class="mb-8">
-      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">Suporte</h2>
+      <h2 class="text-xs font-semibold text-muted uppercase tracking-wide mb-3">
+        {{ 'PROFILE.SUPPORT' | translate }}
+      </h2>
       <div class="bg-card rounded-2xl shadow-sm overflow-hidden">
-        <button
-          type="button"
-          appVoiceRead="Fale conosco"
-          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
-        >
-          <fa-icon
+        <ng-template #leadingContactUs>
+          <ui-icon
             [icon]="icons.headset"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
+        </ng-template>
+        <ng-template #descriptionContactUs>
           <div class="flex-1 text-left">
-            <p class="font-semibold text-foreground text-sm">Fale conosco</p>
-            <p class="text-muted text-xs mt-0.5">Dúvidas ou problemas? Estamos aqui</p>
+            <p class="font-semibold text-foreground text-sm">
+              {{ 'PROFILE.CONTACT_US' | translate }}
+            </p>
+            <p class="text-muted text-xs mt-0.5">{{ 'PROFILE.CONTACT_US_DESC' | translate }}</p>
           </div>
-        </button>
-
-        <div class="bg-border h-px mx-4"></div>
-
-        <button
+        </ng-template>
+        <ui-card-button
           type="button"
-          appVoiceRead="Termos de uso e privacidade"
-          class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
-        >
-          <fa-icon
+          [appVoiceRead]="'PROFILE.CONTACT_US' | translate"
+          [variant]="'ghost'"
+          [leading]="leadingContactUs"
+          [description]="descriptionContactUs"
+        />
+
+        <ui-divider class="mx-4" />
+
+        <ng-template #leadingTerms>
+          <ui-icon
             [icon]="icons.fileContract"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
+        </ng-template>
+        <ng-template #descriptionTerms>
           <div class="flex-1 text-left">
-            <p class="font-semibold text-foreground text-sm">Termos de uso e privacidade</p>
-            <p class="text-muted text-xs mt-0.5">Saiba como usamos seus dados</p>
+            <p class="font-semibold text-foreground text-sm">{{ 'PROFILE.TERMS' | translate }}</p>
+            <p class="text-muted text-xs mt-0.5">{{ 'PROFILE.TERMS_DESC' | translate }}</p>
           </div>
-        </button>
+        </ng-template>
+        <ui-card-button
+          type="button"
+          [variant]="'ghost'"
+          [leading]="leadingTerms"
+          [description]="descriptionTerms"
+          [appVoiceRead]="'PROFILE.TERMS' | translate"
+        />
 
-        <div class="bg-border h-px mx-4"></div>
+        <ui-divider class="mx-4" />
 
-        <div class="flex items-center gap-4 px-4 py-3.5" appVoiceRead="Versão do aplicativo 1.0.0">
-          <fa-icon
+        <div
+          class="flex items-center gap-4 px-4 py-3.5"
+          [appVoiceRead]="('PROFILE.APP_VERSION' | translate) + ' ' + APP_VERSION"
+        >
+          <ui-icon
             [icon]="icons.info"
             class="text-primary text-center flex-shrink-0 text-lg w-[1.375rem]"
-          ></fa-icon>
+          ></ui-icon>
           <div class="flex-1">
-            <p class="font-semibold text-foreground text-sm">Versão do aplicativo</p>
+            <p class="font-semibold text-foreground text-sm">
+              {{ 'PROFILE.APP_VERSION' | translate }}
+            </p>
           </div>
           <span class="text-muted font-semibold text-sm">{{ APP_VERSION }}</span>
         </div>
@@ -339,10 +318,10 @@
       <button
         type="button"
         (click)="saveProfile()"
-        appVoiceRead="Salvar alterações"
+        [appVoiceRead]="'PROFILE.SAVE' | translate"
         class="w-full bg-primary text-white font-semibold rounded-2xl hover:opacity-90 transition-opacity cursor-pointer text-base p-4"
       >
-        Salvar alterações
+        {{ 'PROFILE.SAVE' | translate }}
       </button>
     </div>
   </div>
@@ -359,10 +338,10 @@
     [class.bg-danger]="!toastSuccess()"
     aria-hidden="true"
   >
-    <fa-icon
+    <ui-icon
       [icon]="toastSuccess() ? icons.circleCheck : icons.warning"
       class="text-white flex-shrink-0 text-lg"
-    ></fa-icon>
+    ></ui-icon>
     <p class="text-white font-semibold text-sm">{{ toastMessage() }}</p>
   </div>
 }

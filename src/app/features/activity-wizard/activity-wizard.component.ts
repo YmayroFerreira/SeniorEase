@@ -23,7 +23,8 @@ import {
   faVideo,
   faWifi,
 } from '@fortawesome/free-solid-svg-icons';
-import { AccessibilityService } from '../../core/services/accessibility.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 export type ConnectionStatus = 'idle' | 'testing' | 'ok' | 'slow' | 'offline';
@@ -47,107 +48,16 @@ export interface Activity {
 const COMPLETED_KEY = 'wizard-completed-activities';
 const SESSION_KEY = 'wizard-session';
 
-const ACTIVITIES: Activity[] = [
-  {
-    id: 'aula',
-    title: 'Participar da Aula',
-    description: 'Aula de Desenvolvimento Front End — Prof. Carlos Mendes',
-    estimatedMinutes: 120,
-    steps: [
-      {
-        title: 'Prepare-se para a aula',
-        description:
-          'Certifique-se de estar em um lugar tranquilo, com boa iluminação. Tenha água por perto e fones de ouvido, se possível.',
-        actionLabel: 'Estou pronto!',
-      },
-      {
-        title: 'Sala de Espera',
-        description: 'Verifique sua conexão e entre na aula quando estiver pronto.',
-        actionLabel: 'Entrar na aula',
-        expandedContent: 'waiting-room',
-      },
-      {
-        title: 'Você saiu da aula',
-        description: 'Pode voltar ao vídeo a qualquer momento ou concluir a atividade.',
-        actionLabel: 'Concluir atividade',
-        expandedContent: 'post-class',
-      },
-    ],
-  },
-  {
-    id: 'caderno',
-    title: 'Revisar Anotações',
-    description: 'Acesse seu caderno e revise o que você anotou nas aulas anteriores',
-    estimatedMinutes: 15,
-    steps: [
-      {
-        title: 'Abra seu caderno digital',
-        description:
-          'Clique em "Abrir o Caderno" para ver suas anotações. Quando terminar a leitura, volte aqui e clique em "Já fiz isso".',
-        actionLabel: 'Abrir o Caderno',
-        actionRoute: '/meu-caderno',
-      },
-      {
-        title: 'Você revisou suas anotações!',
-        description:
-          'Muito bem! Reler o conteúdo ajuda a fixar na memória. Você pode fazer isso quantas vezes quiser.',
-        actionLabel: 'Atividade concluída!',
-      },
-    ],
-  },
-  {
-    id: 'forum',
-    title: 'Participar do Fórum',
-    description: 'Leia as mensagens e tire dúvidas com colegas e professores',
-    estimatedMinutes: 10,
-    steps: [
-      {
-        title: 'Acesse o fórum da turma',
-        description:
-          'Clique em "Abrir o Fórum" para ver as mensagens. O fórum é um espaço seguro — não tenha vergonha de perguntar.',
-        actionLabel: 'Abrir o Fórum',
-        actionRoute: '/forum',
-      },
-      {
-        title: 'Você participou do fórum!',
-        description:
-          'Ótimo! Participar do fórum ajuda você a tirar dúvidas e a conhecer melhor seus colegas.',
-        actionLabel: 'Atividade concluída!',
-      },
-    ],
-  },
-  {
-    id: 'trabalho',
-    title: 'Trabalho Final',
-    description: 'Acompanhe o status da sua entrega do trabalho final',
-    estimatedMinutes: 5,
-    steps: [
-      {
-        title: 'Verifique o status da entrega',
-        description:
-          'Clique em "Ver status" para confirmar que seu trabalho foi recebido e ver sua nota.',
-        actionLabel: 'Ver status do trabalho',
-        actionRoute: '/trabalho-final',
-      },
-      {
-        title: 'Trabalho entregue com sucesso!',
-        description:
-          'Seu trabalho final foi entregue. Você pode ficar tranquilo — a entrega foi confirmada pelo sistema.',
-        actionLabel: 'Entendido!',
-      },
-    ],
-  },
-];
-
 @Component({
   selector: 'app-activity-wizard',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective],
+  imports: [CommonModule, FontAwesomeModule, VoiceReadDirective, TranslatePipe, IconComponent],
   templateUrl: './activity-wizard.component.html',
 })
 export class ActivityWizardComponent {
   protected readonly router = inject(Router);
   protected readonly accessibility = inject(AccessibilityService);
+  private readonly translate = inject(TranslateService);
 
   protected readonly icons = {
     arrowLeft: faArrowLeft,
@@ -171,6 +81,91 @@ export class ActivityWizardComponent {
     rotateLeft: faRotateLeft,
   };
 
+  protected readonly activities: Activity[] = [
+    {
+      id: 'aula',
+      title: this.translate.instant('ACTIVITY.ATTEND_CLASS'),
+      description: this.translate.instant('ACTIVITY.ATTEND_CLASS_DESC'),
+      estimatedMinutes: 120,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.PREPARE_CLASS'),
+          description: this.translate.instant('ACTIVITY.PREPARE_CLASS_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.IM_READY'),
+        },
+        {
+          title: this.translate.instant('ACTIVITY.WAITING_ROOM'),
+          description: this.translate.instant('ACTIVITY.WAITING_ROOM_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.ENTER_CLASS'),
+          expandedContent: 'waiting-room',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.LEFT_CLASS'),
+          description: this.translate.instant('ACTIVITY.LEFT_CLASS_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.COMPLETE_ACTIVITY'),
+          expandedContent: 'post-class',
+        },
+      ],
+    },
+    {
+      id: 'caderno',
+      title: this.translate.instant('ACTIVITY.REVIEW_NOTES'),
+      description: this.translate.instant('ACTIVITY.REVIEW_NOTES_DESC'),
+      estimatedMinutes: 15,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.OPEN_NOTEBOOK'),
+          description: this.translate.instant('ACTIVITY.OPEN_NOTEBOOK_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.OPEN_NOTEBOOK_BTN'),
+          actionRoute: '/meu-caderno',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.NOTES_REVIEWED'),
+          description: this.translate.instant('ACTIVITY.NOTES_REVIEWED_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.ACTIVITY_COMPLETED_BTN'),
+        },
+      ],
+    },
+    {
+      id: 'forum',
+      title: this.translate.instant('ACTIVITY.JOIN_FORUM'),
+      description: this.translate.instant('ACTIVITY.JOIN_FORUM_DESC'),
+      estimatedMinutes: 10,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.OPEN_FORUM'),
+          description: this.translate.instant('ACTIVITY.OPEN_FORUM_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.OPEN_FORUM_BTN'),
+          actionRoute: '/forum',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.FORUM_JOINED'),
+          description: this.translate.instant('ACTIVITY.FORUM_JOINED_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.ACTIVITY_COMPLETED_BTN'),
+        },
+      ],
+    },
+    {
+      id: 'trabalho',
+      title: this.translate.instant('ACTIVITY.FINAL_WORK'),
+      description: this.translate.instant('ACTIVITY.FINAL_WORK_DESC'),
+      estimatedMinutes: 5,
+      steps: [
+        {
+          title: this.translate.instant('ACTIVITY.CHECK_DELIVERY'),
+          description: this.translate.instant('ACTIVITY.CHECK_DELIVERY_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.SEE_STATUS_BTN'),
+          actionRoute: '/trabalho-final',
+        },
+        {
+          title: this.translate.instant('ACTIVITY.WORK_DELIVERED'),
+          description: this.translate.instant('ACTIVITY.WORK_DELIVERED_DESC'),
+          actionLabel: this.translate.instant('ACTIVITY.UNDERSTOOD'),
+        },
+      ],
+    },
+  ];
+
   private readonly classHour = 19;
   private readonly classMinute = 0;
 
@@ -193,38 +188,40 @@ export class ActivityWizardComponent {
     const classStart = new Date();
     classStart.setHours(this.classHour, this.classMinute, 0, 0);
     const diffMin = Math.round((classStart.getTime() - now.getTime()) / 60000);
-    if (diffMin > 1) return `A aula começa em ${diffMin} minutos`;
-    if (diffMin === 1) return 'A aula começa em 1 minuto';
-    if (diffMin === 0) return 'A aula está começando agora!';
+    if (diffMin > 1)
+      return this.translate.instant('ACTIVITY.PUNCTUALITY.STARTS_IN_MANY', { min: diffMin });
+    if (diffMin === 1) return this.translate.instant('ACTIVITY.PUNCTUALITY.STARTS_IN_ONE');
+    if (diffMin === 0) return this.translate.instant('ACTIVITY.PUNCTUALITY.STARTING_NOW');
     const late = Math.abs(diffMin);
-    return `Você está ${late} ${late === 1 ? 'minuto' : 'minutos'} atrasado`;
+    if (late === 1) return this.translate.instant('ACTIVITY.PUNCTUALITY.LATE_ONE');
+    return this.translate.instant('ACTIVITY.PUNCTUALITY.LATE_MANY', { min: late });
   });
 
   protected readonly connectionLabel = computed(() => {
     switch (this.connectionStatus()) {
       case 'testing':
-        return 'Verificando conexão…';
+        return this.translate.instant('ACTIVITY.CONNECTION.TESTING');
       case 'ok':
-        return `Conexão boa (${this.connectionLatency()}ms)`;
+        return this.translate.instant('ACTIVITY.CONNECTION.OK', { ms: this.connectionLatency() });
       case 'slow':
-        return `Conexão lenta (${this.connectionLatency()}ms)`;
+        return this.translate.instant('ACTIVITY.CONNECTION.SLOW', { ms: this.connectionLatency() });
       case 'offline':
-        return 'Sem conexão com a internet';
+        return this.translate.instant('ACTIVITY.CONNECTION.OFFLINE');
       default:
-        return 'Testar minha conexão';
+        return this.translate.instant('ACTIVITY.CONNECTION.IDLE');
     }
   });
 
   protected readonly connectionDescription = computed(() => {
     switch (this.connectionStatus()) {
       case 'ok':
-        return 'Tudo certo para a aula!';
+        return this.translate.instant('ACTIVITY.CONNECTION.DESC_OK');
       case 'slow':
-        return 'O vídeo pode travar. Se isso acontecer, feche outros aplicativos.';
+        return this.translate.instant('ACTIVITY.CONNECTION.DESC_SLOW');
       case 'offline':
-        return 'Verifique o Wi-Fi ou dados móveis e tente novamente.';
+        return this.translate.instant('ACTIVITY.CONNECTION.DESC_OFFLINE');
       default:
-        return 'Clique para verificar se sua internet está boa';
+        return this.translate.instant('ACTIVITY.CONNECTION.DESC_IDLE');
     }
   });
 
@@ -256,8 +253,6 @@ export class ActivityWizardComponent {
     this.router.navigate(['/aula']);
   }
 
-  protected readonly activities = ACTIVITIES;
-
   protected readonly completedIds = signal<Set<string>>(this.loadCompleted());
   protected readonly activeActivityId = signal<string | null>(this.loadSession().activityId);
   protected readonly activeStepIndex = signal<number>(this.loadSession().stepIndex);
@@ -268,7 +263,6 @@ export class ActivityWizardComponent {
   );
 
   protected readonly totalCompleted = computed(() => this.completedIds().size);
-
   protected readonly allDone = computed(() => this.completedIds().size === this.activities.length);
 
   protected isCompleted(id: string): boolean {

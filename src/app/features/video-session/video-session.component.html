@@ -1,13 +1,15 @@
 <div
   class="video-placeholder"
   [ngClass]="{ 'high-contrast': accessibility.theme() === 'high-contrast' }"
-  appVoiceRead="Área de vídeo. Imagem do professor ao vivo."
+  [appVoiceRead]="'VIDEO_SESSION.VIDEO_AREA' | translate"
 >
   <div class="video-overlay">
-    <span class="status-badge" appVoiceRead="Ao Vivo">● AO VIVO</span>
+    <span class="status-badge" [appVoiceRead]="'VIDEO_SESSION.LIVE_BADGE' | translate"
+      >● {{ 'VIDEO_SESSION.LIVE_BADGE' | translate }}</span
+    >
 
     <i class="camera-icon" aria-hidden="true">🎥</i>
   </div>
 
-  <p class="placeholder-text">A imagem do professor aparecerá aqui</p>
+  <p class="placeholder-text">{{ 'VIDEO_SESSION.PLACEHOLDER' | translate }}</p>
 </div>
