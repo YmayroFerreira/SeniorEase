@@ -26,8 +26,6 @@ import {
   DividerComponent,
   IconComponent,
 } from '@senior-ease/ui';
-import { LoadUserProfileUseCase } from '../../core/use-cases/user/load-user-profile.use-case';
-import { SaveUserProfileUseCase } from '../../core/use-cases/user/save-user-profile.use-case';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
@@ -47,8 +45,6 @@ export class ProfileComponent {
   private readonly router = inject(Router);
   private readonly accessibilityService = inject(AccessibilityService);
   private readonly translate = inject(TranslateService);
-  private readonly loadProfileUC = inject(LoadUserProfileUseCase);
-  private readonly saveProfileUC = inject(SaveUserProfileUseCase);
 
   protected readonly icons = {
     arrowLeft: faArrowLeft,
@@ -71,13 +67,12 @@ export class ProfileComponent {
 
   protected readonly APP_VERSION = '1.0.0';
 
-  private readonly _profile = this.loadProfileUC.execute();
-  protected readonly profileImage = signal<string | null>(this._profile.profileImageBase64);
-  protected readonly userName = signal(this._profile.name);
-  protected readonly email = signal(this._profile.email);
-  protected readonly phone = signal(this._profile.phone);
-  protected readonly dob = signal(this._profile.dateOfBirth);
-  protected readonly cpf = signal(this._profile.cpf);
+  protected readonly profileImage = signal<string | null>(localStorage.getItem('profile-image'));
+  protected readonly userName = signal(localStorage.getItem('profile-name') ?? 'Sr. Arnaldo');
+  protected readonly email = signal(localStorage.getItem('profile-email') ?? 'arnaldo@email.com');
+  protected readonly phone = signal(localStorage.getItem('profile-phone') ?? '(11) 98765-4321');
+  protected readonly dob = signal(localStorage.getItem('profile-dob') ?? '');
+  protected readonly cpf = signal(localStorage.getItem('profile-cpf') ?? '');
   protected readonly simplifiedNav = this.accessibilityService.simplifiedNav;
   protected readonly extraConfirmations = this.accessibilityService.extraConfirmations;
 
@@ -103,20 +98,19 @@ export class ProfileComponent {
 
   protected saveProfile(): void {
     this.saveAttempted.set(true);
-    try {
-      this.saveProfileUC.execute({
-        id: 'local-user',
-        name: this.userName(),
-        email: this.email(),
-        phone: this.phone(),
-        dateOfBirth: this.dob(),
-        cpf: this.cpf(),
-        profileImageBase64: this.profileImage(),
-      });
-      this.showToast(this.translate.instant('PROFILE.TOAST_SUCCESS'), true);
-    } catch {
+    if (!this.nameValid() || !this.emailValid() || !this.phoneValid()) {
       this.showToast(this.translate.instant('PROFILE.TOAST_INVALID'), false);
+      return;
     }
+    localStorage.setItem('profile-name', this.userName());
+    localStorage.setItem('profile-email', this.email());
+    localStorage.setItem('profile-phone', this.phone());
+    localStorage.setItem('profile-dob', this.dob());
+    localStorage.setItem('profile-cpf', this.cpf());
+    if (this.profileImage()) {
+      localStorage.setItem('profile-image', this.profileImage()!);
+    }
+    this.showToast(this.translate.instant('PROFILE.TOAST_SUCCESS'), true);
   }
 
   protected changePassword(): void {
