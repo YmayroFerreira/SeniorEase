@@ -23,7 +23,7 @@ import {
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
-  selector: 'app-dashboard-ds2',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [
     CommonModule,
@@ -36,9 +36,9 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
     CardButtonComponent,
     DividerComponent,
   ],
-  templateUrl: './dashboard-ds2.component.html',
+  templateUrl: './dashboard.component.html',
 })
-export class DashboardDs2Component {
+export class DashboardComponent {
   protected readonly accessibility = inject(AccessibilityService);
   protected readonly router = inject(Router);
   private readonly translate = inject(TranslateService);
