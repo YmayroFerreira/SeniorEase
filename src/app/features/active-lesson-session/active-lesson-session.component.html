@@ -57,10 +57,8 @@
             (click)="toggleMuteMic()"
             class="flex-1 flex items-center justify-center gap-3 p-3 rounded-xl border transition-all relative overflow-hidden"
             [ngClass]="{
-              'bg-success-light border-success/30 text-success':
-                accessibility.theme() !== 'high-contrast' && !isMicMuted,
-              'bg-red-50 border-red-200 text-red-700':
-                accessibility.theme() !== 'high-contrast' && isMicMuted,
+              'bg-success-light border-success/30 text-success': !isMicMuted,
+              'bg-red-50 border-red-200 text-red-700': isMicMuted,
             }"
           >
             <div class="flex items-center gap-2">
@@ -90,10 +88,8 @@
             (click)="toggleTurnOffVideo()"
             class="flex-1 flex items-center justify-center gap-3 p-3 rounded-xl border transition-all"
             [ngClass]="{
-              'bg-success-light border-success/30 text-success':
-                accessibility.theme() !== 'high-contrast' && !isVideoOff,
-              'bg-red-50 border-red-200 text-red-700':
-                accessibility.theme() !== 'high-contrast' && isVideoOff,
+              'bg-success-light border-success/30 text-success': !isVideoOff,
+              'bg-red-50 border-red-200 text-red-700': isVideoOff,
             }"
             [appVoiceRead]="
               ('LESSON.CAMERA_LABEL' | translate) +
@@ -128,28 +124,19 @@
           >
             <ui-icon
               [icon]="isSpeakerMuted ? icons.volumeMute : icons.volumeUp"
-              class="text-2xl"
-              [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-primary' : ''"
+              class="text-2xl text-primary"
             ></ui-icon>
-            <span
-              class="font-bold text-sm"
-              [ngClass]="accessibility.theme() !== 'high-contrast' ? 'text-foreground' : ''"
-              >{{
-                isSpeakerMuted
-                  ? ('LESSON.CLASS_MUTED' | translate)
-                  : ('LESSON.CLASS_LISTENING' | translate)
-              }}</span
-            >
+            <span class="font-bold text-sm text-foreground">{{
+              isSpeakerMuted
+                ? ('LESSON.CLASS_MUTED' | translate)
+                : ('LESSON.CLASS_LISTENING' | translate)
+            }}</span>
           </button>
 
           <button
             type="button"
             class="bg-card border border-border flex items-center justify-center gap-3 p-4 rounded-2xl hover:bg-primary/5"
-            (click)="
-              router.navigate([
-                accessibility.simplifiedNav() ? '/minhas-atividades' : '/sala-de-espera',
-              ])
-            "
+            (click)="router.navigate([fromWizard ? '/minhas-atividades' : '/sala-de-espera'])"
             [appVoiceRead]="'LESSON.EXIT_BTN_ARIA' | translate"
           >
             <ui-icon [icon]="icons.signOut" class="text-2xl text-red-700"></ui-icon>
