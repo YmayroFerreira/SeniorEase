@@ -25,6 +25,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AccessibilityService, IconComponent } from '@senior-ease/ui';
+import { ACTIVITY_SESSION_REPOSITORY } from '../../core/domain/repositories/activity-session.repository';
+import { CompleteActivityUseCase } from '../../core/use-cases/activity/complete-activity.use-case';
+import { SaveActivitySessionUseCase } from '../../core/use-cases/activity/save-activity-session.use-case';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 export type ConnectionStatus = 'idle' | 'testing' | 'ok' | 'slow' | 'offline';
@@ -45,9 +48,6 @@ export interface Activity {
   steps: ActivityStep[];
 }
 
-const COMPLETED_KEY = 'wizard-completed-activities';
-const SESSION_KEY = 'wizard-session';
-
 @Component({
   selector: 'app-activity-wizard',
   standalone: true,
@@ -58,6 +58,9 @@ export class ActivityWizardComponent {
   protected readonly router = inject(Router);
   protected readonly accessibility = inject(AccessibilityService);
   private readonly translate = inject(TranslateService);
+  private readonly activityRepo = inject(ACTIVITY_SESSION_REPOSITORY);
+  private readonly saveSessionUC = inject(SaveActivitySessionUseCase);
+  private readonly completeActivityUC = inject(CompleteActivityUseCase);
 
   protected readonly icons = {
     arrowLeft: faArrowLeft,
@@ -253,9 +256,12 @@ export class ActivityWizardComponent {
     this.router.navigate(['/aula']);
   }
 
-  protected readonly completedIds = signal<Set<string>>(this.loadCompleted());
-  protected readonly activeActivityId = signal<string | null>(this.loadSession().activityId);
-  protected readonly activeStepIndex = signal<number>(this.loadSession().stepIndex);
+  private readonly _session = this.activityRepo.loadSession();
+  protected readonly completedIds = signal<Set<string>>(
+    new Set(this.activityRepo.loadCompleted().completedIds),
+  );
+  protected readonly activeActivityId = signal<string | null>(this._session?.activityId ?? null);
+  protected readonly activeStepIndex = signal<number>(this._session?.stepIndex ?? 0);
   protected readonly showCelebration = signal<boolean>(false);
 
   protected readonly activeActivity = computed(() =>
@@ -322,54 +328,26 @@ export class ActivityWizardComponent {
   private completeActivity(): void {
     const id = this.activeActivityId();
     if (!id) return;
-    const updated = new Set(this.completedIds());
-    updated.add(id);
+    const updated = this.completeActivityUC.execute(id, this.completedIds());
     this.completedIds.set(updated);
-    this.saveCompleted(updated);
     this.activeActivityId.set(null);
     this.activeStepIndex.set(0);
-    this.clearSession();
     this.showCelebration.set(true);
     setTimeout(() => this.showCelebration.set(false), 4000);
   }
 
   protected resetProgress(): void {
+    this.completeActivityUC.reset();
     this.completedIds.set(new Set());
-    localStorage.removeItem(COMPLETED_KEY);
-    this.clearSession();
     this.activeActivityId.set(null);
     this.activeStepIndex.set(0);
   }
 
-  private loadCompleted(): Set<string> {
-    try {
-      const raw = localStorage.getItem(COMPLETED_KEY);
-      if (!raw) return new Set();
-      return new Set(JSON.parse(raw) as string[]);
-    } catch {
-      return new Set();
-    }
-  }
-
-  private saveCompleted(ids: Set<string>): void {
-    localStorage.setItem(COMPLETED_KEY, JSON.stringify([...ids]));
-  }
-
-  private loadSession(): { activityId: string | null; stepIndex: number } {
-    try {
-      const raw = localStorage.getItem(SESSION_KEY);
-      if (!raw) return { activityId: null, stepIndex: 0 };
-      return JSON.parse(raw);
-    } catch {
-      return { activityId: null, stepIndex: 0 };
-    }
-  }
-
   private saveSession(activityId: string, stepIndex: number): void {
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ activityId, stepIndex }));
+    this.saveSessionUC.execute({ activityId, stepIndex });
   }
 
   private clearSession(): void {
-    localStorage.removeItem(SESSION_KEY);
+    this.activityRepo.clearSession();
   }
 }

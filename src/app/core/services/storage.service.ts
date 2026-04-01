@@ -1,18 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { NOTE_REPOSITORY } from '../domain/repositories/note.repository';
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
+  private readonly noteRepo = inject(NOTE_REPOSITORY);
+
   saveNotes(lessonId: string, content: string): void {
-    const key = `notes_lesson_${lessonId}`;
-    localStorage.setItem(key, content);
+    this.noteRepo.save({ lessonId, content, updatedAt: new Date().toISOString() });
   }
 
   getNotes(lessonId: string): string {
-    const key = `notes_lesson_${lessonId}`;
-    return localStorage.getItem(key) || '';
+    return this.noteRepo.findByLessonId(lessonId)?.content ?? '';
   }
 
   clearNotes(lessonId: string): void {
-    localStorage.removeItem(`notes_lesson_${lessonId}`);
+    this.noteRepo.delete(lessonId);
   }
 }
