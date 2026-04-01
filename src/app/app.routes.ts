@@ -24,9 +24,7 @@ export const routes: Routes = [
       {
         path: 'inicio',
         loadComponent: () =>
-          import('./features/dashboard-ds2/dashboard-ds2.component').then(
-            (m) => m.DashboardDs2Component,
-          ),
+          import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
         path: 'perfil',

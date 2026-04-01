@@ -98,6 +98,15 @@ body {
   overflow: hidden;
 }
 
+/* Mobile: layout usa overflow: visible e delega o scroll ao body */
+@media (max-width: 72rem) {
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+}
+
 html {
   font-size: var(--font-size-base, 16px);
 }
@@ -149,22 +158,31 @@ body {
   --color-primary-light: #ffff00;
   --color-primary-surface: #1a1a00;
 
-  --color-accent: #ffcc00;
-  --color-accent-hover: #e6b800;
+  --color-accent: #ffff00; /* unificado com primary-light para consistência */
+  --color-accent-hover: #e6e600;
 
   --color-surface: #000000;
   --color-card: #111111;
   --color-muted: #aaaaaa;
-  --color-border: #3a3a3a;
+  --color-border: #555555;
   --color-foreground: #f0f0f0;
   --color-toggle-off: #444444;
 
   --color-success: #44dd55;
   --color-success-light: #001100;
-  --color-warning: #ffcc00;
+  --color-warning: #ffff00;
   --color-warning-light: #1a1200;
   --color-danger: #ff5555;
   --color-danger-light: #1a0000;
+
+  /* Remap dos tokens do @senior-ease/ui para o esquema de alto contraste */
+  --ui-color-primary: var(--color-primary-light);
+  --ui-color-primary-strong: var(--color-primary-light);
+  --ui-color-primary-soft: #111100;
+  --ui-color-success: var(--color-primary-light);
+  --ui-color-success-soft: #000000;
+  --ui-color-accent: var(--color-primary-light);
+  --ui-color-accent-soft: #111100;
 }
 
 .theme-high-contrast .text-primary {
@@ -185,6 +203,133 @@ body {
 
 .theme-high-contrast .bg-accent {
   color: #000000;
+}
+
+/* ============================================================
+   ALTO CONTRASTE: overrides automáticos de componentes
+   Centraliza ajustes em CSS — os templates não precisam de
+   condicionais `accessibility.theme() === 'high-contrast'`.
+   ============================================================ */
+
+/* Cards com bg-primary ficam pretos (--color-primary: #000) →
+   adiciona borda amarela para separar do fundo */
+.theme-high-contrast .rounded-2xl.bg-primary,
+.theme-high-contrast .rounded-xl.bg-primary {
+  border: 2px solid var(--color-primary-light);
+}
+
+/* Containers bg-card → borda sutil para separar do fundo preto */
+.theme-high-contrast .rounded-2xl.bg-card,
+.theme-high-contrast .rounded-xl.bg-card {
+  border: 1px solid var(--color-border);
+}
+
+/* bg-primary-surface → mapeado para bg-card (escuro) */
+.theme-high-contrast .bg-primary-surface {
+  background-color: var(--color-card);
+}
+
+/* Texto sobre bg-primary-surface → primary-light (amarelo) */
+.theme-high-contrast .bg-primary-surface .text-primary {
+  color: var(--color-primary-light);
+}
+
+/* Cores de sucesso → remap para primary-light (amarelo) */
+.theme-high-contrast .text-success {
+  color: var(--color-primary-light);
+}
+
+/* bg-success sólido (botões, banners, dots do stepper) → amarelo */
+.theme-high-contrast .bg-success {
+  background-color: var(--color-primary-light);
+  color: #000000;
+}
+
+/* text-white dentro/sobre bg-success → preto para legibilidade no fundo amarelo */
+.theme-high-contrast .bg-success .text-white,
+.theme-high-contrast .bg-success.text-white {
+  color: #000000;
+}
+
+/* Borda de sucesso (card de atividade concluída) → amarelo */
+.theme-high-contrast .border-success {
+  border-color: var(--color-primary-light);
+}
+
+.theme-high-contrast .bg-success-light {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-primary-light);
+}
+
+/* Accent unificado com primary-light */
+.theme-high-contrast .text-accent {
+  color: var(--color-primary-light);
+}
+
+/* Textos brancos dentro de cards bg-primary → amarelo */
+.theme-high-contrast .bg-primary .text-white,
+.theme-high-contrast .bg-primary .text-white\/70,
+.theme-high-contrast .bg-primary .text-white\/80 {
+  color: var(--color-primary-light);
+}
+
+/* Círculo de ícone (bg-white/20) dentro de bg-primary → fundo amarelo, ícone preto */
+.theme-high-contrast .bg-primary .bg-white\/20 {
+  background-color: var(--color-primary-light);
+  color: #000000;
+}
+
+/* Barra de progresso (fill branco) dentro de bg-primary → amarelo */
+.theme-high-contrast .bg-primary .bg-white {
+  background-color: var(--color-primary-light);
+}
+
+/* Seção CTA bg-black/10 dentro de bg-primary → tinte amarelo sutil */
+.theme-high-contrast .bg-primary .bg-black\/10 {
+  background-color: rgba(255, 255, 0, 0.1);
+}
+
+/* Parágrafos descritivos da sala de aula → amarelo */
+.theme-high-contrast app-active-lesson-session p.text-muted,
+.theme-high-contrast app-active-lesson-session p.text-foreground {
+  color: var(--color-primary-light);
+}
+
+/* Sala de aula: botão ativo (mic/câmera) → já coberto pelas regras bg-success-light / text-success */
+
+/* Sala de aula: botão desligado (mic/câmera) em alto contraste */
+.theme-high-contrast app-active-lesson-session .bg-red-50 {
+  background-color: var(--color-danger-light);
+}
+.theme-high-contrast app-active-lesson-session .border-red-200 {
+  border-color: var(--color-danger);
+}
+.theme-high-contrast app-active-lesson-session .text-red-700 {
+  color: var(--color-danger);
+}
+
+/* Sala de aula: ícone text-primary em alto contraste → amarelo */
+.theme-high-contrast app-active-lesson-session .text-primary {
+  color: var(--color-primary-light);
+}
+
+/* Parágrafos e ícones descritivos logo abaixo de títulos → amarelo */
+.theme-high-contrast h1 + p,
+.theme-high-contrast h2 + p,
+.theme-high-contrast h1 + fa-icon,
+.theme-high-contrast h2 + fa-icon,
+.theme-high-contrast h1 + ui-icon,
+.theme-high-contrast h2 + ui-icon {
+  color: var(--color-primary-light);
+}
+
+/* Bordas com opacidade sobre primary → visíveis em fundo preto */
+.theme-high-contrast .border-primary\/20 {
+  border-color: rgba(255, 255, 0, 0.35);
+}
+
+.theme-high-contrast .border-primary\/10 {
+  border-color: rgba(255, 255, 0, 0.2);
 }
 
 .theme-soft {

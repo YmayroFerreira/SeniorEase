@@ -57,10 +57,8 @@
             (click)="toggleMuteMic()"
             class="flex-1 flex items-center justify-center gap-3 p-3 rounded-xl border transition-all relative overflow-hidden"
             [ngClass]="{
-              'bg-success-light border-success/30 text-success':
-                accessibility.theme() !== 'high-contrast' && !isMicMuted,
-              'bg-red-50 border-red-200 text-red-700':
-                accessibility.theme() !== 'high-contrast' && isMicMuted,
+              'bg-success-light border-success/30 text-success': !isMicMuted,
+              'bg-red-50 border-red-200 text-red-700': isMicMuted,
             }"
           >
             <div class="flex items-center gap-2">
@@ -90,10 +88,8 @@
             (click)="toggleTurnOffVideo()"
             class="flex-1 flex items-center justify-center gap-3 p-3 rounded-xl border transition-all"
             [ngClass]="{
-              'bg-success-light border-success/30 text-success':
-                accessibility.theme() !== 'high-contrast' && !isVideoOff,
-              'bg-red-50 border-red-200 text-red-700':
-                accessibility.theme() !== 'high-contrast' && isVideoOff,
+              'bg-success-light border-success/30 text-success': !isVideoOff,
+              'bg-red-50 border-red-200 text-red-700': isVideoOff,
             }"
             [appVoiceRead]="
               ('LESSON.CAMERA_LABEL' | translate) +

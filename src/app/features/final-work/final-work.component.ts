@@ -11,7 +11,7 @@ import {
   faUpload,
   faUserCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AccessibilityService, IconComponent } from '@senior-ease/ui';
 import { BreadcrumbComponent } from '../../shared/components/breadcrumb/breadcrumb.component';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
@@ -35,7 +35,6 @@ interface TimelineStage {
     FontAwesomeModule,
     VoiceReadDirective,
     BreadcrumbComponent,
-    TranslatePipe,
     IconComponent,
   ],
   templateUrl: './final-work.component.html',
@@ -109,41 +108,41 @@ export class FinalWorkComponent {
   protected readonly stages: TimelineStage[] = [
     {
       id: 'submitted',
-      label: 'FINAL_WORK.STAGE_SUBMITTED_LABEL',
+      label: this.translate.instant('FINAL_WORK.STAGE_SUBMITTED_LABEL'),
       date: '15/03/2026',
-      description: 'FINAL_WORK.STAGE_SUBMITTED_DESC',
+      description: this.translate.instant('FINAL_WORK.STAGE_SUBMITTED_DESC'),
       icon: this.icons.upload,
       type: 'default',
     },
     {
       id: 'received',
-      label: 'FINAL_WORK.STAGE_RECEIVED_LABEL',
+      label: this.translate.instant('FINAL_WORK.STAGE_RECEIVED_LABEL'),
       date: '15/03/2026',
-      description: 'FINAL_WORK.STAGE_RECEIVED_DESC',
+      description: this.translate.instant('FINAL_WORK.STAGE_RECEIVED_DESC'),
       icon: this.icons.check,
       type: 'default',
     },
     {
       id: 'reviewing',
-      label: 'FINAL_WORK.STAGE_REVIEWING_LABEL',
+      label: this.translate.instant('FINAL_WORK.STAGE_REVIEWING_LABEL'),
       date: '18/03/2026',
-      description: 'FINAL_WORK.STAGE_REVIEWING_DESC',
+      description: this.translate.instant('FINAL_WORK.STAGE_REVIEWING_DESC'),
       icon: this.icons.review,
       type: 'default',
     },
     {
       id: 'evaluated',
-      label: 'FINAL_WORK.STAGE_EVALUATED_LABEL',
+      label: this.translate.instant('FINAL_WORK.STAGE_EVALUATED_LABEL'),
       date: '22/03/2026',
-      description: 'FINAL_WORK.STAGE_EVALUATED_DESC',
+      description: this.translate.instant('FINAL_WORK.STAGE_EVALUATED_DESC'),
       icon: this.icons.checkDouble,
       type: 'default',
     },
     {
       id: 'grade',
-      label: 'FINAL_WORK.STAGE_GRADE_LABEL',
+      label: this.translate.instant('FINAL_WORK.STAGE_GRADE_LABEL'),
       date: '22/03/2026',
-      description: 'FINAL_WORK.STAGE_GRADE_DESC',
+      description: this.translate.instant('FINAL_WORK.STAGE_GRADE_DESC'),
       icon: this.icons.trophy,
       type: 'grade',
       grade: 9,
