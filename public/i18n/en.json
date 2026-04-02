@@ -24,7 +24,10 @@
     "PROFILE_DESC": "Account settings",
     "PROFILE_ARIA": "Go to profile",
     "MAIN_ARIA": "Main navigation",
-    "MOBILE_ARIA": "Bottom navigation"
+    "MOBILE_ARIA": "Bottom navigation",
+    "LOGOUT": "Sign out",
+    "LOGOUT_DESC": "End session",
+    "LOGOUT_ARIA": "Sign out of account"
   },
   "HOME": {
     "WELCOME": "Welcome back,",
