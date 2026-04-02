@@ -26,6 +26,8 @@ import {
   DividerComponent,
   IconComponent,
 } from '@senior-ease/ui';
+import { AuthService } from '../../core/services/auth.service';
+import { UserFirestoreService } from '../../core/services/user-firestore.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
@@ -43,6 +45,8 @@ import { VoiceReadDirective } from '../../shared/directives/voice-read.directive
 })
 export class ProfileComponent {
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly userFirestoreService = inject(UserFirestoreService);
   private readonly accessibilityService = inject(AccessibilityService);
   private readonly translate = inject(TranslateService);
 
@@ -68,9 +72,9 @@ export class ProfileComponent {
   protected readonly APP_VERSION = '1.0.0';
 
   protected readonly profileImage = signal<string | null>(localStorage.getItem('profile-image'));
-  protected readonly userName = signal(localStorage.getItem('profile-name') ?? 'Sr. Arnaldo');
-  protected readonly email = signal(localStorage.getItem('profile-email') ?? 'arnaldo@email.com');
-  protected readonly phone = signal(localStorage.getItem('profile-phone') ?? '(11) 98765-4321');
+  protected readonly userName = signal(localStorage.getItem('profile-name') ?? '');
+  protected readonly email = signal(localStorage.getItem('profile-email') ?? '');
+  protected readonly phone = signal(localStorage.getItem('profile-phone') ?? '');
   protected readonly dob = signal(localStorage.getItem('profile-dob') ?? '');
   protected readonly cpf = signal(localStorage.getItem('profile-cpf') ?? '');
   protected readonly simplifiedNav = this.accessibilityService.simplifiedNav;
@@ -110,6 +114,15 @@ export class ProfileComponent {
     if (this.profileImage()) {
       localStorage.setItem('profile-image', this.profileImage()!);
     }
+    this.userFirestoreService.save({
+      id: this.authService.getUserId() ?? 'local-user',
+      name: this.userName(),
+      email: this.email(),
+      phone: this.phone(),
+      dateOfBirth: this.dob(),
+      cpf: this.cpf(),
+      profileImageBase64: this.profileImage(),
+    });
     this.showToast(this.translate.instant('PROFILE.TOAST_SUCCESS'), true);
   }
 
@@ -118,7 +131,8 @@ export class ProfileComponent {
   }
 
   protected logout(): void {
-    this.router.navigate(['/inicio']);
+    this.authService.clearToken();
+    window.location.href = this.authService.loginUrl;
   }
 
   private showToast(message: string, success: boolean): void {
