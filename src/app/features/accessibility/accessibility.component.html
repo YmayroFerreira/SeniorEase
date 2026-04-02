@@ -38,7 +38,7 @@
         @for (opt of fontSizeOptions; track opt.value) {
           <button
             type="button"
-            (click)="selectedFontSize.set(opt.value)"
+            (click)="setFontSize(opt.value)"
             [appVoiceRead]="opt.description | translate"
             class="bg-card rounded-xl shadow-sm text-center border-2 transition-colors cursor-pointer flex flex-col items-center justify-center px-1 py-2.5 min-h-[4.5rem]"
             [class.border-primary]="selectedFontSize() === opt.value"
@@ -69,7 +69,7 @@
         @for (opt of themeOptions; track opt.value; let last = $last) {
           <button
             type="button"
-            (click)="selectedTheme.set(opt.value)"
+            (click)="setTheme(opt.value)"
             [appVoiceRead]="(opt.label | translate) + '. ' + (opt.description | translate)"
             class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
             [attr.aria-pressed]="selectedTheme() === opt.value"
@@ -136,7 +136,7 @@
         @for (opt of animationOptions; track opt.value; let last = $last) {
           <button
             type="button"
-            (click)="selectedAnimation.set(opt.value)"
+            (click)="setAnimation(opt.value)"
             [appVoiceRead]="opt.label | translate"
             class="w-full flex items-center hover:bg-surface transition-colors cursor-pointer gap-4 px-4 py-3.5"
             [attr.aria-pressed]="selectedAnimation() === opt.value"
