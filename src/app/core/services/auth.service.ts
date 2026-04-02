@@ -7,6 +7,7 @@ interface TokenPayload {
   sub: string;
   email: string;
   exp: number;
+  name?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -39,6 +40,18 @@ export class AuthService {
     const token = this.getToken();
     if (!token) return null;
     return this.decodePayload(token);
+  }
+
+  getUserId(): string | null {
+    return this.getTokenPayload()?.sub ?? null;
+  }
+
+  getUserEmail(): string | null {
+    return this.getTokenPayload()?.email ?? null;
+  }
+
+  getUserName(): string | null {
+    return this.getTokenPayload()?.name ?? null;
   }
 
   private decodePayload(token: string): TokenPayload | null {

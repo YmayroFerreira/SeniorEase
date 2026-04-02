@@ -25,6 +25,7 @@ import {
   type FontSize,
   type Theme,
 } from '@senior-ease/ui';
+import { AccessibilityFirestoreService } from '../../core/services/accessibility-firestore.service';
 import { VoiceReadingService } from '../../core/services/voice-reading.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -47,6 +48,8 @@ export class AccessibilityComponent {
   protected readonly voiceReadingService = inject(VoiceReadingService);
   protected readonly translate = inject(TranslateService);
   protected readonly router = inject(Router);
+  private readonly accessibilityFirestore = inject(AccessibilityFirestoreService);
+  private _firestoreDebounce: ReturnType<typeof setTimeout> | null = null;
 
   protected readonly icons = {
     wheelchair: faWheelchair,
@@ -198,10 +201,12 @@ export class AccessibilityComponent {
     if (key === 'dyslexiaFont') this.svc.dyslexiaFont.set(val);
     if (key === 'increasedSpacing') this.svc.increasedSpacing.set(val);
     if (key === 'simplifiedNav') this.svc.simplifiedNav.set(val);
+    this.scheduleFirestoreSave();
   }
 
   protected updateSpeechRate(rate: number): void {
     this.svc.speechRate.set(rate);
+    this.scheduleFirestoreSave();
   }
 
   protected testSpeech(): void {
@@ -212,6 +217,21 @@ export class AccessibilityComponent {
         this.translate.instant('ACCESSIBILITY.SPEECH.TEST_MESSAGE'),
       );
     }
+  }
+
+  protected setFontSize(value: FontSize): void {
+    this.selectedFontSize.set(value);
+    this.scheduleFirestoreSave();
+  }
+
+  protected setTheme(value: Theme): void {
+    this.selectedTheme.set(value);
+    this.scheduleFirestoreSave();
+  }
+
+  protected setAnimation(value: AnimationSpeed): void {
+    this.selectedAnimation.set(value);
+    this.scheduleFirestoreSave();
   }
 
   protected changeLang(lang: string): void {
@@ -225,6 +245,23 @@ export class AccessibilityComponent {
     if (rate <= 1.0) return 'ACCESSIBILITY.SPEECH.NORMAL';
     if (rate <= 1.2) return 'ACCESSIBILITY.SPEECH.FAST';
     return 'ACCESSIBILITY.SPEECH.VERY_FAST';
+  }
+
+  private scheduleFirestoreSave(): void {
+    if (this._firestoreDebounce) clearTimeout(this._firestoreDebounce);
+    this._firestoreDebounce = setTimeout(() => {
+      this.accessibilityFirestore.save({
+        fontSize: this.svc.fontSize(),
+        theme: this.svc.theme(),
+        voiceReading: this.svc.voiceReading(),
+        speechRate: this.svc.speechRate(),
+        dyslexiaFont: this.svc.dyslexiaFont(),
+        animationSpeed: this.svc.animationSpeed(),
+        extraConfirmations: this.svc.extraConfirmations(),
+        increasedSpacing: this.svc.increasedSpacing(),
+        simplifiedNav: this.svc.simplifiedNav(),
+      });
+    }, 2000);
   }
 
   protected resetPreferences(): void {
@@ -244,5 +281,6 @@ export class AccessibilityComponent {
       increasedSpacing: false,
       dyslexiaFont: false,
     });
+    this.scheduleFirestoreSave();
   }
 }

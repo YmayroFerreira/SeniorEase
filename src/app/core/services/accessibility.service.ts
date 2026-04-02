@@ -142,4 +142,27 @@ export class AccessibilityService {
     const stored = localStorage.getItem(ANIMATION_KEY) as AnimationSpeed;
     return VALID_ANIMATIONS.includes(stored) ? stored : 'normal';
   }
+
+  /** Apply a full set of preferences loaded from Firestore. */
+  applyPreferences(prefs: {
+    fontSize: FontSize;
+    theme: Theme;
+    voiceReading: boolean;
+    speechRate: number;
+    dyslexiaFont: boolean;
+    animationSpeed: AnimationSpeed;
+    extraConfirmations: boolean;
+    increasedSpacing: boolean;
+    simplifiedNav: boolean;
+  }): void {
+    this.fontSize.set(prefs.fontSize);
+    this.theme.set(prefs.theme);
+    this.voiceReading.set(prefs.voiceReading);
+    this.speechRate.set(prefs.speechRate);
+    this.dyslexiaFont.set(prefs.dyslexiaFont);
+    this.animationSpeed.set(prefs.animationSpeed);
+    this.extraConfirmations.set(prefs.extraConfirmations);
+    this.increasedSpacing.set(prefs.increasedSpacing);
+    this.simplifiedNav.set(prefs.simplifiedNav);
+  }
 }

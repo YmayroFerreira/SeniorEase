@@ -24,7 +24,10 @@
     "PROFILE_DESC": "Configurações da conta",
     "PROFILE_ARIA": "Navegar para perfil",
     "MAIN_ARIA": "Navegação principal",
-    "MOBILE_ARIA": "Navegação inferior"
+    "MOBILE_ARIA": "Navegação inferior",
+    "LOGOUT": "Sair",
+    "LOGOUT_DESC": "Encerrar sessão",
+    "LOGOUT_ARIA": "Sair da conta"
   },
   "HOME": {
     "WELCOME": "Bem-vindo de volta,",
