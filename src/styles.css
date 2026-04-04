@@ -96,6 +96,8 @@ html,
 body {
   height: 100%;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 /* Mobile: layout usa overflow: visible e delega o scroll ao body */
@@ -104,6 +106,8 @@ body {
   body {
     height: auto;
     overflow: auto;
+    margin: 0;
+    padding: 0;
   }
 }
 
@@ -203,6 +207,59 @@ body {
 
 .theme-high-contrast .bg-accent {
   color: #000000;
+}
+
+/* ============================================================
+   SE-PAGE-HEADER — header sticky full-bleed para páginas
+   internas (dentro do <router-outlet>).
+   Usa fixed para sair do fluxo do grid e fica no topo
+   ============================================================ */
+.se-page-header {
+  position: fixed;
+  top: 0;
+  left: var(--ui-layout-sidebar-width);
+  right: 0;
+  z-index: 50;
+  margin: 0;
+}
+
+@media (max-width: 72rem) {
+  /* Mobile: sidebar não é visível, header vai de ponta a ponta */
+  .se-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    margin: 0;
+  }
+}
+
+/* ============================================================
+   HEADER DO LAYOUT (slot [header] do ui-dashboard-layout)
+   Quando o slot tem conteúdo, o .ui-dashboard-layout__header
+   fica colado ao topo e ocupa a largura total do container,
+   sem o padding que o .ui-dashboard-layout__main aplica.
+   ============================================================ */
+.ui-dashboard-layout__header:not(:empty) {
+  /* Cancela o padding (space-7 = 2rem) e o gap do grid (space-6 = 1.5rem) */
+  margin-top: calc(-1 * (var(--ui-space-7) + var(--ui-space-6)));
+  margin-left: calc(-1 * var(--ui-space-7));
+  margin-right: calc(-1 * var(--ui-space-7));
+  position: sticky;
+  top: calc(-1 * var(--ui-space-7));
+  z-index: 50;
+}
+
+@media (max-width: 72rem) {
+  /* Mobile: padding = space-6 (1.5rem), gap = space-6 → total: 2 × space-6 */
+  /* Scroll está no body, então top: 0 para grudar no topo da viewport */
+  .ui-dashboard-layout__header:not(:empty) {
+    margin-top: calc(-2 * var(--ui-space-6));
+    margin-left: calc(-1 * var(--ui-space-6));
+    margin-right: calc(-1 * var(--ui-space-6));
+    top: 0;
+  }
 }
 
 /* ============================================================

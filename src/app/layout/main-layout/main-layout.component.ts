@@ -1,22 +1,34 @@
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DashboardLayoutComponent, NavItemData, SidebarComponent } from '@senior-ease/ui';
-import { map, merge } from 'rxjs';
+import { filter, map, merge, startWith } from 'rxjs';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { AuthService } from '../../core/services/auth.service';
+import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, SidebarComponent, DashboardLayoutComponent, TranslatePipe],
+  imports: [
+    RouterOutlet,
+    SidebarComponent,
+    DashboardLayoutComponent,
+    TranslatePipe,
+    DatePipe,
+    VoiceReadDirective,
+  ],
   templateUrl: './main-layout.component.html',
 })
 export class MainLayoutComponent {
   private readonly accessibilityService = inject(AccessibilityService);
   private readonly authService = inject(AuthService);
   private readonly translate = inject(TranslateService);
+  private readonly router = inject(Router);
+
+  protected readonly today = new Date();
 
   protected readonly userName = computed(() => {
     return localStorage.getItem('profile-name') || this.authService.getUserName() || '';
@@ -32,6 +44,15 @@ export class MainLayoutComponent {
       .map((w) => w[0].toUpperCase())
       .join('');
   });
+
+  protected readonly isDashboard = toSignal(
+    this.router.events.pipe(
+      filter((e) => e instanceof NavigationEnd),
+      map(() => this.router.url === '/inicio'),
+      startWith(this.router.url === '/inicio'),
+    ),
+    { initialValue: this.router.url === '/inicio' },
+  );
 
   private readonly langChange = toSignal(
     merge(
