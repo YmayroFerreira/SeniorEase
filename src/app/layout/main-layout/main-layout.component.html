@@ -9,5 +9,31 @@
     [items]="navItems()"
   ></ui-sidebar>
 
+  @if (isDashboard()) {
+    <div header>
+      <!-- Header mobile -->
+      <div class="md:hidden bg-primary px-6 pt-10 pb-6">
+        <p class="text-primary-light text-sm mb-0.5">
+          {{ today | date: "EEEE, d 'de' MMMM" : '' : 'pt-BR' }}
+        </p>
+        <h1
+          class="text-white text-2xl font-bold"
+          [appVoiceRead]="'Olá, ' + userName() + '! O que temos para fazer hoje?'"
+        >
+          Olá! {{ userName() }},
+        </h1>
+        <p class="text-primary-light text-sm mt-1">{{ 'DASHBOARD.GREETING' | translate }}</p>
+      </div>
+
+      <!-- Header desktop -->
+      <div class="hidden md:block border-b border-border bg-card px-8 py-5">
+        <h1 class="text-xl font-bold text-foreground">{{ 'NAV.HOME' | translate }}</h1>
+        <p class="text-sm text-muted mt-0.5" [appVoiceRead]="'Olá, ' + userName()">
+          Olá, {{ userName() }}
+        </p>
+      </div>
+    </div>
+  }
+
   <router-outlet />
 </ui-dashboard-layout>

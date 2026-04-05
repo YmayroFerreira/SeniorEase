@@ -42,8 +42,6 @@ export class DashboardComponent {
   protected readonly accessibility = inject(AccessibilityService);
   protected readonly router = inject(Router);
   private readonly translate = inject(TranslateService);
-
-  protected readonly today = new Date();
   protected isWorkSubmitted = true;
 
   protected readonly wizardTotal = 4;

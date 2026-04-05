@@ -1,12 +1,7 @@
-<div class="min-h-screen bg-surface pb-[88px]">
-  <!-- mobile -->
-  <div class="md:hidden">
-    <div class="bg-primary h-11"></div>
-  </div>
-
+<div class="pb-[88px] md:pb-8">
   <!-- Header -->
   <header
-    class="border-b bg-card sticky top-0 z-10 px-6 py-3 flex items-center gap-4"
+    class="se-page-header border-b bg-card px-6 py-3 flex items-center gap-4"
     [ngClass]="accessibility.theme() === 'high-contrast' ? 'border-primary-light' : 'border-border'"
   >
     <button
