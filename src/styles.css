@@ -111,6 +111,15 @@ body {
   }
 }
 
+/* Mobile: layout usa overflow: visible e delega o scroll ao body */
+@media (max-width: 72rem) {
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+}
+
 html {
   font-size: var(--font-size-base, 16px);
 }
