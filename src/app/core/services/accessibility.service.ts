@@ -31,6 +31,8 @@ const ANIMATION_KEY = 'accessibility-animation-speed';
 const EXTRA_CONFIRMATIONS_KEY = 'profile-extra-confirmations';
 const SPACING_KEY = 'accessibility-increased-spacing';
 const SIMPLIFIED_NAV_KEY = 'profile-simplified-nav';
+const LARGER_BUTTONS_KEY = 'accessibility-larger-buttons';
+const SILENT_MODE_KEY = 'accessibility-silent-mode';
 
 const VALID_ANIMATIONS: AnimationSpeed[] = ['normal', 'slow', 'none'];
 
@@ -49,6 +51,8 @@ export class AccessibilityService {
   );
   readonly increasedSpacing = signal<boolean>(localStorage.getItem(SPACING_KEY) === 'true');
   readonly simplifiedNav = signal<boolean>(localStorage.getItem(SIMPLIFIED_NAV_KEY) === 'true');
+  readonly largerButtons = signal<boolean>(localStorage.getItem(LARGER_BUTTONS_KEY) === 'true');
+  readonly silentMode = signal<boolean>(localStorage.getItem(SILENT_MODE_KEY) === 'true');
 
   private readonly _fontEffect = effect(() => {
     const size = this.fontSize();
@@ -93,6 +97,22 @@ export class AccessibilityService {
 
   private readonly _simplifiedNavEffect = effect(() => {
     localStorage.setItem(SIMPLIFIED_NAV_KEY, String(this.simplifiedNav()));
+  });
+
+  private readonly _largerButtonsEffect = effect(() => {
+    const enabled = this.largerButtons();
+    const classList = this.document.documentElement.classList;
+    if (enabled) {
+      classList.add('buttons-larger');
+    } else {
+      classList.remove('buttons-larger');
+    }
+    localStorage.setItem(LARGER_BUTTONS_KEY, String(enabled));
+    console.log('[CoreA11y] largerButtons:', enabled, '| html classes:', classList.toString());
+  });
+
+  private readonly _silentModeEffect = effect(() => {
+    localStorage.setItem(SILENT_MODE_KEY, String(this.silentMode()));
   });
 
   private readonly _spacingEffect = effect(() => {
@@ -154,6 +174,8 @@ export class AccessibilityService {
     extraConfirmations: boolean;
     increasedSpacing: boolean;
     simplifiedNav: boolean;
+    largerButtons?: boolean;
+    silentMode?: boolean;
   }): void {
     this.fontSize.set(prefs.fontSize);
     this.theme.set(prefs.theme);
@@ -164,5 +186,7 @@ export class AccessibilityService {
     this.extraConfirmations.set(prefs.extraConfirmations);
     this.increasedSpacing.set(prefs.increasedSpacing);
     this.simplifiedNav.set(prefs.simplifiedNav);
+    this.largerButtons.set(prefs.largerButtons ?? false);
+    this.silentMode.set(prefs.silentMode ?? false);
   }
 }

@@ -139,23 +139,45 @@
 
         <!-- Data de nascimento -->
         <div class="px-4 py-3.5">
-          <div class="flex items-center gap-2 mb-1">
+          <div class="flex items-center gap-2 mb-2">
             <ui-icon
               [icon]="icons.calendar"
               class="text-primary flex-shrink-0 text-sm w-4"
             ></ui-icon>
-            <label for="profile-dob" class="text-muted text-xs">{{
-              'PROFILE.BIRTH_DATE' | translate
-            }}</label>
+            <span class="text-muted text-xs">{{ 'PROFILE.BIRTH_DATE' | translate }}</span>
           </div>
-          <input
-            id="profile-dob"
-            type="date"
-            [value]="dob()"
-            (input)="dob.set($any($event.target).value)"
-            [appVoiceRead]="'PROFILE.BIRTH_DATE_ARIA' | translate"
-            class="w-full text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors text-base py-1"
-          />
+          <div class="flex gap-2">
+            <select
+              [value]="dobDay()"
+              (change)="dobDay.set($any($event.target).value)"
+              class="flex-1 text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors text-base py-1 cursor-pointer"
+            >
+              <option value="" disabled>Dia</option>
+              @for (d of days; track d) {
+                <option [value]="d">{{ d }}</option>
+              }
+            </select>
+            <select
+              [value]="dobMonth()"
+              (change)="dobMonth.set($any($event.target).value)"
+              class="flex-[2] text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors text-base py-1 cursor-pointer"
+            >
+              <option value="" disabled>Mês</option>
+              @for (m of months; track m.value) {
+                <option [value]="m.value">{{ m.label }}</option>
+              }
+            </select>
+            <select
+              [value]="dobYear()"
+              (change)="dobYear.set($any($event.target).value)"
+              class="flex-[1.5] text-foreground font-semibold bg-transparent border-b border-border focus:outline-none focus:border-primary transition-colors text-base py-1 cursor-pointer"
+            >
+              <option value="" disabled>Ano</option>
+              @for (y of years; track y) {
+                <option [value]="y">{{ y }}</option>
+              }
+            </select>
+          </div>
         </div>
 
         <div class="bg-border h-px mx-4"></div>

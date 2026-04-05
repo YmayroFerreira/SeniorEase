@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, NgZone, OnDestroy, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -26,6 +26,7 @@ import {
   type Theme,
 } from '@senior-ease/ui';
 import { AccessibilityFirestoreService } from '../../core/services/accessibility-firestore.service';
+import { AccessibilityService as CoreAccessibilityService } from '../../core/services/accessibility.service';
 import { VoiceReadingService } from '../../core/services/voice-reading.service';
 import { VoiceReadDirective } from '../../shared/directives/voice-read.directive';
 
@@ -43,12 +44,14 @@ interface AccessibilityPrefs {
   imports: [RouterLink, FontAwesomeModule, VoiceReadDirective, TranslatePipe, IconComponent],
   templateUrl: './accessibility.component.html',
 })
-export class AccessibilityComponent {
+export class AccessibilityComponent implements OnDestroy {
   private readonly svc = inject(AccessibilityService);
+  private readonly coreSvc = inject(CoreAccessibilityService);
   protected readonly voiceReadingService = inject(VoiceReadingService);
   protected readonly translate = inject(TranslateService);
   protected readonly router = inject(Router);
   private readonly accessibilityFirestore = inject(AccessibilityFirestoreService);
+  private readonly ngZone = inject(NgZone);
   private _firestoreDebounce: ReturnType<typeof setTimeout> | null = null;
 
   protected readonly icons = {
@@ -76,9 +79,9 @@ export class AccessibilityComponent {
 
   protected readonly prefs = signal<AccessibilityPrefs>({
     voiceReading: this.svc.voiceReading(),
-    largerButtons: true,
+    largerButtons: this.coreSvc.largerButtons(),
     simplifiedNav: this.svc.simplifiedNav(),
-    silentMode: false,
+    silentMode: this.coreSvc.silentMode(),
     increasedSpacing: this.svc.increasedSpacing(),
     dyslexiaFont: this.svc.dyslexiaFont(),
   });
@@ -201,6 +204,11 @@ export class AccessibilityComponent {
     if (key === 'dyslexiaFont') this.svc.dyslexiaFont.set(val);
     if (key === 'increasedSpacing') this.svc.increasedSpacing.set(val);
     if (key === 'simplifiedNav') this.svc.simplifiedNav.set(val);
+    if (key === 'largerButtons') this.coreSvc.largerButtons.set(val);
+    if (key === 'silentMode') {
+      this.coreSvc.silentMode.set(val);
+      if (val) this.voiceReadingService.stop();
+    }
     this.scheduleFirestoreSave();
   }
 
@@ -247,21 +255,45 @@ export class AccessibilityComponent {
     return 'ACCESSIBILITY.SPEECH.VERY_FAST';
   }
 
+  private buildPrefsSnapshot() {
+    return {
+      fontSize: this.svc.fontSize(),
+      theme: this.svc.theme(),
+      voiceReading: this.svc.voiceReading(),
+      speechRate: this.svc.speechRate(),
+      dyslexiaFont: this.svc.dyslexiaFont(),
+      animationSpeed: this.svc.animationSpeed(),
+      extraConfirmations: this.svc.extraConfirmations(),
+      increasedSpacing: this.svc.increasedSpacing(),
+      simplifiedNav: this.svc.simplifiedNav(),
+      largerButtons: this.coreSvc.largerButtons(),
+      silentMode: this.coreSvc.silentMode(),
+    };
+  }
+
+  private doFirestoreSave(): void {
+    this.accessibilityFirestore
+      .save(this.buildPrefsSnapshot())
+      .catch((err) => console.error('[AccessibilityFirestore] save failed:', err));
+  }
+
   private scheduleFirestoreSave(): void {
     if (this._firestoreDebounce) clearTimeout(this._firestoreDebounce);
-    this._firestoreDebounce = setTimeout(() => {
-      this.accessibilityFirestore.save({
-        fontSize: this.svc.fontSize(),
-        theme: this.svc.theme(),
-        voiceReading: this.svc.voiceReading(),
-        speechRate: this.svc.speechRate(),
-        dyslexiaFont: this.svc.dyslexiaFont(),
-        animationSpeed: this.svc.animationSpeed(),
-        extraConfirmations: this.svc.extraConfirmations(),
-        increasedSpacing: this.svc.increasedSpacing(),
-        simplifiedNav: this.svc.simplifiedNav(),
-      });
-    }, 2000);
+    this._firestoreDebounce = this.ngZone.runOutsideAngular(() =>
+      setTimeout(() => {
+        this.ngZone.run(() => {
+          this.doFirestoreSave();
+          this._firestoreDebounce = null;
+        });
+      }, 2000),
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this._firestoreDebounce) {
+      clearTimeout(this._firestoreDebounce);
+    }
+    this.doFirestoreSave();
   }
 
   protected resetPreferences(): void {
@@ -273,9 +305,11 @@ export class AccessibilityComponent {
     this.svc.dyslexiaFont.set(false);
     this.svc.increasedSpacing.set(false);
     this.svc.simplifiedNav.set(false);
+    this.coreSvc.largerButtons.set(false);
+    this.coreSvc.silentMode.set(false);
     this.prefs.set({
       voiceReading: false,
-      largerButtons: true,
+      largerButtons: false,
       simplifiedNav: false,
       silentMode: false,
       increasedSpacing: false,

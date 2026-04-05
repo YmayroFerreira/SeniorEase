@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DEFAULT_ACCESSIBILITY_PREFERENCES } from '../../core/domain/entities/accessibility-preferences.entity';
 import { AccessibilityFirestoreService } from '../../core/services/accessibility-firestore.service';
 import { AccessibilityService } from '../../core/services/accessibility.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -49,6 +50,9 @@ export class AuthCallbackComponent implements OnInit {
 
     if (accessibilityPrefs) {
       this.accessibilityService.applyPreferences(accessibilityPrefs);
+    } else {
+      // Novo usuário sem documento de acessibilidade — cria com todos os defaults
+      this.accessibilityFirestoreService.save(DEFAULT_ACCESSIBILITY_PREFERENCES);
     }
   }
 

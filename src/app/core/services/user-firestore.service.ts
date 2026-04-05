@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { UserEntity } from '../domain/entities/user.entity';
 import { AuthService } from './auth.service';
 
@@ -23,6 +24,9 @@ export class UserFirestoreService {
   async loadToLocalStorage(): Promise<boolean> {
     const uid = this.authService.getUserId();
     if (!uid) return false;
+    // Clear stale data from any previously logged-in user before writing new data
+    Object.values(LS_KEYS).forEach((key) => localStorage.removeItem(key));
+    localStorage.removeItem('profile-image');
     try {
       const snap = await getDoc(doc(this.firestore, `userProfiles/${uid}`));
       if (!snap.exists()) return false;
