@@ -15,12 +15,14 @@ export class VoiceReadingService {
   speak(text: string): void {
     if (!this.synth) return;
     if (!this.a11y.voiceReading()) return;
+    if (this.a11y.silentMode()) return;
     this.stop();
     this._utter(text.trim(), this.a11y.speechRate());
   }
 
   speakDirect(text: string, rate = this.a11y.speechRate()): void {
     if (!this.synth) return;
+    if (this.a11y.silentMode()) return;
     this.stop();
     this._utter(text.trim(), rate);
   }
