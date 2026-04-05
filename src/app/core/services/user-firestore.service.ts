@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { UserEntity } from '../domain/entities/user.entity';
 import { AuthService } from './auth.service';
 

@@ -443,6 +443,29 @@ body {
   --ui-line-height-tight: 1.5;
 }
 
+/* Sidebar mais larga para acomodar ícones e texto com espaçamento aumentado */
+.spacing-increased {
+  --ui-layout-sidebar-width: 18rem;
+}
+
+/* Ícone do nav-item fixo para não consumir largura excessiva da sidebar */
+.spacing-increased ui-nav-item .ui-nav-item__icon {
+  height: 2.25rem !important;
+  width: 2.25rem !important;
+  flex-shrink: 0;
+}
+
+/* Garante que o texto não vaze para fora do botão */
+.spacing-increased ui-nav-item .ui-nav-item__copy {
+  overflow: hidden;
+}
+
+.spacing-increased ui-nav-item .ui-nav-item__copy span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Padding interno de cards e seções */
 .spacing-increased .bg-card,
 .spacing-increased section {
@@ -454,6 +477,23 @@ body {
 .spacing-increased p,
 .spacing-increased label {
   line-height: 1.8;
+}
+
+/* ============================================================
+   ACESSIBILIDADE: Botões maiores
+   Aumenta levemente o padding e o tamanho mínimo dos botões
+   para facilitar o toque/clique por idosos.
+   ============================================================ */
+html.buttons-larger .ui-button {
+  min-height: 3.5rem !important;
+  padding: 0.875rem 1.625rem !important;
+  font-size: 1.0625rem !important;
+}
+
+html.buttons-larger .ui-button--sm {
+  min-height: 3rem !important;
+  padding: 0.75rem 1.25rem !important;
+  font-size: 1rem !important;
 }
 
 /* ============================================================

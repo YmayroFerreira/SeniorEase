@@ -12,6 +12,8 @@ export interface AccessibilityPreferencesEntity {
   extraConfirmations: boolean;
   increasedSpacing: boolean;
   simplifiedNav: boolean;
+  largerButtons: boolean;
+  silentMode: boolean;
 }
 
 export const DEFAULT_ACCESSIBILITY_PREFERENCES: AccessibilityPreferencesEntity = {
@@ -24,4 +26,6 @@ export const DEFAULT_ACCESSIBILITY_PREFERENCES: AccessibilityPreferencesEntity =
   extraConfirmations: false,
   increasedSpacing: false,
   simplifiedNav: false,
+  largerButtons: false,
+  silentMode: false,
 };

@@ -24,6 +24,8 @@ export class LocalStorageAccessibilityRepository implements IAccessibilityPrefer
     extraConfirmations: 'profile-extra-confirmations',
     increasedSpacing: 'accessibility-increased-spacing',
     simplifiedNav: 'profile-simplified-nav',
+    largerButtons: 'accessibility-larger-buttons',
+    silentMode: 'accessibility-silent-mode',
   };
 
   load(): AccessibilityPreferencesEntity {
@@ -45,6 +47,8 @@ export class LocalStorageAccessibilityRepository implements IAccessibilityPrefer
       extraConfirmations: localStorage.getItem(k.extraConfirmations) === 'true',
       increasedSpacing: localStorage.getItem(k.increasedSpacing) === 'true',
       simplifiedNav: localStorage.getItem(k.simplifiedNav) === 'true',
+      largerButtons: localStorage.getItem(k.largerButtons) === 'true',
+      silentMode: localStorage.getItem(k.silentMode) === 'true',
     };
   }
 
@@ -59,5 +63,7 @@ export class LocalStorageAccessibilityRepository implements IAccessibilityPrefer
     localStorage.setItem(k.extraConfirmations, String(prefs.extraConfirmations));
     localStorage.setItem(k.increasedSpacing, String(prefs.increasedSpacing));
     localStorage.setItem(k.simplifiedNav, String(prefs.simplifiedNav));
+    localStorage.setItem(k.largerButtons, String(prefs.largerButtons));
+    localStorage.setItem(k.silentMode, String(prefs.silentMode));
   }
 }
