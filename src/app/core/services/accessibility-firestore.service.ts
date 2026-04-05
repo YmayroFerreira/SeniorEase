@@ -18,6 +18,18 @@ export class AccessibilityFirestoreService {
   async loadToLocalStorage(): Promise<AccessibilityPreferencesEntity | null> {
     const uid = this.authService.getUserId();
     if (!uid) return null;
+    // Clear stale accessibility data from any previously logged-in user
+    [
+      'accessibility-font-size',
+      'accessibility-theme',
+      'accessibility-voice-reading',
+      'accessibility-speech-rate',
+      'accessibility-dyslexia-font',
+      'accessibility-animation-speed',
+      'profile-extra-confirmations',
+      'accessibility-increased-spacing',
+      'profile-simplified-nav',
+    ].forEach((key) => localStorage.removeItem(key));
     try {
       const snap = await getDoc(doc(this.firestore, `accessibilityPreferences/${uid}`));
       if (!snap.exists()) return null;
