@@ -193,6 +193,7 @@ export class AccessibilityComponent implements OnDestroy {
     const val = this.prefs()[key] as boolean;
     if (key === 'voiceReading') {
       this.svc.voiceReading.set(val);
+      this.coreSvc.voiceReading.set(val);
       if (val) {
         this.voiceReadingService.speakDirect(
           this.translate.instant('ACCESSIBILITY.SPEECH.ACTIVATED_MESSAGE'),
@@ -300,6 +301,7 @@ export class AccessibilityComponent implements OnDestroy {
     this.svc.fontSize.set('medium');
     this.svc.theme.set('default');
     this.svc.voiceReading.set(false);
+    this.coreSvc.voiceReading.set(false);
     this.svc.speechRate.set(0.9);
     this.svc.animationSpeed.set('normal');
     this.svc.dyslexiaFont.set(false);
